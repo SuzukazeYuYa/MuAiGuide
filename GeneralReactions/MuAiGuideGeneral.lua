@@ -265,6 +265,7 @@ local tbl =
 						localMapIDList = 
 						{
 							1238,
+							1122,
 						},
 						localmapid = 1228,
 						name = "指路支持的地图",
@@ -303,33 +304,6 @@ local tbl =
 			version = 2,
 		},
 		inheritedIndex = 5,
-	},
-	
-	{
-		data = 
-		{
-			actions = 
-			{
-				
-				{
-					data = 
-					{
-						aType = "Lua",
-						actionLua = "d(MuAiGuide.Party)\nself.used = true",
-						gVar = "ACR_TensorRequiem3_CD",
-						uuid = "38934f40-4013-4904-9585-10d4aeebad4b",
-						version = 2.1,
-					},
-				},
-			},
-			conditions = 
-			{
-			},
-			enabled = false,
-			name = "DEBUG",
-			uuid = "24023e17-946d-67ab-8f4c-a98259a1d085",
-			version = 2,
-		},
 	}, 
 	inheritedProfiles = 
 	{

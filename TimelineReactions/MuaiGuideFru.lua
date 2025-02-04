@@ -898,7 +898,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local buffId1 = 2253 -- 锁链\nlocal buffId2 = 2461 -- 水\nlocal lineId = 110;\n\n-- 8方=> 翻花绳/ 换位 踩塔/引导 => 8方 => 左右刀 => 分摊 => A/C 或者 T 引导\n\n-- 找出ABCD\nlocal groupTH = { \"MT\", \"ST\", \"H1\", \"H2\" }\nlocal groupD = { \"D1\", \"D2\", \"D3\", \"D4\" }\nlocal noLinkTH = {}\nlocal noLinkD = {}\nlocal waterMarked = {}\nlocal A, B, C, D\n\nfor i = 1, #MuAiGuide.JobPosName do\n\n    local jobPos = MuAiGuide.JobPosName[i]\n    local ent = MuAiGuide.Party[jobPos]\n    local buff = TensorCore.getBuff(ent.id, buffId1)\n    local buff2 = TensorCore.getBuff(ent.id, buffId2)\n    if buff then\n        d(\"[MuAiGuide]\" .. jobPos .. \"]连线点名\")\n        if table.contains(groupTH, jobPos) then\n            if A == nil then\n                A = { player = ent, pos = \"A\", job = jobPos }\n            else\n                B = { player = ent, pos = \"B\", job = jobPos }\n            end\n        elseif table.contains(groupD, jobPos) then\n            if C == nil then\n                C = { player = ent, pos = \"C\", job = jobPos }\n            else\n                D = { player = ent, pos = \"D\", job = jobPos }\n            end\n        end\n    else\n        if MuAiGuide.IsDps(ent.job) then\n            table.insert(noLinkD, jobPos)\n        else\n            table.insert(noLinkTH, jobPos)\n        end\n    end\n    if buff2 then\n        d(\"[MuAiGuide]\" .. jobPos .. \"]分摊点名\")\n        table.insert(waterMarked, jobPos)\n    end\nend\nlocal IsLinked = function(startEnt, entEnt)\n    local tethers = Argus.getTethersOnEnt(startEnt.player.id)\n    for _, tether in pairs(tethers) do\n        if tether.type == lineId and tether.partnerid == entEnt.player.id then\n            return true\n        end\n    end\n    return false\nend\n\n--[[ 判断形状\n 假设连线人从上到下从左到右分别为ABCD\n 1. AB 存在 AC 存在 => 四边形  => AC 互换\n 2. AD 存在 BC 存在 =>交叉\n    2.1 AB存在 => 沙漏   =>BC 互换\n    2.2 AC存在 => 蝴蝶结\n]]\n\nlocal abIsLink = IsLinked(A, B)\nlocal acIsLink = IsLinked(A, C)\nlocal isCross = IsLinked(A, D) and IsLinked(B, C, lineId)\n\nlocal GroupUp = {}\nlocal GroupDown = {}\n-- 类型 1 蝴蝶结 2 四边形，3 沙漏\nlocal type\nif isCross then\n    if acIsLink then\n        type = 1\n        local msg = \"[MuAiGuide]翻花绳类型：蝴蝶结, 不换\"\n        d(msg)\n        SendTextCommand(\"/e \" .. msg)\n        GroupUp = { noLinkTH[1], A.job, B.job, noLinkTH[2] }\n        GroupDown = { noLinkD[1], C.job, D.job, noLinkD[2] }\n    elseif abIsLink then\n        local msg = \"[MuAiGuide]翻花绳类型：沙漏, \" .. B.job .. \"<=>\" .. C.job .. \"互换\"\n        d(msg)\n        SendTextCommand(\"/e \" .. msg)\n        GroupUp = { noLinkTH[1], A.job, C.job, noLinkTH[2] }\n        GroupDown = { noLinkD[1], B.job, D.job, noLinkD[2] }\n        type = 3\n    end\nelse\n    local msg = \"[MuAiGuide]翻花绳类型：四边形, \" .. A.job .. \"<=>\" .. C.job .. \"互换！\"\n    d(msg)\n    SendTextCommand(\"/e \" .. msg)\n    GroupUp = { noLinkTH[1], C.job, B.job, noLinkTH[2] }\n    GroupDown = { noLinkD[1], A.job, D.job, noLinkD[2] }\n    type = 2\nend\n\nd(\"[MuAiGuide]上部翻花绳后分组: \" .. MuAiGuide.StringJoin(GroupUp, \",\"))\nd(\"[MuAiGuide]下部翻花绳后分组: \" .. MuAiGuide.StringJoin(GroupDown, \",\"))\n\n-- 分析BUFF, 看看2个水是否在同侧\n\nlocal finalGroupUp\nlocal finalGroupDown\n\n-- 检查上组\nif table.contains(GroupUp, waterMarked[1]) and table.contains(GroupUp, waterMarked[2]) then\n    if table.contains(waterMarked, GroupUp[1]) then\n        finalGroupUp = { GroupDown[1], GroupUp[2], GroupUp[3], GroupUp[4] }\n        finalGroupDown = { GroupUp[1], GroupDown[2], GroupDown[3], GroupDown[4] }\n    else\n        finalGroupUp = { GroupUp[1], GroupUp[2], GroupUp[3], GroupDown[4] }\n        finalGroupDown = { GroupDown[1], GroupDown[2], GroupDown[3], GroupUp[4] }\n    end\nelseif table.contains(GroupDown, waterMarked[1]) and table.contains(GroupDown, waterMarked[2]) then\n    if table.contains(waterMarked, GroupDown[1]) then\n        finalGroupUp = { GroupDown[1], GroupUp[2], GroupUp[3], GroupUp[4] }\n        finalGroupDown = { GroupUp[1], GroupDown[2], GroupDown[3], GroupDown[4] }\n    else\n        finalGroupUp = { GroupUp[1], GroupUp[2], GroupUp[3], GroupDown[4] }\n        finalGroupDown = { GroupDown[1], GroupDown[2], GroupDown[3], GroupUp[4] }\n    end\nelse\n    finalGroupUp = GroupUp\n    finalGroupDown = GroupDown\nend\n\nd(\"[MuAiGuide]上部最终分组: \" .. MuAiGuide.StringJoin(finalGroupUp, \",\"))\nd(\"[MuAiGuide]下部最终分组: \" .. MuAiGuide.StringJoin(finalGroupDown, \",\"))\n\n-- C 逆时针\ndata.MuAiGd_P4_1_OrderPos = {\n    finalGroupDown[3],\n    finalGroupDown[4],\n    finalGroupUp[4],\n    finalGroupUp[3],\n    finalGroupUp[2],\n    finalGroupUp[1],\n    finalGroupDown[1],\n    finalGroupDown[2],\n}\n\nlocal guideInfo = {\n    { deltaH = -math.pi / 12, distance = 7 },\n    { deltaH = 0, distance = 5 },\n    { deltaH = 0, distance = 5 },\n    { deltaH = math.pi / 12, distance = 7 },\n    { deltaH = -math.pi / 12, distance = 7 },\n    { deltaH = 0, distance = 5 },\n    { deltaH = 0, distance = 5 },\n    { deltaH = math.pi / 12, distance = 7\n    }\n}\n\nlocal selfIndex = MuAiGuide.IndexOf(data.MuAiGd_P4_1_OrderPos, MuAiGuide.SelfPos)\nlocal selfGuide = guideInfo[selfIndex]\nlocal heading = (selfIndex - 1) * math.pi / 4 + math.pi / 8 + selfGuide.deltaH\nlocal finalPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, selfGuide.distance)\nMuAiGuide.DirectTo(finalPos.x, finalPos.z, 10000)\nself.used = true\n",
+							actionLua = "local buffId1 = 2253 -- 锁链\nlocal buffId2 = 2461 -- 水\nlocal lineId = 110;\n\n-- 8方=> 翻花绳/ 换位 踩塔/引导 => 8方 => 左右刀 => 分摊 => A/C 或者 T 引导\n\n-- 找出ABCD\nlocal groupTH = { \"MT\", \"ST\", \"H1\", \"H2\" }\nlocal groupD = { \"D1\", \"D2\", \"D3\", \"D4\" }\nlocal noLinkTH = {}\nlocal noLinkD = {}\nlocal waterMarked = {}\nlocal A, B, C, D\n\nfor i = 1, #MuAiGuide.JobPosName do\n\n    local jobPos = MuAiGuide.JobPosName[i]\n    local ent = MuAiGuide.Party[jobPos]\n    local buff = TensorCore.getBuff(ent.id, buffId1)\n    local buff2 = TensorCore.getBuff(ent.id, buffId2)\n    if buff then\n        d(\"[MuAiGuide]\" .. jobPos .. \"]连线点名\")\n        if table.contains(groupTH, jobPos) then\n            if A == nil then\n                A = { player = ent, pos = \"A\", job = jobPos }\n            else\n                B = { player = ent, pos = \"B\", job = jobPos }\n            end\n        elseif table.contains(groupD, jobPos) then\n            if C == nil then\n                C = { player = ent, pos = \"C\", job = jobPos }\n            else\n                D = { player = ent, pos = \"D\", job = jobPos }\n            end\n        end\n    else\n        if MuAiGuide.IsDps(ent.job) then\n            table.insert(noLinkD, jobPos)\n        else\n            table.insert(noLinkTH, jobPos)\n        end\n    end\n    if buff2 then\n        d(\"[MuAiGuide]\" .. jobPos .. \"]分摊点名\")\n        table.insert(waterMarked, jobPos)\n    end\nend\nlocal IsLinked = function(startEnt, entEnt)\n    local tethers = Argus.getTethersOnEnt(startEnt.player.id)\n    for _, tether in pairs(tethers) do\n        if tether.type == lineId and tether.partnerid == entEnt.player.id then\n            return true\n        end\n    end\n    return false\nend\n\n--[[ 判断形状\n 假设连线人从上到下从左到右分别为ABCD\n 1. AB 存在 AC 存在 => 四边形  => AC 互换\n 2. AD 存在 BC 存在 =>交叉\n    2.1 AB存在 => 沙漏   =>BC 互换\n    2.2 AC存在 => 蝴蝶结\n]]\n\nlocal abIsLink = IsLinked(A, B)\nlocal acIsLink = IsLinked(A, C)\nlocal isCross = IsLinked(A, D) and IsLinked(B, C, lineId)\n\nlocal GroupUp = {}\nlocal GroupDown = {}\n-- 类型 1 蝴蝶结 2 四边形，3 沙漏\nlocal type\nif isCross then\n    if acIsLink then\n        type = 1\n        local msg = \"[MuAiGuide]翻花绳类型：蝴蝶结, 不换\"\n        d(msg)\n        SendTextCommand(\"/e \" .. msg)\n        GroupUp = { noLinkTH[1], A.job, B.job, noLinkTH[2] }\n        GroupDown = { noLinkD[1], C.job, D.job, noLinkD[2] }\n    elseif abIsLink then\n        local msg = \"[MuAiGuide]翻花绳类型：沙漏, \" .. B.job .. \"<=>\" .. C.job .. \"互换\"\n        d(msg)\n        SendTextCommand(\"/e \" .. msg)\n        GroupUp = { noLinkTH[1], A.job, C.job, noLinkTH[2] }\n        GroupDown = { noLinkD[1], B.job, D.job, noLinkD[2] }\n        type = 3\n    end\nelse\n    local msg = \"[MuAiGuide]翻花绳类型：四边形, \" .. A.job .. \"<=>\" .. C.job .. \"互换！\"\n    d(msg)\n    SendTextCommand(\"/e \" .. msg)\n    GroupUp = { noLinkTH[1], C.job, B.job, noLinkTH[2] }\n    GroupDown = { noLinkD[1], A.job, D.job, noLinkD[2] }\n    type = 2\nend\n\nd(\"[MuAiGuide]上部翻花绳后分组: \" .. MuAiGuide.StringJoin(GroupUp, \",\"))\nd(\"[MuAiGuide]下部翻花绳后分组: \" .. MuAiGuide.StringJoin(GroupDown, \",\"))\n\n-- 分析BUFF, 看看2个水是否在同侧\n\nlocal finalGroupUp\nlocal finalGroupDown\n\n-- 检查上组\nif table.contains(GroupUp, waterMarked[1]) and table.contains(GroupUp, waterMarked[2]) then\n    if table.contains(waterMarked, GroupUp[1]) then\n        finalGroupUp = { GroupDown[1], GroupUp[2], GroupUp[3], GroupUp[4] }\n        finalGroupDown = { GroupUp[1], GroupDown[2], GroupDown[3], GroupDown[4] }\n    else\n        finalGroupUp = { GroupUp[1], GroupUp[2], GroupUp[3], GroupDown[4] }\n        finalGroupDown = { GroupDown[1], GroupDown[2], GroupDown[3], GroupUp[4] }\n    end\nelseif table.contains(GroupDown, waterMarked[1]) and table.contains(GroupDown, waterMarked[2]) then\n    if table.contains(waterMarked, GroupDown[1]) then\n        finalGroupUp = { GroupDown[1], GroupUp[2], GroupUp[3], GroupUp[4] }\n        finalGroupDown = { GroupUp[1], GroupDown[2], GroupDown[3], GroupDown[4] }\n    else\n        finalGroupUp = { GroupUp[1], GroupUp[2], GroupUp[3], GroupDown[4] }\n        finalGroupDown = { GroupDown[1], GroupDown[2], GroupDown[3], GroupUp[4] }\n    end\nelse\n    finalGroupUp = GroupUp\n    finalGroupDown = GroupDown\nend\n\nd(\"[MuAiGuide]上部最终分组: \" .. MuAiGuide.StringJoin(finalGroupUp, \",\"))\nd(\"[MuAiGuide]下部最终分组: \" .. MuAiGuide.StringJoin(finalGroupDown, \",\"))\n\n-- C 逆时针\ndata.MuAiGd_P4_1_OrderPos = {\n    finalGroupDown[3],\n    finalGroupDown[4],\n    finalGroupUp[4],\n    finalGroupUp[3],\n    finalGroupUp[2],\n    finalGroupUp[1],\n    finalGroupDown[1],\n    finalGroupDown[2],\n}\n\nlocal guideInfo = {\n    { deltaH = -math.pi / 12, distance = 7 },\n    { deltaH = 0, distance = 5 },\n    { deltaH = 0, distance = 5 },\n    { deltaH = math.pi / 12, distance = 7 },\n    { deltaH = -math.pi / 12, distance = 7 },\n    { deltaH = 0, distance = 5 },\n    { deltaH = 0, distance = 5 },\n    { deltaH = math.pi / 12, distance = 7 }\n}\n\nlocal selfIndex = MuAiGuide.IndexOf(data.MuAiGd_P4_1_OrderPos, MuAiGuide.SelfPos)\nlocal selfGuide = guideInfo[selfIndex]\nlocal heading = (selfIndex - 1) * math.pi / 4 + math.pi / 8 + selfGuide.deltaH\nlocal finalPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, selfGuide.distance)\nMuAiGuide.DirectTo(finalPos.x, finalPos.z, 10000)\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "1326ce5d-88b6-3530-ba5c-b4dfef15bb5b",
 							version = 2.1,
@@ -909,9 +909,9 @@ local tbl =
 				{
 				},
 				mechanicTime = 738.2,
-				name = "[MuAiGuide]光暗龙诗-翻花绳引导光波DEBUG",
+				name = "[MuAiGuide]光暗龙诗-翻花绳引导光波",
 				timelineIndex = 166,
-				timerOffset = 1.7000000476837,
+				timerOffset = 2,
 				uuid = "1faae67b-df7d-40a7-9f9c-ab5a22a01dde",
 				version = 2,
 			},
@@ -951,6 +951,20 @@ local tbl =
 	},
 	[169] = 
 	{
+		
+		{
+			data = 
+			{
+				name = "[TTS] Spread then Stack",
+				uuid = "29b0f6b6-2bf3-d2fe-819a-123bba8df522",
+				version = 2,
+			},
+			inheritedObjectUUID = "d6d3be7e-e95e-3e44-98eb-765903575d58",
+			inheritedOverwrites = 
+			{
+				timerOffset = -2.4000000953674,
+			},
+		},
 		
 		{
 			data = 
@@ -1004,15 +1018,51 @@ local tbl =
 				{
 				},
 				mechanicTime = 757.3,
-				name = "[MuAiGuide]引导人群回中增加T容错",
+				name = "[MuAiGuide]光暗龙诗-引导人群回中增加T容错",
 				timelineIndex = 170,
 				uuid = "9e6e5623-ca59-e4d3-9b64-3656ca01e0df",
 				version = 2,
 			},
 		},
 	},
+	[173] = 
+	{
+		
+		{
+			data = 
+			{
+				name = "[Draw] Fragment Exclusion Zone",
+				uuid = "a7108f0b-0376-6c9f-80e2-1576311a40b2",
+				version = 2,
+			},
+			inheritedObjectUUID = "097bd059-abb7-be6a-824d-c10fd19eb608",
+			inheritedOverwrites = 
+			{
+				timerOffset = -6.8499999046326,
+			},
+		},
+	},
+	[176] = 
+	{
+		
+		{
+			data = 
+			{
+				name = "[TTS] Party Stack",
+				uuid = "3b97cddd-36c9-9b8c-b9b0-51eff52de65b",
+				version = 2,
+			},
+			inheritedObjectUUID = "fa03d51b-ac33-9953-92ac-2899719bdb0c",
+			inheritedOverwrites = 
+			{
+				timerOffset = -5.1999998092651,
+			},
+		},
+	},
 	inheritedProfiles = 
 	{
+		"Kaze_Fru_Bard",
+		"bard_mitigation",
 	},
 	mapID = 1238,
 	version = 5,

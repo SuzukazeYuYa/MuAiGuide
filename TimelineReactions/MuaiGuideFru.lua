@@ -1,5 +1,164 @@
 local tbl = 
 {
+	
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local selfIndex = MuAiGuide.IndexOf(MuAiGuide.Config.FruCfg.JobPos, MuAiGuide.SelfPos)\ndata.MuAiGd_P1_8_BaseHeading = (selfIndex - 1) * math.pi / 4\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, data.MuAiGd_P1_8_BaseHeading, 7)\nMuAiGuide.DirectTo(pos.x, pos.z, 10000)\nfor _, ent in pairs(TensorCore.entityList(\"contentid=9707\")) do\n    if Argus.isEntityVisible(ent) then\n        data.MuAiGd_P1_BOSS = ent\n        break\n    end\nend\nself.used = true\n",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "25e6b076-bdfc-d583-b16b-027d0cb6cd1c",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 13.7,
+				name = "[MuAiGuide]8方",
+				timelineIndex = 1,
+				timerOffset = -12,
+				uuid = "db69b28f-01d0-ec40-a2c6-7157106baa6d",
+				version = 2,
+			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal heading = bossPos.h - math.pi + data.MuAiGd_P1_8_BaseHeading\ndata.MuAiGd_P1_8_BossHeading = heading\nlocal distance\nif TensorCore.isAnyEntityCasting(40144) then -- 火\n    data.MuAiGd_P1_8_Type1 = 1\n    distance = 6\nelse\n    data.MuAiGd_P1_8_Type1 = 2\n    local melees = { \"MT\", \"ST\", \"D1\", \"D2\" }\n\n    if table.contains(melees, MuAiGuide.SelfPos) then\n        distance = 6\n    else\n        distance = 14\n    end\nend\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 5000)\nself.used = true\n",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "25e6b076-bdfc-d583-b16b-027d0cb6cd1c",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 13.7,
+				name = "[MuAiGuide]BOSS8方",
+				timelineIndex = 1,
+				timerOffset = -5,
+				uuid = "63663593-7871-8d7a-8751-3b224a3c37e7",
+				version = 2,
+			},
+		},
+	},
+	
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local heading = data.MuAiGd_P1_8_BossHeading\nlocal tankHealer = { \"MT\", \"ST\", \"H1\", \"H2\" }\nif table.contains(tankHealer, MuAiGuide.SelfPos) then\n    heading = heading + math.pi / 8\nelse\n    heading = heading - math.pi / 8\nend\n\nlocal bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance = TensorCore.getDistance2d(MuAiGuide.GetPlayer().pos, bossPos)\nlocal pos = TensorCore.getPosInDirection(bossPos, heading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 5000)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "eb782d2d-bfbe-5bd9-bcf4-ccd1a584451d",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 14.4,
+				name = "[MuAiGuide]躲",
+				timelineIndex = 2,
+				uuid = "1691a491-98f8-68ea-8a7b-ab58c3c56a7c",
+				version = 2,
+			},
+		},
+	},
+	
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance = TensorCore.getDistance2d(MuAiGuide.GetPlayer().pos, bossPos)\nlocal pos = TensorCore.getPosInDirection(bossPos, data.MuAiGd_P1_8_BossHeading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "eb782d2d-bfbe-5bd9-bcf4-ccd1a584451d",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 16.4,
+				name = "[MuAiGuide]回",
+				timelineIndex = 3,
+				uuid = "1c3044b6-be9f-ffc6-b5ea-597744ca14d5",
+				version = 2,
+			},
+			inheritedIndex = 1,
+		},
+	}, 
+	[5] = 
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local heading = data.MuAiGd_P1_8_BossHeading\nlocal tankHealer = { \"MT\", \"ST\", \"H1\", \"H2\" }\nif table.contains(tankHealer, MuAiGuide.SelfPos) then\n    heading = heading + math.pi / 8\nelse\n    heading = heading - math.pi / 8\nend\n\nlocal bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance = TensorCore.getDistance2d(MuAiGuide.GetPlayer().pos, bossPos)\nlocal pos = TensorCore.getPosInDirection(bossPos, heading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 2000)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "eb782d2d-bfbe-5bd9-bcf4-ccd1a584451d",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 18.4,
+				name = "[MuAiGuide]躲",
+				timelineIndex = 5,
+				uuid = "88d6bd89-b470-541c-9739-271449826418",
+				version = 2,
+			},
+			inheritedIndex = 1,
+		},
+	},
 	[10] = 
 	{
 		
@@ -811,7 +970,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local guideTime = 10000\n\nlocal allMirrors = {}\nlocal blueMirror = nil\nfor _, ent in pairs(TensorCore.entityList(\"contentid=9317\")) do\n    if TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, ent.pos) > 15 then\n        table.insert(allMirrors, ent)\n        if blueMirror == nil or ent.id < blueMirror.id then\n            blueMirror = ent\n        end\n    end\nend\n\nlocal redMirror = {}\nfor _, mirror in pairs(allMirrors) do\n    if mirror.id ~= blueMirror.id then\n        table.insert(redMirror, mirror)\n    end\nend\n\nlocal distance1 = TensorCore.getDistance2d(redMirror[1].pos, blueMirror.pos)\nlocal distance2 = TensorCore.getDistance2d(redMirror[2].pos, blueMirror.pos)\nlocal left, right\nif MuAiGuide.GetClock(redMirror[1].pos, redMirror[2].pos) then\n    left  = redMirror[1]\n    right = redMirror[2]\nelse\n    left  = redMirror[2]\n    right = redMirror[1]\nend\nlocal melees = { \"MT\", \"D1\", \"D2\", \"ST\" }\nif MuAiGuide.IsSame(distance1, distance2) then\n    if table.contains(melees, MuAiGuide.SelfPos) then\n        data.MuAiGd_P2_Mirror2 = { pos = right.pos, isLeft = false }\n    else\n        data.MuAiGd_P2_Mirror2 = { pos = left.pos, isLeft = true }\n    end\nelse\n    local far, near\n    if distance1 > distance2 then\n        far  = redMirror[1]\n        near = redMirror[2]\n    else\n        near = redMirror[1]\n        far  = redMirror[2]\n    end\n    if table.contains(melees, MuAiGuide.SelfPos) then\n        data.MuAiGd_P2_Mirror2 = { pos = far.pos, isLeft = (far.id == left.id) }\n    else\n        data.MuAiGd_P2_Mirror2 = { pos = near.pos, isLeft = (near.id == left.id) }\n    end\nend\nd(data.MuAiGd_P2_Mirror2)\nlocal m2cHeading = TensorCore.getHeadingToTarget(blueMirror.pos, { x = 100, y = 0, z = 100 })\nif table.contains(melees, MuAiGuide.SelfPos) then\n    if not MuAiGuide.Config.AnyOneReactionOn then\n        Argus2.addTimedArrowFilled(\n            guideTime,\n            100,\n            0,\n            100,\n            9,\n            1.5,\n            3,\n            3,\n            m2cHeading,\n            GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 255 / 255, 0.7),\n            GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 255 / 255, 0.7),\n            GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 255 / 255, 0.7),\n            0,\n            nil,\n            nil,\n            GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1),\n            1.0,\n            3,\n            0.05,\n            false\n        )\n    end\nelse\n    local endHeading\n    if MuAiGuide.SelfPos == \"H1\" then\n        endHeading = m2cHeading - 75 / 180 * math.pi\n    elseif MuAiGuide.SelfPos == \"H2\" then\n        endHeading = m2cHeading + 75 / 180 * math.pi\n    elseif MuAiGuide.SelfPos == \"D3\" then\n        endHeading = m2cHeading - 45 / 180 * math.pi\n    elseif MuAiGuide.SelfPos == \"D4\" then\n        endHeading = m2cHeading + 45 / 180 * math.pi\n    end\n    local endPos = TensorCore.getPosInDirection(blueMirror.pos, endHeading, 3)\n    MuAiGuide.DirectTo(endPos.x, endPos.z, guideTime)\nend\nself.used = true\n",
+							actionLua = "local guideTime = 10000\n\nlocal allMirrors = {}\nlocal blueMirror = nil\nfor _, ent in pairs(TensorCore.entityList(\"contentid=9317\")) do\n    if TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, ent.pos) > 15 then\n        table.insert(allMirrors, ent)\n        if blueMirror == nil or ent.id < blueMirror.id then\n            blueMirror = ent\n        end\n    end\nend\n\nlocal redMirror = {}\nfor _, mirror in pairs(allMirrors) do\n    if mirror.id ~= blueMirror.id then\n        table.insert(redMirror, mirror)\n    end\nend\n\nlocal distance1 = TensorCore.getDistance2d(redMirror[1].pos, blueMirror.pos)\nlocal distance2 = TensorCore.getDistance2d(redMirror[2].pos, blueMirror.pos)\nlocal left, right\nif MuAiGuide.GetClock(redMirror[1].pos, redMirror[2].pos) then\n    left  = redMirror[1]\n    right = redMirror[2]\nelse\n    left  = redMirror[2]\n    right = redMirror[1]\nend\n\nif MuAiGuide.IsSame(distance1, distance2) then\n    if table.contains(MuAiGuide.Config.FruCfg.MirrorPosMelee1, MuAiGuide.SelfPos) then\n        data.MuAiGd_P2_Mirror2 = { pos = right.pos, isLeft = false }\n    else\n        data.MuAiGd_P2_Mirror2 = { pos = left.pos, isLeft = true }\n    end\nelse\n    local far, near\n    if distance1 > distance2 then\n        far  = redMirror[1]\n        near = redMirror[2]\n    else\n        near = redMirror[1]\n        far  = redMirror[2]\n    end\n    if table.contains(MuAiGuide.Config.FruCfg.MirrorPosMelee1, MuAiGuide.SelfPos) then\n        data.MuAiGd_P2_Mirror2 = { pos = far.pos, isLeft = (far.id == left.id) }\n    else\n        data.MuAiGd_P2_Mirror2 = { pos = near.pos, isLeft = (near.id == left.id) }\n    end\nend\nlocal m2cHeading = TensorCore.getHeadingToTarget(blueMirror.pos, { x = 100, y = 0, z = 100 })\nif table.contains(MuAiGuide.Config.FruCfg.MirrorPosMelee1, MuAiGuide.SelfPos) then\n    for _, ent in pairs(TensorCore.entityList(\"contentid=12809\")) do\n        if Argus.isEntityVisible(ent) then\n            data.MuAiGd_P2_BOSS = ent\n            break\n        end\n    end\n    data.MuAiGd_P2_MirrorMelee = true\nelse\n    data.MuAiGd_P2_MirrorMelee = false\n    local selfIndex = MuAiGuide.IndexOf(MuAiGuide.Config.FruCfg.MirrorPosRange, MuAiGuide.SelfPos)\n    local endHeading\n    if selfIndex == 1 then       --左1\n        endHeading = m2cHeading - 75 / 180 * math.pi\n    elseif selfIndex == 2 then   --左2\n        endHeading = m2cHeading - 45 / 180 * math.pi\n    elseif selfIndex == 3 then   --左3\n        endHeading = m2cHeading + 45 / 180 * math.pi\n    elseif selfIndex == 4 then   --左4\n        endHeading = m2cHeading + 75 / 180 * math.pi\n    end\n    local endPos = TensorCore.getPosInDirection(blueMirror.pos, endHeading, 3)\n    MuAiGuide.DirectTo(endPos.x, endPos.z, guideTime)\nend\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "3f737fe6-7887-9bb2-92dc-36920051bb49",
 							version = 2.1,
@@ -847,7 +1006,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local guideTime = 10000\nif data.MuAiGd_P2_Mirror2 ~= nil then\n    local baseDir = TensorCore.getHeadingToTarget(data.MuAiGd_P2_Mirror2.pos, { x = 100, y = 0, z = 100 })\n    local endHeading\n    if MuAiGuide.SelfPos == \"H1\" or MuAiGuide.SelfPos == \"MT\" then\n        endHeading = baseDir - 75 / 180 * math.pi\n    elseif MuAiGuide.SelfPos == \"H2\" or MuAiGuide.SelfPos == \"ST\" then\n        endHeading = baseDir + 75 / 180 * math.pi\n    elseif MuAiGuide.SelfPos == \"D3\" or MuAiGuide.SelfPos == \"D1\" then\n        if data.MuAiGd_P2_Mirror2.isLeft then\n            endHeading = baseDir - 45 / 180 * math.pi\n        else\n            endHeading = baseDir\n        end\n    elseif MuAiGuide.SelfPos == \"D4\" or MuAiGuide.SelfPos == \"D2\" then\n        if not data.MuAiGd_P2_Mirror2.isLeft then\n            endHeading = baseDir + 45 / 180 * math.pi\n        else\n            endHeading = baseDir\n        end\n    end\n    local endPos = TensorCore.getPosInDirection(data.MuAiGd_P2_Mirror2.pos, endHeading, 3)\n    MuAiGuide.DirectTo(endPos.x, endPos.z, guideTime)\nend\nself.used = true\n",
+							actionLua = "local guideTime = 10000\nif data.MuAiGd_P2_Mirror2 ~= nil then\n    local baseDir = TensorCore.getHeadingToTarget(data.MuAiGd_P2_Mirror2.pos, { x = 100, y = 0, z = 100 })\n    local endHeading\n    local posTable\n    if table.contains(MuAiGuide.Config.FruCfg.MirrorPosMelee1, MuAiGuide.SelfPos) then\n        posTable = MuAiGuide.Config.FruCfg.MirrorPosMelee2\n    else\n        posTable = MuAiGuide.Config.FruCfg.MirrorPosRange\n    end\n    local index = MuAiGuide.IndexOf(posTable, MuAiGuide.SelfPos)\n\n    if index == 1 then\n        endHeading = baseDir - 75 / 180 * math.pi\n    elseif index == 2 then\n        if data.MuAiGd_P2_Mirror2.isLeft then\n            endHeading = baseDir - 45 / 180 * math.pi\n        else\n            endHeading = baseDir\n        end\n    elseif index == 3 then\n        if not data.MuAiGd_P2_Mirror2.isLeft then\n            endHeading = baseDir + 45 / 180 * math.pi\n        else\n            endHeading = baseDir\n        end\n    elseif index == 4 then\n        endHeading = baseDir + 75 / 180 * math.pi\n    end\n    \n    local endPos = TensorCore.getPosInDirection(data.MuAiGd_P2_Mirror2.pos, endHeading, 3)\n    MuAiGuide.DirectTo(endPos.x, endPos.z, guideTime)\nend\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "3d17e481-f584-72bd-90c4-253ac1dbac4a",
 							version = 2.1,
@@ -863,6 +1022,57 @@ local tbl =
 				timerEndOffset = 10,
 				timerStartOffset = -2,
 				uuid = "308bfcf7-a1cf-208f-8084-ed90f5916d54",
+				version = 2,
+			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local bossPos = TensorCore.mGetEntity(data.MuAiGd_P2_BOSS.id).pos\nlocal selfIndex = MuAiGuide.IndexOf(MuAiGuide.Config.FruCfg.MirrorPosMelee1, MuAiGuide.SelfPos)\nlocal heading\nif selfIndex == 1 then\n    heading = bossPos.h + math.pi / 2\nelseif selfIndex == 2 then\n    heading = bossPos.h + math.pi / 6\nelseif selfIndex == 3 then\n    heading = bossPos.h - math.pi / 6\nelseif selfIndex == 4 then\n    heading = bossPos.h - math.pi / 2\nend\nlocal targetPos = TensorCore.getPosInDirection(bossPos, heading, 3)\nMuAiGuide.FrameDirect(targetPos.x, targetPos.z)\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"e81648ff-fd6b-60d7-bb67-a558ec8f6d6a",
+									true,
+								},
+							},
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "49bfeaf6-80d5-9f7f-b681-63b8ada4b9ba",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_P2_MirrorMelee ~= nil \nand data.MuAiGd_P2_MirrorMelee == true\nand data.MuAiGd_P2_BOSS ~= nil",
+							uuid = "e81648ff-fd6b-60d7-bb67-a558ec8f6d6a",
+							version = 2,
+						},
+					},
+				},
+				eventType = 12,
+				mechanicTime = 306.6,
+				name = "[MuAiGuide]镜子1指路MELEE",
+				randomOffset = 10,
+				timeRange = true,
+				timelineIndex = 71,
+				timerOffset = -10,
+				timerStartOffset = -10,
+				uuid = "7ccf8be3-3ad0-aecd-919b-6ddd2453cfa8",
 				version = 2,
 			},
 		},
@@ -1663,20 +1873,6 @@ local tbl =
 		{
 			data = 
 			{
-				name = "[TTS] Spread then Stack",
-				uuid = "1b3a52b1-d3f0-4c41-a4e2-ef9e984759e7",
-				version = 2,
-			},
-			inheritedObjectUUID = "d6d3be7e-e95e-3e44-98eb-765903575d58",
-			inheritedOverwrites = 
-			{
-				timerOffset = -2.4000000953674,
-			},
-		},
-		
-		{
-			data = 
-			{
 				actions = 
 				{
 					
@@ -1689,6 +1885,7 @@ local tbl =
 							uuid = "3953cd55-a913-da28-ac8f-e75bc5ab3536",
 							version = 2.1,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				conditions = 
@@ -1719,7 +1916,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" then\n    local selfIndex = MuAiGuide.IndexOf(data.MuAiGd_P4_1_OrderPos, MuAiGuide.SelfPos)\n    -- 引导人群回中增加T容错\n\tMuAiGuide.DirectTo(100, 100, 5000)\nend\nself.used = true",
+							actionLua = "if MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" then\n    local selfIndex = MuAiGuide.IndexOf(data.MuAiGd_P4_1_OrderPos, MuAiGuide.SelfPos)\n    -- 引导人群回中增加T容错\n    if selfIndex >= 3 and selfIndex <= 6 then\n        MuAiGuide.DirectTo(100, 91, 5000)\n    else\n        MuAiGuide.DirectTo(100, 109, 5000)\n    end\nend\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "7210f740-d0f3-2ce3-ba75-b4075af0a2b0",
 							version = 2.1,
@@ -1751,40 +1948,6 @@ local tbl =
 			inheritedOverwrites = 
 			{
 				timerEndOffset = 0.34999999403954,
-			},
-		},
-	},
-	[173] = 
-	{
-		
-		{
-			data = 
-			{
-				name = "[Draw] Somber Nearest",
-				uuid = "a1fc99ce-d279-c434-a730-b39be7a23ea3",
-				version = 2,
-			},
-			inheritedObjectUUID = "da7bb794-ec51-c6d9-af9c-72502452e665",
-			inheritedOverwrites = 
-			{
-				timerEndOffset = 0.10000000149012,
-			},
-		},
-	},
-	[176] = 
-	{
-		
-		{
-			data = 
-			{
-				name = "[Draw] Morn Afah",
-				uuid = "4a24104a-9795-f700-bf33-b485e250db46",
-				version = 2,
-			},
-			inheritedObjectUUID = "5db68d15-063e-f9c3-b41d-4fcef7820029",
-			inheritedOverwrites = 
-			{
-				timerOffset = -5.1999998092651,
 			},
 		},
 	},
@@ -1843,69 +2006,8 @@ local tbl =
 			},
 		},
 	},
-	[180] = 
-	{
-		
-		{
-			data = 
-			{
-				name = "[Kaze] Using Blast Arrow",
-				uuid = "59705baa-de4d-a2c8-8b96-eddef20bc163",
-				version = 2,
-			},
-			inheritedObjectUUID = "2ab39430-cb08-a2f9-a090-b3a4f827ccef",
-			inheritedOverwrites = 
-			{
-				timerEndOffset = -0.10000000149012,
-			},
-		},
-	},
 	[181] = 
 	{
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "local guideTime = 10000\nif data.MuAiGd_P4_Lights == nil then\n    data.MuAiGd_P4_Lights = {}\n    --- 场地类型 1:左上紫色，2:右上紫色\n    data.MuAiGd_P4_GroundType = 0\nend\n\n-- 采集灯\nif table.size(data.MuAiGd_P4_Lights) < 6 then\n    for _, ent in pairs(TensorCore.entityList(\"contentid=9823\")) do\n        data.MuAiGd_P4_Lights[ent.id] = ent\n    end\nend\nif table.size(data.MuAiGd_P4_Lights) == 6 then\n    local purpleLines = {}\n    for _, light in pairs(data.MuAiGd_P4_Lights) do\n        local lines = Argus.getTethersOnEnt(light.id)\n        for _, line in pairs(lines) do\n            if line.type == 133 then\n                purpleLines[light.id] = light\n            end\n        end\n    end\n    if table.size(purpleLines) == 2 then\n        for _, purpleLine in pairs(purpleLines) do\n            if purpleLine.pos.z < 100 then\n                if purpleLine.pos.x > 100 then\n                    data.MuAiGd_P4_GroundType = 2\n                else\n                    data.MuAiGd_P4_GroundType = 1\n                end\n            end\n        end\n\n        -- 如果当前为标点模式，且自身有标点\n        if MuAiGuide.Config.FruCfg.CrystallizeTimeType ~= 1 and MuAiGuide.GetPlayer().marker ~= 0 then\n            if MuAiGuide.GetPlayer().marker <= 4 then\n                --- type 1:捡D，2:捡B，3:捡3，4:捡4，\n                if MuAiGuide.Config.FruCfg.CrystallizeMark[\"D\"] == MuAiGuide.GetPlayer().marker then\n                    data.MuAiGd_P4_SelfGuideType = 1\n                elseif MuAiGuide.Config.FruCfg.CrystallizeMark[\"B\"] == MuAiGuide.GetPlayer().marker then\n                    data.MuAiGd_P4_SelfGuideType = 2\n                elseif MuAiGuide.Config.FruCfg.CrystallizeMark[\"3\"] == MuAiGuide.GetPlayer().marker then\n                    data.MuAiGd_P4_SelfGuideType = 3\n                elseif MuAiGuide.Config.FruCfg.CrystallizeMark[\"4\"] == MuAiGuide.GetPlayer().marker then\n                    data.MuAiGd_P4_SelfGuideType = 4\n                end\n            else\n                if MuAiGuide.GetPlayer().marker == 6 then\n                    data.MuAiGd_P4_SelfGuideType = 5\n                elseif MuAiGuide.GetPlayer().marker == 7 then\n                    data.MuAiGd_P4_SelfGuideType = 6\n                elseif MuAiGuide.GetPlayer().marker == 9 then\n                    data.MuAiGd_P4_SelfGuideType = 7\n                elseif MuAiGuide.GetPlayer().marker == 10 then\n                    data.MuAiGd_P4_SelfGuideType = 8\n                end\n            end\n            if MuAiGuide.Config.FruCfg.CrystallizeTimeType == 2 then\n                MuAiGuide.Info(\"检测到当前为ACT标点模式，逻辑变更：\")\n            elseif MuAiGuide.Config.FruCfg.CrystallizeTimeType == 3 then\n                MuAiGuide.Info(\"检测到当前为手摇模式，逻辑变更：\")\n            end\n            data.MuAiGd_P4_InfoGuideType()\n        end\n\n        if MuAiGuide.IsMe(data.MuAiGd_P4_Player.Flame) then -- 暗单走\n            if data.MuAiGd_P4_GroundType == 1 then\n                MuAiGuide.DirectTo(88.67, 84, guideTime, 0.3)\n            else\n                MuAiGuide.DirectTo(111.33, 84, guideTime, 0.3)\n            end\n        else\n            if data.MuAiGd_P4_SelfGuideType <= 4 then -- 3个蓝BUFF\n                if data.MuAiGd_P4_GroundType == 1 then\n                    MuAiGuide.DirectTo(111.33, 116, guideTime, 0.3)\n                else\n                    MuAiGuide.DirectTo(88.67, 116, guideTime, 0.3)\n                end\n            elseif data.MuAiGd_P4_SelfGuideType == 7 then\n                MuAiGuide.DirectTo(88.67, 116, guideTime, 0.3)\n            elseif data.MuAiGd_P4_SelfGuideType == 8 then\n                MuAiGuide.DirectTo(111.33, 116, guideTime, 0.3)\n            elseif data.MuAiGd_P4_SelfGuideType == 5 then\n                MuAiGuide.DirectTo(87, 100, guideTime)\n            elseif data.MuAiGd_P4_SelfGuideType == 6 then\n                MuAiGuide.DirectTo(113, 100, guideTime)\n            end\n        end\n    end\n    if MuAiGuide.Config.LogToEchoMsg then\n        if data.MuAiGd_P4_SelfGuideType <= 4 then\n            if MuAiGuide.IsMe(data.MuAiGd_P4_Player.Flame) then\n                MuAiGuide.Info(\"我是暗单走。\")\n            else\n                MuAiGuide.Info(\"我和人群一起行动。\")\n            end\n        end\n    end\nend\ndata.MuAiGd_P4_Guide1Finish = true\nself.used = true\n",
-							gVar = "ACR_TensorMagnum3_CD",
-							uuid = "fd341487-f82a-4a77-a895-984b05db4d7e",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-				},
-				mechanicTime = 804.9,
-				name = "[MuAiGuide]分析线&指路1",
-				timelineIndex = 181,
-				timerOffset = -1.5,
-				uuid = "59c6f796-4136-3dc1-b912-b2b69d7ec748",
-				version = 2,
-			},
-			inheritedIndex = 2,
-		},
-		
-		{
-			data = 
-			{
-				name = "[Draw] Queue CT Debuffs",
-				uuid = "a6e9c9de-bc8d-68de-b050-b0de282c49bc",
-				version = 2,
-			},
-			inheritedObjectUUID = "560fdb59-5a89-e019-ba2f-b531c36be627",
-			inheritedOverwrites = 
-			{
-				timerStartOffset = -4.5999999046326,
-			},
-		},
 		
 		{
 			data = 
@@ -1952,6 +2054,36 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
+							actionLua = "local guideTime = 10000\nif data.MuAiGd_P4_Lights == nil then\n    data.MuAiGd_P4_Lights = {}\n    --- 场地类型 1:左上紫色，2:右上紫色\n    data.MuAiGd_P4_GroundType = 0\nend\n\n-- 采集灯\nif table.size(data.MuAiGd_P4_Lights) < 6 then\n    for _, ent in pairs(TensorCore.entityList(\"contentid=9823\")) do\n        data.MuAiGd_P4_Lights[ent.id] = ent\n    end\nend\nif table.size(data.MuAiGd_P4_Lights) == 6 then\n    local purpleLines = {}\n    for _, light in pairs(data.MuAiGd_P4_Lights) do\n        local lines = Argus.getTethersOnEnt(light.id)\n        for _, line in pairs(lines) do\n            if line.type == 133 then\n                purpleLines[light.id] = light\n            end\n        end\n    end\n    if table.size(purpleLines) == 2 then\n        for _, purpleLine in pairs(purpleLines) do\n            if purpleLine.pos.z < 100 then\n                if purpleLine.pos.x > 100 then\n                    data.MuAiGd_P4_GroundType = 2\n                else\n                    data.MuAiGd_P4_GroundType = 1\n                end\n            end\n        end\n\n        -- 如果当前为标点模式，且自身有标点\n        if MuAiGuide.Config.FruCfg.CrystallizeTimeType ~= 1 and MuAiGuide.GetPlayer().marker ~= 0 then\n            if MuAiGuide.GetPlayer().marker <= 4 then\n                --- type 1:捡D，2:捡B，3:捡3，4:捡4，\n                if MuAiGuide.Config.FruCfg.CrystallizeMark[\"D\"] == MuAiGuide.GetPlayer().marker then\n                    data.MuAiGd_P4_SelfGuideType = 1\n                elseif MuAiGuide.Config.FruCfg.CrystallizeMark[\"B\"] == MuAiGuide.GetPlayer().marker then\n                    data.MuAiGd_P4_SelfGuideType = 2\n                elseif MuAiGuide.Config.FruCfg.CrystallizeMark[\"3\"] == MuAiGuide.GetPlayer().marker then\n                    data.MuAiGd_P4_SelfGuideType = 3\n                elseif MuAiGuide.Config.FruCfg.CrystallizeMark[\"4\"] == MuAiGuide.GetPlayer().marker then\n                    data.MuAiGd_P4_SelfGuideType = 4\n                end\n            else\n                if MuAiGuide.GetPlayer().marker == 6 then\n                    data.MuAiGd_P4_SelfGuideType = 5\n                elseif MuAiGuide.GetPlayer().marker == 7 then\n                    data.MuAiGd_P4_SelfGuideType = 6\n                elseif MuAiGuide.GetPlayer().marker == 9 then\n                    data.MuAiGd_P4_SelfGuideType = 7\n                elseif MuAiGuide.GetPlayer().marker == 10 then\n                    data.MuAiGd_P4_SelfGuideType = 8\n                end\n            end\n            if MuAiGuide.Config.FruCfg.CrystallizeTimeType == 2 then\n                MuAiGuide.Info(\"检测到当前为ACT标点模式，逻辑变更：\")\n            elseif MuAiGuide.Config.FruCfg.CrystallizeTimeType == 3 then\n                MuAiGuide.Info(\"检测到当前为手摇模式，逻辑变更：\")\n            end\n            data.MuAiGd_P4_InfoGuideType()\n        end\n\n        if MuAiGuide.IsMe(data.MuAiGd_P4_Player.Flame) then -- 暗单走\n            if data.MuAiGd_P4_GroundType == 1 then\n                MuAiGuide.DirectTo(88.67, 84, guideTime, 0.3)\n            else\n                MuAiGuide.DirectTo(111.33, 84, guideTime, 0.3)\n            end\n        else\n            if data.MuAiGd_P4_SelfGuideType <= 4 then -- 3个蓝BUFF\n                if data.MuAiGd_P4_GroundType == 1 then\n                    MuAiGuide.DirectTo(111.33, 116, guideTime, 0.3)\n                else\n                    MuAiGuide.DirectTo(88.67, 116, guideTime, 0.3)\n                end\n            elseif data.MuAiGd_P4_SelfGuideType == 7 then\n                MuAiGuide.DirectTo(88.67, 116, guideTime, 0.3)\n            elseif data.MuAiGd_P4_SelfGuideType == 8 then\n                MuAiGuide.DirectTo(111.33, 116, guideTime, 0.3)\n            elseif data.MuAiGd_P4_SelfGuideType == 5 then\n                MuAiGuide.DirectTo(87, 100, guideTime)\n            elseif data.MuAiGd_P4_SelfGuideType == 6 then\n                MuAiGuide.DirectTo(113, 100, guideTime)\n            end\n        end\n    end\n    if MuAiGuide.Config.LogToEchoMsg then\n        if data.MuAiGd_P4_SelfGuideType <= 4 then\n            if MuAiGuide.IsMe(data.MuAiGd_P4_Player.Flame) then\n                MuAiGuide.Info(\"我是暗单走。\")\n            else\n                MuAiGuide.Info(\"我和人群一起行动。\")\n            end\n        end\n    end\nend\ndata.MuAiGd_P4_Guide1Finish = true\nself.used = true\n",
+							gVar = "ACR_TensorMagnum3_CD",
+							uuid = "fd341487-f82a-4a77-a895-984b05db4d7e",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 804.9,
+				name = "[MuAiGuide]分析线&指路1",
+				timelineIndex = 181,
+				timerOffset = -1.5,
+				uuid = "59c6f796-4136-3dc1-b912-b2b69d7ec748",
+				version = 2,
+			},
+			inheritedIndex = 2,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
 							actionLua = "local M = MuAiGuide\nif data.MuAiGd_P4_Flags == nil then\n    data.MuAiGd_P4_Flags = {\n        Water = false,\n        Converge = false,\n        Wind = false,\n        Blue = false,\n        Red = false,\n        MissRed = false,\n        LinkToHead = false,\n        Avoid = false,\n        EndGuide = false,\n        RedGuides = {}\n    }\n    data.MuAiGd_P4_FinalGuide = function()\n        if data.MuAiGd_P4_WaveGuideHeading == nil or data.MuAiGd_P4_WaveGuideHeading < -10 then\n            return false\n        end\n        local endHeading\n        local distance\n        if M.Config.FruCfg.CrystallizeTimeKnockBack == 1 then --Y字 then\n            if M.SelfPos == \"MT\" then\n                endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi / 8\n                distance = 14\n            elseif M.SelfPos == \"ST\" then\n                endHeading = data.MuAiGd_P4_WaveGuideHeading - math.pi / 8\n                distance = 14\n            else\n                endHeading = data.MuAiGd_P4_WaveGuideHeading\n                distance = 4\n            end\n        else\n            local selfIndex = M.IndexOf(M.JobPosName)\n            if selfIndex % 2 == 1 then -- mt 组\n                if M.SelfPos == \"MT\" then\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 11 / 180\n                    distance = 16.1\n                else\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 8 / 180\n                    distance = 13\n                end\n            else\n                if M.SelfPos == \"ST\" then\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 11 / 180\n                    distance = 16.1\n                else\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 8 / 180\n                    distance = 13\n                end\n            end\n        end\n        local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, endHeading, distance)\n        local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n        if curReturn ~= nil then\n            M.DirectTo(targetPos.x, targetPos.z, curReturn.duration * 1000)\n        else\n            M.DirectTo(targetPos.x, targetPos.z, 5000)\n        end\n        return true\n    end\n    data.MuAiGd_P4_GetDragonHead = function()\n        local heads = {}\n        local rightHead, leftHead\n        for _, ent in pairs(TensorCore.entityList(\"contentid=9323\")) do\n            if Argus.getEntityModel(ent.id) == 17836 then\n                table.insert(heads, ent)\n            end\n        end\n        if heads[1].pos.x > heads[2].pos.x then\n            rightHead = heads[1]\n            leftHead = heads[2]\n        else\n            leftHead = heads[1]\n            rightHead = heads[2]\n        end\n        return leftHead, rightHead\n    end\nend\n\nif data.MuAiGd_P4_SelfGuideType <= 4 then -- 分摊BUFF倒计时结束\n    -- 水判定，准备击退\n    if data.MuAiGd_P4_Flags.Water == false then\n        if not M.IsMe(data.MuAiGd_P4_Player.Flame) then\n            local curWater = TensorCore.getBuff(data.MuAiGd_P4_Player.Water.id, 2461)\n            if curWater == nil or curWater.duration < 0.9 then\n                local pos\n                if data.MuAiGd_P4_GroundType == 1 then\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi / 6, 17)\n                else\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 11 / 6, 17)\n                end\n                M.DirectTo(pos.x, pos.z, 4000, 0.3)\n                data.MuAiGd_P4_Flags.Water = true\n                M.Info(\"准备击退。\")\n            end\n        end\n    end\n\n    if data.MuAiGd_P4_Flags.Wind == false then\n        -- 被击退/暗判定 =>调整位置进行分摊\n        local curWind = TensorCore.getBuff(data.MuAiGd_P4_Player.Wind1.id, 2463)\n        if curWind == nil or curWind.duration < 0.1 then\n            local pos\n            if data.MuAiGd_P4_GroundType == 1 then\n                pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 5 / 4, 19.5)\n            else\n                pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 3 / 4, 19.5)\n            end\n            M.DirectTo(pos.x, pos.z, 4000)\n            data.MuAiGd_P4_Flags.Wind = true\n            M.Info(\"调整位置到斜点。\")\n        end\n    end\n\n    if data.MuAiGd_P4_Flags.Converge == false then\n        -- 分摊判定回A\n        local curConverge = TensorCore.getBuff(data.MuAiGd_P4_Player.Converge.id, 2454)\n        if curConverge == nil or curConverge.duration < 0.1 then\n            M.DirectTo(100, 82, 4000)\n            data.MuAiGd_P4_Flags.Converge = true\n            M.Info(\"分摊完毕前往A方向。\")\n        end\n    end\n\n    --- 指路捡垃圾\n    if data.MuAiGd_P4_Flags.Blue == false then\n        local removerList = {}\n        local curBlue = TensorCore.getBuff(M.GetPlayer().id, 3264)\n        if curBlue and curBlue.duration < 18.5 then\n            for _, ent in pairs(TensorCore.entityList(\"contentid=2014529\")) do\n                table.insert(removerList, ent)\n            end\n            for i = 1, #removerList do\n                for j = 1, #removerList - i do\n                    if removerList[j].pos.x > removerList[j + 1].pos.x then\n                        removerList[j], removerList[j + 1] = removerList[j + 1], removerList[j]\n                    end\n                end\n            end\n            local pos\n            if data.MuAiGd_P4_SelfGuideType == 1 then\n                M.Info(\"去D点附近捡垃圾。\")\n                pos = removerList[1].pos\n            elseif data.MuAiGd_P4_SelfGuideType == 2 then\n                M.Info(\"去B点附近捡垃圾。\")\n                pos = removerList[4].pos\n            elseif data.MuAiGd_P4_SelfGuideType == 3 then\n                M.Info(\"去3点附近捡垃圾。\")\n                pos = removerList[3].pos\n            elseif data.MuAiGd_P4_SelfGuideType == 4 then\n                M.Info(\"去4点附近捡垃圾。\")\n                pos = removerList[2].pos\n            end\n            M.DirectTo(pos.x, pos.z, curBlue.duration * 1000)\n            data.MuAiGd_P4_Flags.Blue = true\n        end\n    end\n    if data.MuAiGd_P4_Flags.EndGuide == false then\n        local curBlue = TensorCore.getBuff(M.GetPlayer().id, 3264)\n        if curBlue == nil then\n            if data.MuAiGd_P4_FinalGuide() then\n                M.Info(\"垃圾回收成功！\")\n                data.MuAiGd_P4_Flags.EndGuide = true\n                self.used = true\n            end\n        end\n    end\nelse\n    if data.MuAiGd_P4_SelfGuideType == 5 or data.MuAiGd_P4_SelfGuideType == 6 then\n        -- 左右撞头\n        if data.MuAiGd_P4_Flags.LinkToHead == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw and curClaw.duration <= 8 then\n                M.CancelDir()\n                local leftHead, rightHead = data.MuAiGd_P4_GetDragonHead()\n                local selfHead\n                if data.MuAiGd_P4_SelfGuideType == 5 then\n                    selfHead = leftHead\n                else\n                    selfHead = rightHead\n                end\n                data.MuAiGd_P4_Flags.RedGuides = M.DirectToEnt(selfHead.id, 10000)\n                data.MuAiGd_P4_Flags.LinkToHead = true\n            end\n        end\n\n        -- 撞头完毕\n        if data.MuAiGd_P4_Flags.MissRed == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw == nil then\n                for _, uuid in pairs(data.MuAiGd_P4_Flags.RedGuides) do\n                    Argus.deleteTimedShape(uuid)\n                end\n                if data.MuAiGd_P4_SelfGuideType == 5 then\n                    if data.MuAiGd_P4_GroundType == 1 then\n                        local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 5 / 4, 19.5)\n                        M.DirectTo(pos.x, pos.z, 4000)\n                        M.Info(\"撞头完毕，和人群分摊。\")\n                    else\n                        MuAiGuide.DirectTo(80.5, 101.8, 8000, 0.3)\n                        M.Info(\"撞头完毕，躲开大圈。\")\n                    end\n                elseif data.MuAiGd_P4_SelfGuideType == 6 then\n                    if data.MuAiGd_P4_GroundType == 2 then\n                        local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 3 / 4, 19.5)\n                        M.DirectTo(pos.x, pos.z, 4000)\n                        M.Info(\"撞头完毕，和人群分摊。\")\n                    else\n                        MuAiGuide.DirectTo(119.5, 101.8, 8000, 0.3)\n                        M.Info(\"撞头完毕，躲开大圈。\")\n                    end\n                end\n                data.MuAiGd_P4_Flags.MissRed = true\n            end\n        end\n        -- 分摊\n        if data.MuAiGd_P4_Flags.Converge == false then\n            if data.MuAiGd_P4_SelfGuideType == 5 and data.MuAiGd_P4_GroundType == 1 or data.MuAiGd_P4_SelfGuideType == 6 and data.MuAiGd_P4_GroundType == 2 then\n                local curConverge = TensorCore.getBuff(data.MuAiGd_P4_Player.Converge.id, 2454)\n                if curConverge == nil or curConverge.duration < 0.1 then\n                    M.DirectTo(100, 82, 4000)\n                    data.MuAiGd_P4_Flags.Converge = true\n                    M.Info(\"分摊完毕前往A方向。\")\n                end\n            end\n        end\n\n        -- 躲大圈\n        if data.MuAiGd_P4_Flags.Avoid == false then\n            if data.MuAiGd_P4_SelfGuideType == 5 and data.MuAiGd_P4_GroundType == 2 or data.MuAiGd_P4_SelfGuideType == 6 and data.MuAiGd_P4_GroundType == 1 then\n                local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n                if curReturn and curReturn.duration < 16.5 then\n                    M.Info(\"前往A点。\")\n                    M.DirectTo(100, 82, 8000)\n                    data.MuAiGd_P4_Flags.Avoid = true\n                end\n            end\n        end\n\n        -- 终点指路\n        if data.MuAiGd_P4_Flags.EndGuide == false then\n            local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n            if curReturn and curReturn.duration < 13 then\n                if data.MuAiGd_P4_FinalGuide() then\n                    data.MuAiGd_P4_Flags.EndGuide = true\n                    self.used = true\n                end\n            end\n        end\n    else\n        -- 水判定\n        if data.MuAiGd_P4_Flags.Water == false then\n            local curWater = TensorCore.getBuff(data.MuAiGd_P4_Player.Water.id, 2461)\n            if curWater == nil or curWater.duration < 0.9 then\n                local pos\n                M.Info(\"准备站位击飞其他人。\")\n                if data.MuAiGd_P4_SelfGuideType == 7 then\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 11 / 6, 19.5)\n                else\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi / 6, 19.5)\n                end\n                M.DirectTo(pos.x, pos.z, 4000)\n                data.MuAiGd_P4_Flags.Water = true\n            end\n        end\n\n        --风判定\n        if data.MuAiGd_P4_Flags.Wind == false then\n            -- 被击退/暗判定 =>调整位置进行分摊\n            local curWind = TensorCore.getBuff(data.MuAiGd_P4_Player.Wind1.id, 2463)\n            if curWind == nil or curWind.duration < 0.1 then\n                M.Info(\"躲开大圈。\")\n                local pos\n                if data.MuAiGd_P4_SelfGuideType == 7 then\n                    M.DirectTo(92.5, 117.9, 5000)\n                else\n                    M.DirectTo(107.5, 117.9, 5000)\n                end\n                data.MuAiGd_P4_Flags.Wind = true\n            end\n        end\n \n        -- 左下右下撞头\n        if data.MuAiGd_P4_Flags.LinkToHead == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw and curClaw.duration <= 23.5 then\n                M.Info(\"龙撞头。\")\n                M.CancelDir()\n                local leftHead, rightHead = data.MuAiGd_P4_GetDragonHead()\n                local selfHead\n                if data.MuAiGd_P4_SelfGuideType == 7 then\n                    selfHead = leftHead\n                else\n                    selfHead = rightHead\n                end\n                data.MuAiGd_P4_Flags.RedGuides = M.DirectToEnt(selfHead.id, 10000)\n                data.MuAiGd_P4_Flags.LinkToHead = true\n            end\n        end\n\n        -- 撞头完毕\n        if data.MuAiGd_P4_Flags.MissRed == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw == nil then\n                for _, uuid in pairs(data.MuAiGd_P4_Flags.RedGuides) do\n                    Argus.deleteTimedShape(uuid)\n                end\n                M.Info(\"前往C点。\")\n                M.DirectTo(100, 118, 8000)\n                data.MuAiGd_P4_Flags.MissRed = true\n            end\n        end\n\n        -- 终点指路\n        if data.MuAiGd_P4_Flags.EndGuide == false then\n            local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n            if curReturn and curReturn.duration < 13 then\n                if data.MuAiGd_P4_FinalGuide() then\n                    data.MuAiGd_P4_Flags.EndGuide = true\n                    self.used = true\n                end\n            end\n        end\n    end\nend\n",
 							gVar = "ACR_TensorMagnum3_CD",
 							uuid = "cd63e215-3e32-dbfa-944a-c95ba44302b3",
@@ -1973,23 +2105,6 @@ local tbl =
 				timerStartOffset = -1,
 				uuid = "d92862b0-284c-1791-ad03-c2c1502744b5",
 				version = 2,
-			},
-		},
-	},
-	[184] = 
-	{
-		
-		{
-			data = 
-			{
-				name = "[Draw] Aero KB Arrow",
-				uuid = "5bcbd358-e326-d71a-8f28-d1593d97e5d6",
-				version = 2,
-			},
-			inheritedObjectUUID = "d4788314-0456-7ae7-b2cb-247c5848dbdd",
-			inheritedOverwrites = 
-			{
-				timerEndOffset = 0.10000000149012,
 			},
 		},
 	},
@@ -2367,6 +2482,58 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
+							actionLua = "if data.MuAiGd_P5_Towers == nil then\n\tlocal result = data.MuAiGd_GetP5TowerTable(eventArgs.a1)\n\tif result ~= nil then\n\t\td(eventArgs.a1)\n\t\td(result)\n\t\tdata.MuAiGd_P5_Towers = result\n\tend\nend\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"a84a5896-c18a-d96e-98c7-7113928e3731",
+									true,
+								},
+							},
+							gVar = "ACR_RikuGNB3_CD",
+							uuid = "c5ce03af-9d98-db9c-99c3-585821790223",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return eventArgs.a2 == 1 and eventArgs.a3 == 2 and data.MuAiGd_P5_Towers == nil",
+							uuid = "a84a5896-c18a-d96e-98c7-7113928e3731",
+							version = 2,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				eventType = 14,
+				mechanicTime = 1150.3,
+				name = "[MuAiGuide]分析塔位置",
+				timeRange = true,
+				timelineIndex = 250,
+				timerStartOffset = -20,
+				uuid = "6fdcc152-dc0a-2a8b-a278-483079c843c9",
+				version = 2,
+			},
+			inheritedIndex = 5,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
 							actionLua = "data.MuAiGd_P5CastInfo = data.MuAiGd_P5GetCastInfo(eventArgs.spellID)\nd(data.MuAiGd_P5CastInfo)\nself.used = true",
 							conditions = 
 							{
@@ -2466,80 +2633,10 @@ local tbl =
 			},
 			inheritedIndex = 3,
 		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "if data.MuAiGd_P5_Towers == nil then\n\tlocal result = data.MuAiGd_GetP5TowerTable(eventArgs.a1)\n\tif result ~= nil then\n\t\td(eventArgs.a1)\n\t\td(result)\n\t\tdata.MuAiGd_P5_Towers = result\n\tend\nend\nself.used = true\n",
-							conditions = 
-							{
-								
-								{
-									"a84a5896-c18a-d96e-98c7-7113928e3731",
-									true,
-								},
-							},
-							gVar = "ACR_RikuGNB3_CD",
-							uuid = "c5ce03af-9d98-db9c-99c3-585821790223",
-							version = 2.1,
-						},
-						inheritedIndex = 1,
-					},
-				},
-				conditions = 
-				{
-					
-					{
-						data = 
-						{
-							category = "Lua",
-							conditionLua = "return eventArgs.a2 == 1 and eventArgs.a3 == 2 and data.MuAiGd_P5_Towers == nil",
-							uuid = "a84a5896-c18a-d96e-98c7-7113928e3731",
-							version = 2,
-						},
-						inheritedIndex = 1,
-					},
-				},
-				eventType = 14,
-				mechanicTime = 1150.3,
-				name = "[MuAiGuide]分析塔位置",
-				timeRange = true,
-				timelineIndex = 250,
-				timerStartOffset = -20,
-				uuid = "6fdcc152-dc0a-2a8b-a278-483079c843c9",
-				version = 2,
-			},
-			inheritedIndex = 5,
-		},
-	},
-	[268] = 
-	{
-		
-		{
-			data = 
-			{
-				name = "[Kaze] Hold HeartBreak Shot",
-				uuid = "1c5a0d0e-7f81-49ae-895a-4fa9a155e133",
-				version = 2,
-			},
-			inheritedObjectUUID = "a9d94783-ed85-9f6e-ae0b-2cb6dd464f0e",
-			inheritedOverwrites = 
-			{
-				timerStartOffset = -6.0999999046326,
-			},
-		},
 	},
 	inheritedProfiles = 
 	{
-		"bard_mitigation",
-		"Kaze_Fru_Bard",
+		"rdps_mitigation",
 	},
 	mapID = 1238,
 	version = 5,

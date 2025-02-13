@@ -170,6 +170,242 @@ local tbl =
 			},
 		},
 	},
+	[32] = 
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local one = { 40131, 40135 }\nlocal two = { 40122, 40125 }\nlocal three = { 40123, 40126 }\nlocal four = { 40124, 40127 }\n\nif data.MuAiGd_P1_Towers == nil then\n    data.MuAiGd_P1_Towers = {}\nend\n\nif table.contains(one, eventArgs.spellID) then\n    local ent = TensorCore.mGetEntity(eventArgs.entityID)\n    table.insert(data.MuAiGd_P1_Towers, { entity = ent, need = 1 })\nelseif table.contains(two, eventArgs.spellID) then\n    local ent = TensorCore.mGetEntity(eventArgs.entityID)\n    table.insert(data.MuAiGd_P1_Towers, { entity = ent, need = 2 })\nelseif table.contains(three, eventArgs.spellID) then\n    local ent = TensorCore.mGetEntity(eventArgs.entityID)\n    table.insert(data.MuAiGd_P1_Towers, { entity = ent, need = 3 })\nelseif table.contains(four, eventArgs.spellID) then\n    local ent = TensorCore.mGetEntity(eventArgs.entityID)\n    table.insert(data.MuAiGd_P1_Towers, { entity = ent, need = 4 })\nend\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"efe1e409-1d08-9ae8-8701-bbc0288e0a9f",
+									true,
+								},
+							},
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "54a27c0c-6796-08ef-91e8-238265170ca9",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Event",
+							eventArgOptionType = 3,
+							eventArgType = 2,
+							name = "塔读条ID",
+							spellIDList = 
+							{
+								40122,
+								40123,
+								40124,
+								40125,
+								40126,
+								40127,
+								40131,
+								40135,
+							},
+							uuid = "efe1e409-1d08-9ae8-8701-bbc0288e0a9f",
+							version = 2,
+						},
+					},
+				},
+				eventType = 3,
+				loop = true,
+				mechanicTime = 140.9,
+				name = "[MuAiGuide]塔数据采集",
+				timeRange = true,
+				timelineIndex = 32,
+				timerEndOffset = -2,
+				timerStartOffset = -10,
+				uuid = "6f235a4a-a910-3ae1-a40d-e69d2bf4bf23",
+				version = 2,
+			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P1_TowerCastingType = eventArgs.spellID\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"de1aaff4-b6a9-a121-8871-069f75bccd9c",
+									true,
+								},
+							},
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "0700d340-a1b3-02fd-ba00-077aae5e464c",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Event",
+							eventArgOptionType = 3,
+							eventArgType = 2,
+							spellIDList = 
+							{
+								40129,
+								40133,
+							},
+							uuid = "de1aaff4-b6a9-a121-8871-069f75bccd9c",
+							version = 2,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				eventType = 3,
+				loop = true,
+				mechanicTime = 140.9,
+				name = "[MuAiGuide]读条采集",
+				timeRange = true,
+				timelineIndex = 32,
+				timerEndOffset = -2,
+				timerStartOffset = -10,
+				uuid = "fc962f58-cd80-e8c5-93a6-b4c81ee10b57",
+				version = 2,
+			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "if MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" then\n    local towers = table.deepcopy(data.MuAiGd_P1_Towers)\n    table.sort(towers, function(a, b)\n        return a.entity.pos.z < b.entity.pos.z\n    end)\n    local infoPos = function(index)\n        if index == 1 then\n            return \"上\"\n        elseif index == 2 then\n            return \"中\"\n        elseif index == 3 then\n            return \"下\"\n        end\n        return \"\"\n    end\n    local towerIdx\n    -- 小学塔\n    if MuAiGuide.Config.FruCfg.TakeTowerType == 1 then\n        local selfIndex = MuAiGuide.IndexOf(MuAiGuide.Config.FruCfg.FallTowerOrder, MuAiGuide.SelfPos)\n        if selfIndex <= towers[1].need then\n            towerIdx = 1\n        elseif towers[1].need < selfIndex and selfIndex <= towers[1].need + towers[2].need then\n            towerIdx = 2\n        elseif towers[1].need + towers[2].need < selfIndex and selfIndex <= 6 then\n            towerIdx = 3\n        end\n        MuAiGuide.Info(\"填充踩塔，去\" .. infoPos(towerIdx) .. \"塔\")\n    else\n        if table.contains(MuAiGuide.Config.FruCfg.FixTowerUp, MuAiGuide.SelfPos) then\n            if MuAiGuide.Config.FruCfg.FixTowerUp[1] == MuAiGuide.SelfPos or towers[1].need >= 2 then\n                towerIdx = 1\n            else\n                if towers[2].need > 2 then\n                    towerIdx = 2\n                else\n                    towerIdx = 3\n                end\n            end\n        elseif table.contains(MuAiGuide.Config.FruCfg.FixTowerMid, MuAiGuide.SelfPos) then\n            if MuAiGuide.Config.FruCfg.FixTowerMid[1] == MuAiGuide.SelfPos or towers[2].need >= 2 then\n                towerIdx = 2\n            else\n                if towers[1].need > 2 then\n                    towerIdx = 1\n                else\n                    towerIdx = 3\n                end\n            end\n        elseif table.contains(MuAiGuide.Config.FruCfg.FixTowerDown, MuAiGuide.SelfPos) then\n            if MuAiGuide.Config.FruCfg.FixTowerDown[1] == MuAiGuide.SelfPos or towers[3].need >= 2 then\n                towerIdx = 3\n            else\n                if towers[1].need > 2 then\n                    towerIdx = 1\n                else\n                    towerIdx = 2\n                end\n            end\n        end\n\n        MuAiGuide.Info(\"固定踩塔，去\" .. infoPos(towerIdx) .. \"塔\")\n    end\n\n    local towerPos = towers[towerIdx].entity.pos\n    data.MuAiGd_P1_SelfTowerInfo = { Index = towerIdx, Pos = towerPos }\n\td(data.MuAiGd_P1_TowerCastingType)\n    if data.MuAiGd_P1_TowerCastingType == 40129 then\n        local posX, posZ\n        if towerPos.x > 100 then\n            posX = 106\n        else\n            posX = 94\n        end\n        if towerIdx == 1 then\n            posZ = 94\n        elseif towerIdx == 2 then\n            posZ = 100\n        elseif towerIdx == 3 then\n            posZ = 106\n        end\n        MuAiGuide.DirectTo(posX, posZ, 6000)\n    elseif data.MuAiGd_P1_TowerCastingType == 40133 then\n        MuAiGuide.DirectTo(towerPos.x, towerPos.z, 10000)\n    end\nelse\n\nend\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"580974dc-f238-142e-8c97-10454362f8c5",
+									true,
+								},
+							},
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "c5bdcc5c-2318-a466-9a53-e311565dd1a5",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_P1_TowerCastingType ~= nil\nand  data.MuAiGd_P1_Towers ~= nil and table.size(data.MuAiGd_P1_Towers) >= 3",
+							name = "获取到读条和塔信息",
+							uuid = "580974dc-f238-142e-8c97-10454362f8c5",
+							version = 2,
+						},
+					},
+				},
+				mechanicTime = 140.9,
+				name = "[MuAiGuide]踩塔指路",
+				timeRange = true,
+				timelineIndex = 32,
+				timerEndOffset = 10,
+				timerStartOffset = -10,
+				uuid = "d313db81-8d8e-da94-8c73-d3d01aebbffc",
+				version = 2,
+			},
+			inheritedIndex = 7,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "d(data.MuAiGd_P1_TowerCastingType)\nif data.MuAiGd_P1_TowerCastingType == 40129 then\n    local posX, posZ\n    if data.MuAiGd_P1_SelfTowerInfo.Pos.x > 100 then\n        posX = 101\n    else\n        posX = 99\n    end\n    if data.MuAiGd_P1_SelfTowerInfo.Index == 1 then\n        posZ = 94\n    elseif data.MuAiGd_P1_SelfTowerInfo.Index == 2 then\n        posZ = 100\n    elseif data.MuAiGd_P1_SelfTowerInfo.Index == 3 then\n        posZ = 106\n    end\n    MuAiGuide.DirectTo(posX, posZ, 4000)\nend\nself.used = true\n",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "56b76848-40a6-9c88-a384-92eb80bf56e2",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 140.9,
+				name = "[MuAiGuide]火靠近",
+				timelineIndex = 32,
+				uuid = "bed0da6f-ee8d-e3df-8bbd-7d36f25ae95b",
+				version = 2,
+			},
+			inheritedIndex = 8,
+		},
+	},
+	[33] = 
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "if data.MuAiGd_P1_TowerCastingType == 40129 then\n    local towerPos = data.MuAiGd_P1_SelfTowerInfo.Pos\n    MuAiGuide.DirectTo(towerPos.x, towerPos.z, 2100)\nend\nself.used = true\n",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "11df3678-7386-177e-aba4-19239e145091",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 142.9,
+				name = "[MuAiGuide]指塔",
+				timelineIndex = 33,
+				uuid = "43c5dedd-ee48-577f-babb-f51c170e21d3",
+				version = 2,
+			},
+		},
+	},
 	[44] = 
 	{
 		
@@ -1483,7 +1719,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" then\n    local selfIndex = MuAiGuide.IndexOf(data.MuAiGd_P4_1_OrderPos, MuAiGuide.SelfPos)\n    -- 引导人群回中增加T容错\n    if selfIndex >= 3 and selfIndex <= 6 then\n        MuAiGuide.DirectTo(100, 91, 5000)\n    else\n        MuAiGuide.DirectTo(100, 109, 5000)\n    end\nend\nself.used = true",
+							actionLua = "if MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" then\n    local selfIndex = MuAiGuide.IndexOf(data.MuAiGd_P4_1_OrderPos, MuAiGuide.SelfPos)\n    -- 引导人群回中增加T容错\n\tMuAiGuide.DirectTo(100, 100, 5000)\nend\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "7210f740-d0f3-2ce3-ba75-b4075af0a2b0",
 							version = 2.1,
@@ -1716,7 +1952,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local M = MuAiGuide\nif data.MuAiGd_P4_Flags == nil then\n    data.MuAiGd_P4_Flags = {\n        Water = false,\n        Converge = false,\n        Wind = false,\n        Blue = false,\n        Red = false,\n        MissRed = false,\n        LinkToHead = false,\n        Avoid = false,\n        EndGuide = false,\n        RedGuides = {}\n    }\n    data.MuAiGd_P4_FinalGuide = function()\n        if data.MuAiGd_P4_WaveGuideHeading == nil or data.MuAiGd_P4_WaveGuideHeading < -10 then\n            return false\n        end\n        local endHeading\n        local distance\n        if M.Config.FruCfg.CrystallizeTimeKnockBack == 1 then --Y字 then\n            if M.SelfPos == \"MT\" then\n                endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi / 8\n                distance = 14\n            elseif M.SelfPos == \"ST\" then\n                endHeading = data.MuAiGd_P4_WaveGuideHeading - math.pi / 8\n                distance = 14\n            else\n                endHeading = data.MuAiGd_P4_WaveGuideHeading\n                distance = 4\n            end\n        else\n            local selfIndex = M.IndexOf(M.JobPosName)\n            if selfIndex % 2 == 1 then -- mt 组\n                if M.SelfPos == \"MT\" then\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 11 / 180\n                    distance = 16.1\n                else\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 8 / 180\n                    distance = 13\n                end\n            else\n                if M.SelfPos == \"ST\" then\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 11 / 180\n                    distance = 16.1\n                else\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 8 / 180\n                    distance = 13\n                end\n            end\n        end\n        local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, endHeading, distance)\n        local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n        if curReturn ~= nil then\n            M.DirectTo(targetPos.x, targetPos.z, curReturn.duration * 1000)\n        else\n            M.DirectTo(targetPos.x, targetPos.z, 5000)\n        end\n        return true\n    end\n    data.MuAiGd_P4_GetDragonHead = function()\n        local heads = {}\n        local rightHead, leftHead\n        for _, ent in pairs(TensorCore.entityList(\"contentid=9323\")) do\n            if Argus.getEntityModel(ent.id) == 17836 then\n                table.insert(heads, ent)\n            end\n        end\n        if heads[1].pos.x > heads[2].pos.x then\n            rightHead = heads[1]\n            leftHead = heads[2]\n        else\n            leftHead = heads[1]\n            rightHead = heads[2]\n        end\n        return leftHead, rightHead\n    end\nend\n\nif data.MuAiGd_P4_SelfGuideType <= 4 then -- 分摊BUFF倒计时结束\n    -- 水判定，准备击退\n    if data.MuAiGd_P4_Flags.Water == false then\n        if not M.IsMe(data.MuAiGd_P4_Player.Flame) then\n            local curWater = TensorCore.getBuff(data.MuAiGd_P4_Player.Water.id, 2461)\n            if curWater == nil or curWater.duration < 0.9 then\n                local pos\n                if data.MuAiGd_P4_GroundType == 1 then\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi / 6, 18.5)\n                else\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 11 / 6, 18.5)\n                end\n                M.DirectTo(pos.x, pos.z, 4000)\n                data.MuAiGd_P4_Flags.Water = true\n                M.Info(\"准备击退。\")\n            end\n        end\n    end\n\n    if data.MuAiGd_P4_Flags.Wind == false then\n        -- 被击退/暗判定 =>调整位置进行分摊\n        local curWind = TensorCore.getBuff(data.MuAiGd_P4_Player.Wind1.id, 2463)\n        if curWind == nil or curWind.duration < 0.1 then\n            local pos\n            if data.MuAiGd_P4_GroundType == 1 then\n                pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 5 / 4, 19.5)\n            else\n                pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 3 / 4, 19.5)\n            end\n            M.DirectTo(pos.x, pos.z, 4000)\n            data.MuAiGd_P4_Flags.Wind = true\n            M.Info(\"调整位置到斜点。\")\n        end\n    end\n\n    if data.MuAiGd_P4_Flags.Converge == false then\n        -- 分摊判定回A\n        local curConverge = TensorCore.getBuff(data.MuAiGd_P4_Player.Converge.id, 2454)\n        if curConverge == nil or curConverge.duration < 0.1 then\n            M.DirectTo(100, 82, 4000)\n            data.MuAiGd_P4_Flags.Converge = true\n            M.Info(\"分摊完毕前往A方向。\")\n        end\n    end\n\n    --- 指路捡垃圾\n    if data.MuAiGd_P4_Flags.Blue == false then\n        local removerList = {}\n        local curBlue = TensorCore.getBuff(M.GetPlayer().id, 3264)\n        if curBlue and curBlue.duration < 18.5 then\n            for _, ent in pairs(TensorCore.entityList(\"contentid=2014529\")) do\n                table.insert(removerList, ent)\n            end\n            for i = 1, #removerList do\n                for j = 1, #removerList - i do\n                    if removerList[j].pos.x > removerList[j + 1].pos.x then\n                        removerList[j], removerList[j + 1] = removerList[j + 1], removerList[j]\n                    end\n                end\n            end\n            local pos\n            if data.MuAiGd_P4_SelfGuideType == 1 then\n                M.Info(\"去D点附近捡垃圾。\")\n                pos = removerList[1].pos\n            elseif data.MuAiGd_P4_SelfGuideType == 2 then\n                M.Info(\"去B点附近捡垃圾。\")\n                pos = removerList[4].pos\n            elseif data.MuAiGd_P4_SelfGuideType == 3 then\n                M.Info(\"去3点附近捡垃圾。\")\n                pos = removerList[3].pos\n            elseif data.MuAiGd_P4_SelfGuideType == 4 then\n                M.Info(\"去4点附近捡垃圾。\")\n                pos = removerList[2].pos\n            end\n            M.DirectTo(pos.x, pos.z, curBlue.duration * 1000)\n            data.MuAiGd_P4_Flags.Blue = true\n        end\n    end\n    if data.MuAiGd_P4_Flags.EndGuide == false then\n        local curBlue = TensorCore.getBuff(M.GetPlayer().id, 3264)\n        if curBlue == nil then\n            if data.MuAiGd_P4_FinalGuide() then\n                M.Info(\"垃圾回收成功！\")\n                data.MuAiGd_P4_Flags.EndGuide = true\n                self.used = true\n            end\n        end\n    end\nelse\n    if data.MuAiGd_P4_SelfGuideType == 5 or data.MuAiGd_P4_SelfGuideType == 6 then\n        -- 左右撞头\n        if data.MuAiGd_P4_Flags.LinkToHead == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw and curClaw.duration <= 8 then\n                M.CancelDir()\n                local leftHead, rightHead = data.MuAiGd_P4_GetDragonHead()\n                local selfHead\n                if data.MuAiGd_P4_SelfGuideType == 5 then\n                    selfHead = leftHead\n                else\n                    selfHead = rightHead\n                end\n                data.MuAiGd_P4_Flags.RedGuides = M.DirectToEnt(selfHead.id, 10000)\n                data.MuAiGd_P4_Flags.LinkToHead = true\n            end\n        end\n\n        -- 撞头完毕\n        if data.MuAiGd_P4_Flags.MissRed == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw == nil then\n                for _, uuid in pairs(data.MuAiGd_P4_Flags.RedGuides) do\n                    Argus.deleteTimedShape(uuid)\n                end\n                if data.MuAiGd_P4_SelfGuideType == 5 then\n                    if data.MuAiGd_P4_GroundType == 1 then\n                        local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 5 / 4, 19.5)\n                        M.DirectTo(pos.x, pos.z, 4000)\n                        M.Info(\"撞头完毕，和人群分摊。\")\n                    else\n                        MuAiGuide.DirectTo(80.5, 101.8, 8000, 0.3)\n                        M.Info(\"撞头完毕，躲开大圈。\")\n                    end\n                elseif data.MuAiGd_P4_SelfGuideType == 6 then\n                    if data.MuAiGd_P4_GroundType == 2 then\n                        local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 3 / 4, 19.5)\n                        M.DirectTo(pos.x, pos.z, 4000)\n                        M.Info(\"撞头完毕，和人群分摊。\")\n                    else\n                        MuAiGuide.DirectTo(119.5, 101.8, 8000, 0.3)\n                        M.Info(\"撞头完毕，躲开大圈。\")\n                    end\n                end\n                data.MuAiGd_P4_Flags.MissRed = true\n            end\n        end\n        -- 分摊\n        if data.MuAiGd_P4_Flags.Converge == false then\n            if data.MuAiGd_P4_SelfGuideType == 5 and data.MuAiGd_P4_GroundType == 1 or data.MuAiGd_P4_SelfGuideType == 6 and data.MuAiGd_P4_GroundType == 2 then\n                local curConverge = TensorCore.getBuff(data.MuAiGd_P4_Player.Converge.id, 2454)\n                if curConverge == nil or curConverge.duration < 0.1 then\n                    M.DirectTo(100, 82, 4000)\n                    data.MuAiGd_P4_Flags.Converge = true\n                    M.Info(\"分摊完毕前往A方向。\")\n                end\n            end\n        end\n\n        -- 躲大圈\n        if data.MuAiGd_P4_Flags.Avoid == false then\n            if data.MuAiGd_P4_SelfGuideType == 5 and data.MuAiGd_P4_GroundType == 2 or data.MuAiGd_P4_SelfGuideType == 6 and data.MuAiGd_P4_GroundType == 1 then\n                local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n                if curReturn and curReturn.duration < 16.5 then\n                    M.Info(\"前往A点。\")\n                    M.DirectTo(100, 82, 8000)\n                    data.MuAiGd_P4_Flags.Avoid = true\n                end\n            end\n        end\n\n        -- 终点指路\n        if data.MuAiGd_P4_Flags.EndGuide == false then\n            local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n            if curReturn and curReturn.duration < 13 then\n                if data.MuAiGd_P4_FinalGuide() then\n                    data.MuAiGd_P4_Flags.EndGuide = true\n                    self.used = true\n                end\n            end\n        end\n    else\n        -- 水判定\n        if data.MuAiGd_P4_Flags.Water == false then\n            local curWater = TensorCore.getBuff(data.MuAiGd_P4_Player.Water.id, 2461)\n            if curWater == nil or curWater.duration < 0.9 then\n                local pos\n                M.Info(\"准备站位击飞其他人。\")\n                if data.MuAiGd_P4_SelfGuideType == 7 then\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 11 / 6, 19.5)\n                else\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi / 6, 19.5)\n                end\n                M.DirectTo(pos.x, pos.z, 4000)\n                data.MuAiGd_P4_Flags.Water = true\n            end\n        end\n\n        --风判定\n        if data.MuAiGd_P4_Flags.Wind == false then\n            -- 被击退/暗判定 =>调整位置进行分摊\n            local curWind = TensorCore.getBuff(data.MuAiGd_P4_Player.Wind1.id, 2463)\n            if curWind == nil or curWind.duration < 0.1 then\n                M.Info(\"躲开大圈。\")\n                local pos\n                if data.MuAiGd_P4_SelfGuideType == 7 then\n                    M.DirectTo(92.5, 117.9, 5000)\n                else\n                    M.DirectTo(107.5, 117.9, 5000)\n                end\n                data.MuAiGd_P4_Flags.Wind = true\n            end\n        end\n \n        -- 左下右下撞头\n        if data.MuAiGd_P4_Flags.LinkToHead == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw and curClaw.duration <= 23.5 then\n                M.Info(\"龙撞头。\")\n                M.CancelDir()\n                local leftHead, rightHead = data.MuAiGd_P4_GetDragonHead()\n                local selfHead\n                if data.MuAiGd_P4_SelfGuideType == 7 then\n                    selfHead = leftHead\n                else\n                    selfHead = rightHead\n                end\n                data.MuAiGd_P4_Flags.RedGuides = M.DirectToEnt(selfHead.id, 10000)\n                data.MuAiGd_P4_Flags.LinkToHead = true\n            end\n        end\n\n        -- 撞头完毕\n        if data.MuAiGd_P4_Flags.MissRed == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw == nil then\n                for _, uuid in pairs(data.MuAiGd_P4_Flags.RedGuides) do\n                    Argus.deleteTimedShape(uuid)\n                end\n                M.Info(\"前往C点。\")\n                M.DirectTo(100, 118, 8000)\n                data.MuAiGd_P4_Flags.MissRed = true\n            end\n        end\n\n        -- 终点指路\n        if data.MuAiGd_P4_Flags.EndGuide == false then\n            local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n            if curReturn and curReturn.duration < 13 then\n                if data.MuAiGd_P4_FinalGuide() then\n                    data.MuAiGd_P4_Flags.EndGuide = true\n                    self.used = true\n                end\n            end\n        end\n    end\nend\n",
+							actionLua = "local M = MuAiGuide\nif data.MuAiGd_P4_Flags == nil then\n    data.MuAiGd_P4_Flags = {\n        Water = false,\n        Converge = false,\n        Wind = false,\n        Blue = false,\n        Red = false,\n        MissRed = false,\n        LinkToHead = false,\n        Avoid = false,\n        EndGuide = false,\n        RedGuides = {}\n    }\n    data.MuAiGd_P4_FinalGuide = function()\n        if data.MuAiGd_P4_WaveGuideHeading == nil or data.MuAiGd_P4_WaveGuideHeading < -10 then\n            return false\n        end\n        local endHeading\n        local distance\n        if M.Config.FruCfg.CrystallizeTimeKnockBack == 1 then --Y字 then\n            if M.SelfPos == \"MT\" then\n                endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi / 8\n                distance = 14\n            elseif M.SelfPos == \"ST\" then\n                endHeading = data.MuAiGd_P4_WaveGuideHeading - math.pi / 8\n                distance = 14\n            else\n                endHeading = data.MuAiGd_P4_WaveGuideHeading\n                distance = 4\n            end\n        else\n            local selfIndex = M.IndexOf(M.JobPosName)\n            if selfIndex % 2 == 1 then -- mt 组\n                if M.SelfPos == \"MT\" then\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 11 / 180\n                    distance = 16.1\n                else\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 8 / 180\n                    distance = 13\n                end\n            else\n                if M.SelfPos == \"ST\" then\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 11 / 180\n                    distance = 16.1\n                else\n                    endHeading = data.MuAiGd_P4_WaveGuideHeading + math.pi * 8 / 180\n                    distance = 13\n                end\n            end\n        end\n        local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, endHeading, distance)\n        local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n        if curReturn ~= nil then\n            M.DirectTo(targetPos.x, targetPos.z, curReturn.duration * 1000)\n        else\n            M.DirectTo(targetPos.x, targetPos.z, 5000)\n        end\n        return true\n    end\n    data.MuAiGd_P4_GetDragonHead = function()\n        local heads = {}\n        local rightHead, leftHead\n        for _, ent in pairs(TensorCore.entityList(\"contentid=9323\")) do\n            if Argus.getEntityModel(ent.id) == 17836 then\n                table.insert(heads, ent)\n            end\n        end\n        if heads[1].pos.x > heads[2].pos.x then\n            rightHead = heads[1]\n            leftHead = heads[2]\n        else\n            leftHead = heads[1]\n            rightHead = heads[2]\n        end\n        return leftHead, rightHead\n    end\nend\n\nif data.MuAiGd_P4_SelfGuideType <= 4 then -- 分摊BUFF倒计时结束\n    -- 水判定，准备击退\n    if data.MuAiGd_P4_Flags.Water == false then\n        if not M.IsMe(data.MuAiGd_P4_Player.Flame) then\n            local curWater = TensorCore.getBuff(data.MuAiGd_P4_Player.Water.id, 2461)\n            if curWater == nil or curWater.duration < 0.9 then\n                local pos\n                if data.MuAiGd_P4_GroundType == 1 then\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi / 6, 17)\n                else\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 11 / 6, 17)\n                end\n                M.DirectTo(pos.x, pos.z, 4000, 0.3)\n                data.MuAiGd_P4_Flags.Water = true\n                M.Info(\"准备击退。\")\n            end\n        end\n    end\n\n    if data.MuAiGd_P4_Flags.Wind == false then\n        -- 被击退/暗判定 =>调整位置进行分摊\n        local curWind = TensorCore.getBuff(data.MuAiGd_P4_Player.Wind1.id, 2463)\n        if curWind == nil or curWind.duration < 0.1 then\n            local pos\n            if data.MuAiGd_P4_GroundType == 1 then\n                pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 5 / 4, 19.5)\n            else\n                pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 3 / 4, 19.5)\n            end\n            M.DirectTo(pos.x, pos.z, 4000)\n            data.MuAiGd_P4_Flags.Wind = true\n            M.Info(\"调整位置到斜点。\")\n        end\n    end\n\n    if data.MuAiGd_P4_Flags.Converge == false then\n        -- 分摊判定回A\n        local curConverge = TensorCore.getBuff(data.MuAiGd_P4_Player.Converge.id, 2454)\n        if curConverge == nil or curConverge.duration < 0.1 then\n            M.DirectTo(100, 82, 4000)\n            data.MuAiGd_P4_Flags.Converge = true\n            M.Info(\"分摊完毕前往A方向。\")\n        end\n    end\n\n    --- 指路捡垃圾\n    if data.MuAiGd_P4_Flags.Blue == false then\n        local removerList = {}\n        local curBlue = TensorCore.getBuff(M.GetPlayer().id, 3264)\n        if curBlue and curBlue.duration < 18.5 then\n            for _, ent in pairs(TensorCore.entityList(\"contentid=2014529\")) do\n                table.insert(removerList, ent)\n            end\n            for i = 1, #removerList do\n                for j = 1, #removerList - i do\n                    if removerList[j].pos.x > removerList[j + 1].pos.x then\n                        removerList[j], removerList[j + 1] = removerList[j + 1], removerList[j]\n                    end\n                end\n            end\n            local pos\n            if data.MuAiGd_P4_SelfGuideType == 1 then\n                M.Info(\"去D点附近捡垃圾。\")\n                pos = removerList[1].pos\n            elseif data.MuAiGd_P4_SelfGuideType == 2 then\n                M.Info(\"去B点附近捡垃圾。\")\n                pos = removerList[4].pos\n            elseif data.MuAiGd_P4_SelfGuideType == 3 then\n                M.Info(\"去3点附近捡垃圾。\")\n                pos = removerList[3].pos\n            elseif data.MuAiGd_P4_SelfGuideType == 4 then\n                M.Info(\"去4点附近捡垃圾。\")\n                pos = removerList[2].pos\n            end\n            M.DirectTo(pos.x, pos.z, curBlue.duration * 1000)\n            data.MuAiGd_P4_Flags.Blue = true\n        end\n    end\n    if data.MuAiGd_P4_Flags.EndGuide == false then\n        local curBlue = TensorCore.getBuff(M.GetPlayer().id, 3264)\n        if curBlue == nil then\n            if data.MuAiGd_P4_FinalGuide() then\n                M.Info(\"垃圾回收成功！\")\n                data.MuAiGd_P4_Flags.EndGuide = true\n                self.used = true\n            end\n        end\n    end\nelse\n    if data.MuAiGd_P4_SelfGuideType == 5 or data.MuAiGd_P4_SelfGuideType == 6 then\n        -- 左右撞头\n        if data.MuAiGd_P4_Flags.LinkToHead == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw and curClaw.duration <= 8 then\n                M.CancelDir()\n                local leftHead, rightHead = data.MuAiGd_P4_GetDragonHead()\n                local selfHead\n                if data.MuAiGd_P4_SelfGuideType == 5 then\n                    selfHead = leftHead\n                else\n                    selfHead = rightHead\n                end\n                data.MuAiGd_P4_Flags.RedGuides = M.DirectToEnt(selfHead.id, 10000)\n                data.MuAiGd_P4_Flags.LinkToHead = true\n            end\n        end\n\n        -- 撞头完毕\n        if data.MuAiGd_P4_Flags.MissRed == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw == nil then\n                for _, uuid in pairs(data.MuAiGd_P4_Flags.RedGuides) do\n                    Argus.deleteTimedShape(uuid)\n                end\n                if data.MuAiGd_P4_SelfGuideType == 5 then\n                    if data.MuAiGd_P4_GroundType == 1 then\n                        local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 5 / 4, 19.5)\n                        M.DirectTo(pos.x, pos.z, 4000)\n                        M.Info(\"撞头完毕，和人群分摊。\")\n                    else\n                        MuAiGuide.DirectTo(80.5, 101.8, 8000, 0.3)\n                        M.Info(\"撞头完毕，躲开大圈。\")\n                    end\n                elseif data.MuAiGd_P4_SelfGuideType == 6 then\n                    if data.MuAiGd_P4_GroundType == 2 then\n                        local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 3 / 4, 19.5)\n                        M.DirectTo(pos.x, pos.z, 4000)\n                        M.Info(\"撞头完毕，和人群分摊。\")\n                    else\n                        MuAiGuide.DirectTo(119.5, 101.8, 8000, 0.3)\n                        M.Info(\"撞头完毕，躲开大圈。\")\n                    end\n                end\n                data.MuAiGd_P4_Flags.MissRed = true\n            end\n        end\n        -- 分摊\n        if data.MuAiGd_P4_Flags.Converge == false then\n            if data.MuAiGd_P4_SelfGuideType == 5 and data.MuAiGd_P4_GroundType == 1 or data.MuAiGd_P4_SelfGuideType == 6 and data.MuAiGd_P4_GroundType == 2 then\n                local curConverge = TensorCore.getBuff(data.MuAiGd_P4_Player.Converge.id, 2454)\n                if curConverge == nil or curConverge.duration < 0.1 then\n                    M.DirectTo(100, 82, 4000)\n                    data.MuAiGd_P4_Flags.Converge = true\n                    M.Info(\"分摊完毕前往A方向。\")\n                end\n            end\n        end\n\n        -- 躲大圈\n        if data.MuAiGd_P4_Flags.Avoid == false then\n            if data.MuAiGd_P4_SelfGuideType == 5 and data.MuAiGd_P4_GroundType == 2 or data.MuAiGd_P4_SelfGuideType == 6 and data.MuAiGd_P4_GroundType == 1 then\n                local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n                if curReturn and curReturn.duration < 16.5 then\n                    M.Info(\"前往A点。\")\n                    M.DirectTo(100, 82, 8000)\n                    data.MuAiGd_P4_Flags.Avoid = true\n                end\n            end\n        end\n\n        -- 终点指路\n        if data.MuAiGd_P4_Flags.EndGuide == false then\n            local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n            if curReturn and curReturn.duration < 13 then\n                if data.MuAiGd_P4_FinalGuide() then\n                    data.MuAiGd_P4_Flags.EndGuide = true\n                    self.used = true\n                end\n            end\n        end\n    else\n        -- 水判定\n        if data.MuAiGd_P4_Flags.Water == false then\n            local curWater = TensorCore.getBuff(data.MuAiGd_P4_Player.Water.id, 2461)\n            if curWater == nil or curWater.duration < 0.9 then\n                local pos\n                M.Info(\"准备站位击飞其他人。\")\n                if data.MuAiGd_P4_SelfGuideType == 7 then\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 11 / 6, 19.5)\n                else\n                    pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi / 6, 19.5)\n                end\n                M.DirectTo(pos.x, pos.z, 4000)\n                data.MuAiGd_P4_Flags.Water = true\n            end\n        end\n\n        --风判定\n        if data.MuAiGd_P4_Flags.Wind == false then\n            -- 被击退/暗判定 =>调整位置进行分摊\n            local curWind = TensorCore.getBuff(data.MuAiGd_P4_Player.Wind1.id, 2463)\n            if curWind == nil or curWind.duration < 0.1 then\n                M.Info(\"躲开大圈。\")\n                local pos\n                if data.MuAiGd_P4_SelfGuideType == 7 then\n                    M.DirectTo(92.5, 117.9, 5000)\n                else\n                    M.DirectTo(107.5, 117.9, 5000)\n                end\n                data.MuAiGd_P4_Flags.Wind = true\n            end\n        end\n \n        -- 左下右下撞头\n        if data.MuAiGd_P4_Flags.LinkToHead == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw and curClaw.duration <= 23.5 then\n                M.Info(\"龙撞头。\")\n                M.CancelDir()\n                local leftHead, rightHead = data.MuAiGd_P4_GetDragonHead()\n                local selfHead\n                if data.MuAiGd_P4_SelfGuideType == 7 then\n                    selfHead = leftHead\n                else\n                    selfHead = rightHead\n                end\n                data.MuAiGd_P4_Flags.RedGuides = M.DirectToEnt(selfHead.id, 10000)\n                data.MuAiGd_P4_Flags.LinkToHead = true\n            end\n        end\n\n        -- 撞头完毕\n        if data.MuAiGd_P4_Flags.MissRed == false then\n            local curClaw = TensorCore.getBuff(M.GetPlayer().id, 3263)\n            if curClaw == nil then\n                for _, uuid in pairs(data.MuAiGd_P4_Flags.RedGuides) do\n                    Argus.deleteTimedShape(uuid)\n                end\n                M.Info(\"前往C点。\")\n                M.DirectTo(100, 118, 8000)\n                data.MuAiGd_P4_Flags.MissRed = true\n            end\n        end\n\n        -- 终点指路\n        if data.MuAiGd_P4_Flags.EndGuide == false then\n            local curReturn = TensorCore.getBuff(M.GetPlayer().id, 4208)\n            if curReturn and curReturn.duration < 13 then\n                if data.MuAiGd_P4_FinalGuide() then\n                    data.MuAiGd_P4_Flags.EndGuide = true\n                    self.used = true\n                end\n            end\n        end\n    end\nend\n",
 							gVar = "ACR_TensorMagnum3_CD",
 							uuid = "cd63e215-3e32-dbfa-944a-c95ba44302b3",
 							version = 2.1,

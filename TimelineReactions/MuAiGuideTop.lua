@@ -226,7 +226,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local p = TensorCore.mGetPlayer()\nlocal tethers = Argus.getTethersOnEnt(p.id)\n\nif (table.valid(tethers)) then\n    for _, tether in pairs(tethers) do\n        if (tether.type == 222) then\n            local partner = TensorCore.mGetEntity(tether.partnerid)\n            if (partner ~= nil) then\n                if p.marker ~= nil and partner.marker ~= nil and  p.marker ~= 0 and partner.marker ~= 0 then                   \n                    if partner.marker < p.marker then\n                        data.p2partysynergygroup = \"right\"\n                    else\n                        data.p2partysynergygroup = \"left\"\n                    end\n                else\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\td(partner.job)\n                    if data.TopJobOrder[p.job] > data.TopJobOrder[partner.job] then\n                        data.p2partysynergygroup = \"right\"\n                    else\n                        data.p2partysynergygroup = \"left\"\n                    end\n                end\n            end\n            break\n        end\n    end\nend\nd(data.p2partysynergygroup)\nself.used = true",
+							actionLua = "local p = TensorCore.mGetPlayer()\nlocal tethers = Argus.getTethersOnEnt(p.id)\n\nif (table.valid(tethers)) then\n    for _, tether in pairs(tethers) do\n        if (tether.type == 222) then\n            local partner = TensorCore.mGetEntity(tether.partnerid)\n            if (partner ~= nil) then\n                if p.marker ~= nil and partner.marker ~= nil and  p.marker ~= 0 and partner.marker ~= 0 then                   \n                    if partner.marker < p.marker then\n                        data.p2partysynergygroup = \"right\"\n                    else\n                        data.p2partysynergygroup = \"left\"\n                    end\n                else\n\t\t\t\t\td(partner.job)\n                    if data.TopJobOrder[p.job] > data.TopJobOrder[partner.job] then\n                        data.p2partysynergygroup = \"right\"\n                    else\n                        data.p2partysynergygroup = \"left\"\n                    end\n                end\n            end\n            break\n        end\n    end\nend\nd(data.p2partysynergygroup)\nself.used = true",
 							gVar = "ACR_TensorMagnum2_CD",
 							uuid = "6a13ad82-98cf-a865-a6ae-f1de44c525bf",
 							version = 2.1,
@@ -242,7 +242,7 @@ local tbl =
 				timeRange = true,
 				timelineIndex = 36,
 				timerEndOffset = 10,
-				timerStartOffset = 1,
+				timerStartOffset = 2.2000000476837,
 				uuid = "e06ec460-d8f5-e433-8acc-48e983509505",
 				version = 2,
 			},

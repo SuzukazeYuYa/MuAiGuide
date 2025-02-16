@@ -547,7 +547,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local heading4\nif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi / 4) then\n    heading4 = math.pi / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 1 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 4) then\n    heading4 = math.pi * 7 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 5 / 4) then\n    heading4 = math.pi * 9 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 7 / 4) then\n    heading4 = math.pi * 15 / 8\nend\nlocal distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, MuAiGuide.GetPlayer().pos)\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading4, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
+							actionLua = "local heading4\nif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi / 4) then\n    heading4 = math.pi / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 1 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 4) then\n    heading4 = math.pi * 7 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 5 / 4) then\n    heading4 = math.pi * 9 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 7 / 4) then\n    heading4 = math.pi * 15 / 8\nend\nlocal distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, MuAiGuide.GetPlayer().pos)\nif distance < 13 then\n\tdistance = 13\nend\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading4, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "3322ab0a-b0ae-ef80-8982-9573c746bd05",
 							version = 2.1,
@@ -1682,6 +1682,55 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
+							actionLua = "local guideTime = 9000\nlocal buffId = 4157\nlocal M = MuAiGuide\nlocal linkBuff = TensorCore.getBuff(M.GetPlayer().id, buffId)\n\n-- 计算是否有线（是否有线BUFF）\nif linkBuff ~= nil then\n    --连线定名\n    local TGroup = { \"MT\", \"ST\", \"H1\", \"H2\" }\n    local DGroup = { \"D1\", \"D2\", \"D3\", \"D4\" }\n    local selfLinkOrder = 0 --计算自己是第几个有线\n    local targetHeading = 0\n    if table.contains(TGroup, M.SelfPos) then\n        local index = M.IndexOf(TGroup, M.SelfPos)\n        for i = 1, index do\n            local curPlayer = M.Party[TGroup[i]]\n            if TensorCore.getBuff(curPlayer.id, buffId) then\n                selfLinkOrder = selfLinkOrder + 1\n            end\n        end\n        if selfLinkOrder == 1 then\n            targetHeading = math.pi * 4 / 3\n            M.Info(\"我是上1，去左上。\")\n        elseif selfLinkOrder == 2 then\n            M.Info(\"我是上2，去下。\")\n            targetHeading = 0\n        elseif selfLinkOrder == 3 then\n            M.Info(\"我是上3，去右上。\")\n            targetHeading = math.pi * 2 / 3\n        elseif selfLinkOrder == 4 then\n            M.Info(\"我是上4，需要补位去左下。\")\n            targetHeading = math.pi * 5 / 3\n        end\n    elseif table.contains(DGroup, M.SelfPos) then\n        local index = M.IndexOf(DGroup, M.SelfPos)\n        for i = 1, index do\n            local curPlayer = M.Party[DGroup[i]]\n            if TensorCore.getBuff(curPlayer.id, buffId) then\n                selfLinkOrder = selfLinkOrder + 1\n            end\n        end\n        if selfLinkOrder == 1 then\n            M.Info(\"我是下1，去右下。\")\n            targetHeading = math.pi / 3\n        elseif selfLinkOrder == 2 then\n            M.Info(\"我是下2，去上。\")\n            targetHeading = math.pi\n        elseif selfLinkOrder == 3 then\n            M.Info(\"我是下3，去左下。\")\n            targetHeading = math.pi * 5 / 3\n        elseif selfLinkOrder == 4 then\n            targetHeading = math.pi * 2 / 3\n            M.Info(\"我是下4，需要补位去右上。\")\n        end\n    end\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, targetHeading, 18)\n    M.DirectTo(targetPos.x, targetPos.z, guideTime)\nelse\n    M.Info(\"被点名了，放五个圈。\")\n    local guideTime2 = 16000\n    local fromA = {\n        { x = 100,   z = 92 },\n        { x = 106.1, z = 94.8 },\n        { x = 109,   z = 100.77 },\n        { x = 108,   z = 107.3 },\n        { x = 106,   z = 113.6 },\n    }\n    local fromC = {\n        { x = 100,  z = 108 },\n        { x = 93.9, z = 105.2 },\n        { x = 91,   z = 99.23 },\n        { x = 92,   z = 92.7 },\n        { x = 94,   z = 86.4 },\n    }\n    local draw = function(points)\n        for i = 1, #points do\n            local curPos = points[i]\n            local size = 0.5\n            M.DrawCircleUI(curPos.x, curPos.z, guideTime2, 0.5, 0, 255, 0, 0.7)\n            if i > 1 then\n                local lastPos = points[i - 1]\n                local heading = TensorCore.getHeadingToTarget(lastPos, curPos)\n                local length = TensorCore.getDistance2d(lastPos, curPos)\n                local pos = TensorCore.getPosInDirection(lastPos, heading, size + 0.1)\n                Argus2.addTimedArrowFilled(\n                    guideTime2,\n                    pos.x,\n                    0,\n                    pos.z,\n                    length - size * 2 - 1 - 0.2,\n                    size / 5 * 2,\n                    1,\n                    0.25,\n                    heading,\n                    GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 255 / 255, 0.7),\n                    GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 255 / 255, 0.7),\n                    GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 255 / 255, 0.7),\n                    0,\n                    nil,\n                    nil,\n                    GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1),\n                    1.0,\n                    3,\n                    0.05,\n                    true\n                )\n            end\n        end\n    end\n    local noBuffOther\n    for i = 1, 8 do\n        local curJobPos = M.JobPosName[i]\n        if curJobPos ~= M.SelfPos and TensorCore.getBuff(M.Party[curJobPos].id, buffId) == nil then\n            noBuffOther = curJobPos\n        end\n    end\n    if noBuffOther then\n        if M.IndexOf(M.SelfPos) < M.IndexOf(noBuffOther) then\n            draw(fromA)\n        else\n            draw(fromC)\n        end\n    else\n        draw(fromA)\n        draw(fromC)\n    end\nend\nself.used = true",
+							conditions = 
+							{
+								
+								{
+									"cf85f192-7932-8d1a-aa9a-11eb68d7a4f8",
+									true,
+								},
+							},
+							gVar = "ACR_TensorRequiem3_CD",
+							name = "MGL光暴-线分析&指路",
+							uuid = "63c0bd19-de44-6780-822c-251564f6c733",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return MuAiGuide and MuAiGuide.Config.FruCfg.FruLightRampantType == 1",
+							name = "田园郡式",
+							uuid = "cf85f192-7932-8d1a-aa9a-11eb68d7a4f8",
+							version = 2,
+						},
+					},
+				},
+				mechanicTime = 331.8,
+				name = "[MuAiGuide]MGL光暴-线分析&指路",
+				timelineIndex = 80,
+				timerOffset = 1,
+				uuid = "df04ad36-0dec-a5b8-86b0-2187c689b527",
+				version = 2,
+			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
 							actionLua = "local TGroup = { \"MT\", \"ST\", \"H1\", \"H2\" }\nlocal DGroup = { \"D1\", \"D2\", \"D3\", \"D4\" }\nlocal noBuff = {}\ndata.MuAiGd_LightRampantGroupUp = {}\ndata.MuAiGd_LightRampantGroupDown = {}\nlocal buffCnt = 0\nfor i = 1, 4 do\n    local curPlayer = MuAiGuide.Party[TGroup[i]]\n    if TensorCore.getBuff(curPlayer.id, 4157) then\n        buffCnt = buffCnt + 1\n        if buffCnt == 2 or buffCnt == 4 then\n            table.insert(data.MuAiGd_LightRampantGroupDown, TGroup[i])\n        else\n            table.insert(data.MuAiGd_LightRampantGroupUp, TGroup[i])\n        end\n        d(TGroup[i])\n    else\n        table.insert(noBuff, TGroup[i])\n    end\nend\nbuffCnt = 0\nfor i = 1, 4 do\n    local curPlayer = MuAiGuide.Party[DGroup[i]]\n    if TensorCore.getBuff(curPlayer.id, 4157) then\n        buffCnt = buffCnt + 1\n        if buffCnt == 2 or buffCnt == 4 then\n            table.insert(data.MuAiGd_LightRampantGroupUp, DGroup[i])\n        else\n            table.insert(data.MuAiGd_LightRampantGroupDown, DGroup[i])\n        end\n        d(DGroup[i])\n    else\n        table.insert(noBuff, DGroup[i])\n    end\nend\ntable.insert(data.MuAiGd_LightRampantGroupUp, noBuff[2])\ntable.insert(data.MuAiGd_LightRampantGroupDown, noBuff[1])\nMuAiGuide.Info(\"最终分摊分组，上：\" .. MuAiGuide.StringJoin(data.MuAiGd_LightRampantGroupUp, \",\"))\nMuAiGuide.Info(\"最终分摊分组，下：\" .. MuAiGuide.StringJoin(data.MuAiGd_LightRampantGroupDown, \",\"))\nself.used = true\n",
 							conditions = 
 							{
@@ -1837,55 +1886,6 @@ local tbl =
 				version = 2,
 			},
 			inheritedIndex = 6,
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "local guideTime = 9000\nlocal buffId = 4157\nlocal M = MuAiGuide\nlocal linkBuff = TensorCore.getBuff(M.GetPlayer().id, buffId)\n\n-- 计算是否有线（是否有线BUFF）\nif linkBuff ~= nil then\n    --连线定名\n    local TGroup = { \"MT\", \"ST\", \"H1\", \"H2\" }\n    local DGroup = { \"D1\", \"D2\", \"D3\", \"D4\" }\n    local selfLinkOrder = 0 --计算自己是第几个有线\n    local targetHeading = 0\n    if table.contains(TGroup, M.SelfPos) then\n        local index = M.IndexOf(TGroup, M.SelfPos)\n        for i = 1, index do\n            local curPlayer = M.Party[TGroup[i]]\n            if TensorCore.getBuff(curPlayer.id, buffId) then\n                selfLinkOrder = selfLinkOrder + 1\n            end\n        end\n        if selfLinkOrder == 1 then\n            targetHeading = math.pi * 4 / 3\n            M.Info(\"我是上1，去左上。\")\n        elseif selfLinkOrder == 2 then\n            M.Info(\"我是上2，去下。\")\n            targetHeading = 0\n        elseif selfLinkOrder == 3 then\n            M.Info(\"我是上3，去右上。\")\n            targetHeading = math.pi * 2 / 3\n        elseif selfLinkOrder == 4 then\n            M.Info(\"我是上4，需要补位去左下。\")\n            targetHeading = math.pi * 5 / 3\n        end\n    elseif table.contains(DGroup, M.SelfPos) then\n        local index = M.IndexOf(DGroup, M.SelfPos)\n        for i = 1, index do\n            local curPlayer = M.Party[DGroup[i]]\n            if TensorCore.getBuff(curPlayer.id, buffId) then\n                selfLinkOrder = selfLinkOrder + 1\n            end\n        end\n        if selfLinkOrder == 1 then\n            M.Info(\"我是下1，去右下。\")\n            targetHeading = math.pi / 3\n        elseif selfLinkOrder == 2 then\n            M.Info(\"我是下2，去上。\")\n            targetHeading = math.pi\n        elseif selfLinkOrder == 3 then\n            M.Info(\"我是下3，去左下。\")\n            targetHeading = math.pi * 5 / 3\n        elseif selfLinkOrder == 4 then\n            targetHeading = math.pi * 2 / 3\n            M.Info(\"我是下4，需要补位去右上。\")\n        end\n    end\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, targetHeading, 18)\n    M.DirectTo(targetPos.x, targetPos.z, guideTime)\nelse\n    M.Info(\"被点名了，放五个圈。\")\n    local guideTime2 = 16000\n    local fromA = {\n        { x = 100,   z = 92 },\n        { x = 106.1, z = 94.8 },\n        { x = 109,   z = 100.77 },\n        { x = 108,   z = 107.3 },\n        { x = 106,   z = 113.6 },\n    }\n    local fromC = {\n        { x = 100,  z = 108 },\n        { x = 93.9, z = 105.2 },\n        { x = 91,   z = 99.23 },\n        { x = 92,   z = 92.7 },\n        { x = 94,   z = 86.4 },\n    }\n    local draw = function(points)\n        for i = 1, #points do\n            local curPos = points[i]\n            local size = 0.5\n            M.DrawCircleUI(curPos.x, curPos.z, guideTime2, 0.5, 0, 255, 0, 0.7)\n            if i > 1 then\n                local lastPos = points[i - 1]\n                local heading = TensorCore.getHeadingToTarget(lastPos, curPos)\n                local length = TensorCore.getDistance2d(lastPos, curPos)\n                local pos = TensorCore.getPosInDirection(lastPos, heading, size + 0.1)\n                Argus2.addTimedArrowFilled(\n                    guideTime2,\n                    pos.x,\n                    0,\n                    pos.z,\n                    length - size * 2 - 1 - 0.2,\n                    size / 5 * 2,\n                    1,\n                    0.25,\n                    heading,\n                    GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 255 / 255, 0.7),\n                    GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 255 / 255, 0.7),\n                    GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 255 / 255, 0.7),\n                    0,\n                    nil,\n                    nil,\n                    GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1),\n                    1.0,\n                    3,\n                    0.05,\n                    true\n                )\n            end\n        end\n    end\n    local noBuffOther\n    for i = 1, 8 do\n        local curJobPos = M.JobPosName[i]\n        if curJobPos ~= M.SelfPos and TensorCore.getBuff(M.Party[curJobPos].id, buffId) == nil then\n            noBuffOther = curJobPos\n        end\n    end\n    if noBuffOther then\n        if M.IndexOf(M.SelfPos) < M.IndexOf(noBuffOther) then\n            draw(fromA)\n        else\n            draw(fromC)\n        end\n    else\n        draw(fromA)\n        draw(fromC)\n    end\nend\nself.used = true",
-							conditions = 
-							{
-								
-								{
-									"cf85f192-7932-8d1a-aa9a-11eb68d7a4f8",
-									true,
-								},
-							},
-							gVar = "ACR_TensorRequiem3_CD",
-							name = "MGL光暴-线分析&指路",
-							uuid = "63c0bd19-de44-6780-822c-251564f6c733",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-					
-					{
-						data = 
-						{
-							category = "Lua",
-							conditionLua = "return MuAiGuide and MuAiGuide.Config.FruCfg.FruLightRampantType == 1",
-							name = "田园郡式",
-							uuid = "cf85f192-7932-8d1a-aa9a-11eb68d7a4f8",
-							version = 2,
-						},
-					},
-				},
-				mechanicTime = 331.8,
-				name = "[MuAiGuide]MGL光暴-线分析&指路",
-				timelineIndex = 80,
-				timerOffset = 1,
-				uuid = "df04ad36-0dec-a5b8-86b0-2187c689b527",
-				version = 2,
-			},
 		},
 	},
 	[85] = 
@@ -2985,6 +2985,38 @@ local tbl =
 			},
 		},
 	},
+	[215] = 
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_drawGroup = function(drawTime)\n    local curMT = TensorCore.getEntityByGroup(\"Main Tank\", \"Nearest\")\n    local curST\n    if MuAiGuide.Party[\"MT\"].id == curMT.id then\n        curST = MuAiGuide.Party[\"ST\"]\n    else\n        curST = MuAiGuide.Party[\"MT\"]\n    end\n    local purpleDrawer = Argus2.ShapeDrawer:new(\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n        2\n    )\n    local yellowDrawer = Argus2.ShapeDrawer:new(\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n        2\n    )\n    purpleDrawer:addTimedCircleOnEnt(drawTime, curMT.id, 4)\n    yellowDrawer:addTimedCircleOnEnt(drawTime, curST.id, 4)\nend\ndata.MuAiGd_P5_drawGroup(2500)\nself.used = true\n",
+							gVar = "ACR_TensorRuin3_CD",
+							uuid = "5b9a62df-cb5f-675a-b1f4-849ac93d6dc9",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1011.4,
+				name = "[MuAiGuide]画分摊",
+				timelineIndex = 215,
+				timerOffset = -2.5,
+				uuid = "f61197d0-740d-77ba-bc2a-228dc124413d",
+				version = 2,
+			},
+		},
+	},
 	[222] = 
 	{
 		
@@ -3291,6 +3323,38 @@ local tbl =
 			},
 		},
 	},
+	[243] = 
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_drawGroup(2500)\nself.used = true\n",
+							gVar = "ACR_TensorRuin3_CD",
+							uuid = "5b9a62df-cb5f-675a-b1f4-849ac93d6dc9",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1124,
+				name = "[MuAiGuide]画分摊2",
+				timelineIndex = 243,
+				timerOffset = -2.5,
+				uuid = "053bde7c-d968-565a-947f-ee4995dbf46e",
+				version = 2,
+			},
+		},
+	},
 	[247] = 
 	{
 		
@@ -3325,6 +3389,58 @@ local tbl =
 	},
 	[250] = 
 	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "if data.MuAiGd_P5_Towers == nil then\n\tlocal result = data.MuAiGd_GetP5TowerTable(eventArgs.a1)\n\tif result ~= nil then\n\t\td(eventArgs.a1)\n\t\td(result)\n\t\tdata.MuAiGd_P5_Towers = result\n\tend\nend\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"a84a5896-c18a-d96e-98c7-7113928e3731",
+									true,
+								},
+							},
+							gVar = "ACR_RikuGNB3_CD",
+							uuid = "c5ce03af-9d98-db9c-99c3-585821790223",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return eventArgs.a2 == 1 and eventArgs.a3 == 2 and data.MuAiGd_P5_Towers == nil",
+							uuid = "a84a5896-c18a-d96e-98c7-7113928e3731",
+							version = 2,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				eventType = 14,
+				mechanicTime = 1150.3,
+				name = "[MuAiGuide]分析塔位置",
+				timeRange = true,
+				timelineIndex = 250,
+				timerStartOffset = -20,
+				uuid = "6fdcc152-dc0a-2a8b-a278-483079c843c9",
+				version = 2,
+			},
+			inheritedIndex = 5,
+		},
 		
 		{
 			data = 
@@ -3434,58 +3550,6 @@ local tbl =
 				version = 2,
 			},
 			inheritedIndex = 3,
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "if data.MuAiGd_P5_Towers == nil then\n\tlocal result = data.MuAiGd_GetP5TowerTable(eventArgs.a1)\n\tif result ~= nil then\n\t\td(eventArgs.a1)\n\t\td(result)\n\t\tdata.MuAiGd_P5_Towers = result\n\tend\nend\nself.used = true\n",
-							conditions = 
-							{
-								
-								{
-									"a84a5896-c18a-d96e-98c7-7113928e3731",
-									true,
-								},
-							},
-							gVar = "ACR_RikuGNB3_CD",
-							uuid = "c5ce03af-9d98-db9c-99c3-585821790223",
-							version = 2.1,
-						},
-						inheritedIndex = 1,
-					},
-				},
-				conditions = 
-				{
-					
-					{
-						data = 
-						{
-							category = "Lua",
-							conditionLua = "return eventArgs.a2 == 1 and eventArgs.a3 == 2 and data.MuAiGd_P5_Towers == nil",
-							uuid = "a84a5896-c18a-d96e-98c7-7113928e3731",
-							version = 2,
-						},
-						inheritedIndex = 1,
-					},
-				},
-				eventType = 14,
-				mechanicTime = 1150.3,
-				name = "[MuAiGuide]分析塔位置",
-				timeRange = true,
-				timelineIndex = 250,
-				timerStartOffset = -20,
-				uuid = "6fdcc152-dc0a-2a8b-a278-483079c843c9",
-				version = 2,
-			},
-			inheritedIndex = 5,
 		},
 	},
 	[253] = 
@@ -3630,10 +3694,40 @@ local tbl =
 			},
 		},
 	},
+	[268] = 
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_drawGroup(2500)\nself.used = true\n",
+							gVar = "ACR_TensorRuin3_CD",
+							uuid = "5b9a62df-cb5f-675a-b1f4-849ac93d6dc9",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1214.2,
+				name = "[MuAiGuide]画分摊3",
+				timelineIndex = 268,
+				timerOffset = -2.5,
+				uuid = "ef5ccd59-727a-4d33-afab-678cf74db3f2",
+				version = 2,
+			},
+		},
+	},
 	inheritedProfiles = 
 	{
-		"rdps_mitigation",
-		"Kaze_Fru_Bard",
 	},
 	mapID = 1238,
 	version = 5,

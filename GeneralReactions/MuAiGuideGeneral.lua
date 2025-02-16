@@ -323,7 +323,6 @@ local tbl =
 	}, 
 	inheritedProfiles = 
 	{
-		"7_Bard_Fru_General",
 	},
 }
 

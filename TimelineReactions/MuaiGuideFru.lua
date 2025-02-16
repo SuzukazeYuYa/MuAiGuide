@@ -13,7 +13,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local selfIndex = MuAiGuide.IndexOf(MuAiGuide.Config.FruCfg.JobPos, MuAiGuide.SelfPos)\ndata.MuAiGd_P1_8_BaseHeading = (selfIndex - 1) * math.pi / 4\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, data.MuAiGd_P1_8_BaseHeading, 7)\nMuAiGuide.DirectTo(pos.x, pos.z, 10000)\nfor _, ent in pairs(TensorCore.entityList(\"contentid=9707\")) do\n    if Argus.isEntityVisible(ent) then\n        data.MuAiGd_P1_BOSS = ent\n        break\n    end\nend\nself.used = true\n",
+							actionLua = "local selfIndex = MuAiGuide.IndexOf(MuAiGuide.Config.FruCfg.JobPos, MuAiGuide.SelfPos)\ndata.MuAiGd_P1_8_BaseHeading = (selfIndex - 1) * math.pi / 4\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, data.MuAiGd_P1_8_BaseHeading, 7.5)\nMuAiGuide.DirectTo(pos.x, pos.z, 10000)\nfor _, ent in pairs(TensorCore.entityList(\"contentid=9707\")) do\n    if Argus.isEntityVisible(ent) then\n        data.MuAiGd_P1_BOSS = ent\n        break\n    end\nend\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "25e6b076-bdfc-d583-b16b-027d0cb6cd1c",
 							version = 2.1,
@@ -42,7 +42,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal heading = bossPos.h - math.pi + data.MuAiGd_P1_8_BaseHeading\ndata.MuAiGd_P1_8_BossHeading = heading\nlocal distance\nif TensorCore.isAnyEntityCasting(40144) then -- 火\n    data.MuAiGd_P1_8_Type1 = 1\n    distance = 6\nelse\n    data.MuAiGd_P1_8_Type1 = 2\n    local melees = { \"MT\", \"ST\", \"D1\", \"D2\" }\n\n    if table.contains(melees, MuAiGuide.SelfPos) then\n        distance = 6\n    else\n        distance = 14\n    end\nend\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 5000)\nself.used = true\n",
+							actionLua = "local bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance\nif TensorCore.isAnyEntityCasting(40144) then -- 火\n    data.MuAiGd_P1_8_Type1 = 1\n    distance = 7\n    MuAiGuide.Info(\"八方然后分摊。\")\nelse\n    data.MuAiGd_P1_8_Type1 = 2\n    local melees = { \"MT\", \"ST\", \"D1\", \"D2\" }\n\n    if table.contains(melees, MuAiGuide.SelfPos) then\n        distance = 7\n    else\n        distance = 14\n    end\n    MuAiGuide.Info(\"八方然后分散。\")\nend\nlocal pos = TensorCore.getPosInDirection(bossPos, data.MuAiGd_P1_8_BaseHeading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 5000)\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "25e6b076-bdfc-d583-b16b-027d0cb6cd1c",
 							version = 2.1,
@@ -57,35 +57,6 @@ local tbl =
 				timelineIndex = 1,
 				timerOffset = -5,
 				uuid = "63663593-7871-8d7a-8751-3b224a3c37e7",
-				version = 2,
-			},
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "data.MuAiGd_P4_GroundType = 2\ndata.MuAiGd_P4_SelfGuideType = 1\nlocal referenceH\n--- 画一个击退参考线\nif data.MuAiGd_P4_GroundType == 2 then\n    referenceH = -math.pi / 6\nelse\n    referenceH = math.pi / 6\nend\nif data.MuAiGd_P4_SelfGuideType <= 4 then\n\t  local yellowDrawer = Argus2.ShapeDrawer:new(\n\t\t\t\t(GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 1)),\n\t\t\t\t(GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 1)),\n\t\t\t\t(GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 1)),\n\t\t\t\t(GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 1)),\n\t\t\t\t0\n\t\t\t)\n\nlocal drawer =       TensorCore.getStaticDrawer(GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5), 1)\n        drawer:addTimedArrow(10000, 100, 0, 100, referenceH, 21, .05, .3, .3,0, false)\n\t\tdrawer:addTimedArrow(10000, 100, 0, 100, referenceH + math.pi,  21, .05, .3, .3,0, false)\nend\n\ndata.MuAiGd_P4_Guide1Finish = true\nself.used = true",
-							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "a9293fab-8a2c-448d-bf62-0a32b67396e8",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-				},
-				enabled = false,
-				mechanicTime = 13.7,
-				name = "123",
-				timelineIndex = 1,
-				uuid = "1312b823-d76a-3b32-a1a4-7df3bd858af6",
 				version = 2,
 			},
 		},
@@ -168,7 +139,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local heading = data.MuAiGd_P1_8_BossHeading\nlocal tankHealer = { \"MT\", \"ST\", \"H1\", \"H2\" }\nif table.contains(tankHealer, MuAiGuide.SelfPos) then\n    heading = heading + math.pi / 8\nelse\n    heading = heading - math.pi / 8\nend\n\nlocal bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance = TensorCore.getDistance2d(MuAiGuide.GetPlayer().pos, bossPos)\nlocal pos = TensorCore.getPosInDirection(bossPos, heading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 2000)\nself.used = true",
+							actionLua = "local heading = data.MuAiGd_P1_8_BaseHeading\nlocal tankHealer = { \"MT\", \"ST\", \"H1\", \"H2\" }\nif table.contains(tankHealer, MuAiGuide.SelfPos) then\n    heading = heading + math.pi / 8\nelse\n    heading = heading - math.pi / 8\nend\n\nlocal bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance = TensorCore.getDistance2d(MuAiGuide.GetPlayer().pos, bossPos)\nlocal pos = TensorCore.getPosInDirection(bossPos, heading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "eb782d2d-bfbe-5bd9-bcf4-ccd1a584451d",
 							version = 2.1,
@@ -186,6 +157,23 @@ local tbl =
 				version = 2,
 			},
 			inheritedIndex = 1,
+		},
+	},
+	[9] = 
+	{
+		
+		{
+			data = 
+			{
+				name = "[Kaze] Pitch Perfect 15",
+				uuid = "38b77522-4590-3caf-99a3-cda769a88a6a",
+				version = 2,
+			},
+			inheritedObjectUUID = "f8a4b642-0819-3629-80a9-3abc95e0dd71",
+			inheritedOverwrites = 
+			{
+				timerEndOffset = -2.7000000476837,
+			},
 		},
 	},
 	[10] = 
@@ -230,7 +218,15 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "--[[\n    type : OnUpdate\n    time : -3.000\n    timeline : 34.9\n]]\nif TensorCore.isAnyEntityCasting(40154) then\n    data.MuAiGd_SinsmokeType = 1\nelseif TensorCore.isAnyEntityCasting(40155) then\n    data.MuAiGd_SinsmokeType = 2\nelse\n    data.MuAiGd_SinsmokeType = 0\nend\nself.used = true\n",
+							actionLua = "d(eventArgs.spellID)\nif eventArgs.spellID == 40154 then\n\tMuAiGuide.Info(\"稍后分摊。\")\n    data.MuAiGd_SinsmokeType = 1\nelseif eventArgs.spellID == 40155 then\n    data.MuAiGd_SinsmokeType = 2\n\tMuAiGuide.Info(\"稍后分散。\")\nelse\n    data.MuAiGd_SinsmokeType = 0\nend\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"3ae5a8a1-6db7-24d7-82de-948b7ce6b6f2",
+									true,
+								},
+							},
 							gVar = "ACR_TensorRequiem3_CD",
 							name = "乐园绝技类型记录",
 							uuid = "04d12805-bffa-03a0-be65-b0f7c452ee51",
@@ -240,11 +236,34 @@ local tbl =
 				},
 				conditions = 
 				{
+					
+					{
+						data = 
+						{
+							category = "Event",
+							eventArgOptionType = 3,
+							eventArgType = 2,
+							eventSpellID = 40154,
+							spellIDList = 
+							{
+								40154,
+								40155,
+							},
+							uuid = "3ae5a8a1-6db7-24d7-82de-948b7ce6b6f2",
+							version = 2,
+						},
+						inheritedIndex = 1,
+					},
 				},
+				eventType = 3,
 				mechanicTime = 34.9,
 				name = "[MuAiGuide]乐园绝技类型记录",
+				randomOffset = 3,
+				timeRange = true,
 				timelineIndex = 10,
+				timerEndOffset = 5,
 				timerOffset = -3,
+				timerStartOffset = -5,
 				uuid = "493ecff4-3afc-467d-b8b3-b3da390f9c39",
 				version = 2,
 			},
@@ -261,15 +280,34 @@ local tbl =
 						{
 							aType = "Lua",
 							actionLua = "local M = MuAiGuide\nlocal drawTime = 10000\nif data.MuAiGd_SinsmokeIndex == nil then\n    data.MuAiGd_SinsmokeIndex = {}\n    -- 雾龙站位情况C开始逆时针一圈, 如果站位不同可以修改这里\n    data.MuAiGd_SinsmokeJobOrder = { \"H2\", \"D2\", \"D4\", \"ST\", \"MT\", \"D3\", \"H1\", \"D1\" }\n    data.MuAiGd_SinsmokeGuideFinish = false\n    M.Debug(\"================================== 雾龙计算开始 ====================================\")\nend\n\nif table.size(data.MuAiGd_SinsmokeIndex) < 3 then\n    -- 采集阶段\n    for _, ent in pairs(TensorCore.entityList(\"contentid=9708\")) do\n        if ent.action == 210 then\n            -- 抬手\n            local pos = M.GetDirectionIndex({ x = 100, z = 100 }, { x = ent.pos.x, z = ent.pos.z })\n            table.insert(data.MuAiGd_SinsmokeIndex, pos)\n            --如果是自己，那么自己往前走\n            local jobName = data.MuAiGd_SinsmokeJobOrder[pos]\n            if jobName then\n                if M.IsMeByPos(jobName) then\n                    -- 指路到前面(给对面的人看的)\n                    local pos1 = M.GetPointAtDistance({ x = 100, y = 0, z = 100 }, ent.pos, 10)\n                    M.DirectTo(pos1.x, pos1.z, 2000)\n                end\n            end\n        end\n    end\nend\n\nif table.size(data.MuAiGd_SinsmokeIndex) == 3\n    and data.MuAiGd_SinsmokeGuideFinish == false then\n   \n    local danger = {}\n    for i = 1, 3, 1 do\n        local pos = data.MuAiGd_SinsmokeIndex[i]\n        table.insert(danger, pos)\n        local opposite = pos + 4\n        if opposite > 8 then\n            opposite = opposite - 8\n        end\n        table.insert(danger, opposite)\n    end\n\n    local safeHeading\n    local selfOrder = M.IndexOf(data.MuAiGd_SinsmokeJobOrder, M.SelfPos)\n    for i = 1, 8, 1 do\n        if not table.contains(danger, i) then\n            if (selfOrder >= 5 and i >= 5) or (selfOrder <= 4 and i <= 4) then\n                safeHeading = (i - 1) * math.pi / 4\n            end\n        end\n    end\n\n    -- debug start\n    local msg = \"危险点\"\n    for i = 1, #danger do\n        msg = msg .. \", \" .. danger[i]\n    end\n    M.Debug(msg)\n    msg = \"本组安全区\" .. (safeHeading / math.pi)\n    M.Debug(msg)\n    local infoPoint = M.GetGamePointByHeading(M.Config.FruCfg.PosInfo, safeHeading)\n   \n    -- debug end\n\n    local targetPos\n    if data.MuAiGd_SinsmokeType == 1 then\n        --分摊\n        targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, safeHeading, 13)\n        M.Info(\"去\" .. infoPoint .. \"点，分摊。\")\n    elseif data.MuAiGd_SinsmokeType == 2 then\n        -- 按照如下站位进下的指路\n        --      H\n        -- 近   T   远\n        -- 如果站位不同，需要修改\n        if M.SelfPos == \"MT\" or M.SelfPos == \"ST\" then\n            targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, safeHeading, 19.5)\n        elseif M.SelfPos == \"H1\" or M.SelfPos == \"H2\" then\n            targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, safeHeading, 13)\n        elseif M.SelfPos == \"D1\" or M.SelfPos == \"D2\" then\n            targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, safeHeading - 0.105 * math.pi, 19.5)\n        elseif M.SelfPos == \"D3\" or M.SelfPos == \"D4\" then\n            targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, safeHeading + 0.105 * math.pi, 19.5)\n        end\n        M.Info(\"去\" .. infoPoint .. \"点，分散。\")\n    end\n\n    if table.contains(data.MuAiGd_SinsmokeIndex, selfOrder) then\n        M.DirectTo(targetPos.x, targetPos.z, 8000, 0.5, 2000)\n    else\n        M.DirectTo(targetPos.x, targetPos.z, drawTime)\n    end\n    data.MuAiGd_SinsmokeGuideFinish = true\n    M.Debug(\"================================== 雾龙计算结束 ====================================\")\nend\n\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"185593c3-8095-1233-a28a-dc5611fb08a2",
+									true,
+								},
+							},
 							gVar = "ACR_TensorRequiem3_CD",
 							name = "雾龙",
 							uuid = "a269d71a-373e-0a3d-a331-59aa86be5681",
 							version = 2.1,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				conditions = 
 				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_SinsmokeType ~= nil",
+							uuid = "185593c3-8095-1233-a28a-dc5611fb08a2",
+							version = 2,
+						},
+					},
 				},
 				eventType = 3,
 				loop = true,
@@ -297,7 +335,15 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "data.MuAiGd_P1_8_2_skillType = eventArgs.spellID \nself.used = true",
+							actionLua = "data.MuAiGd_P1_8_2_skillType = eventArgs.spellID \nif eventArgs.spellID == 40329 then\n\tMuAiGuide.Info(\"稍后分摊。\")\n    data.MuAiGd_SinsmokeType = 1\nelseif eventArgs.spellID == 40330 then\n    data.MuAiGd_SinsmokeType = 2\n\tMuAiGuide.Info(\"稍后分散。\")\nend\nself.used = true",
+							conditions = 
+							{
+								
+								{
+									"7a41f349-d266-77e6-8594-b2fbc08b0952",
+									true,
+								},
+							},
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "44fab956-b6e4-c981-bac2-16f0306d0ffd",
 							version = 2.1,
@@ -412,7 +458,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local heading3 \nif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi / 4) then\n    heading3 = 0\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 1 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 4) then\n    heading3 = math.pi * 3 / 4\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 5 / 4) then\n    heading3 = math.pi\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 7 / 4) then\n    heading3 = math.pi * 7 / 4\nend\n\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading3, 13)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
+							actionLua = "local heading3 \nif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi / 4) then\n    heading3 = 0\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 1 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 4) then\n    heading3 = math.pi * 3 / 4\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 5 / 4) then\n    heading3 = math.pi\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 7 / 4) then\n    heading3 = math.pi * 7 / 4\nend\nlocal distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, MuAiGuide.GetPlayer().pos)\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading3, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "2e1a3fd2-50a0-02c9-b8d7-3482e43fbe36",
 							version = 2.1,
@@ -501,7 +547,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local heading4\nif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi / 4) then\n    heading4 = math.pi / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 1 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 4) then\n    heading4 = math.pi * 7 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 5 / 4) then\n    heading4 = math.pi * 9 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 7 / 4) then\n    heading4 = math.pi * 15 / 8\nend\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading4, 14)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true\n",
+							actionLua = "local heading4\nif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi / 4) then\n    heading4 = math.pi / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 1 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 4) then\n    heading4 = math.pi * 7 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 5 / 4) then\n    heading4 = math.pi * 9 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 7 / 4) then\n    heading4 = math.pi * 15 / 8\nend\nlocal distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, MuAiGuide.GetPlayer().pos)\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading4, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "3322ab0a-b0ae-ef80-8982-9573c746bd05",
 							version = 2.1,
@@ -533,7 +579,58 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local hasBuff = {}\nlocal M = MuAiGuide\nfor job, ent in pairs(M.Party) do\n    if TensorCore.getBuff(ent.id, 1051) and not table.contains(hasBuff, job) then\n        table.insert(hasBuff, job)\n    end\nend\n\nlocal fireRing, lightingRing\nfor _, ent in pairs(TensorCore.entityList(\"contentid=9710\")) do\n\tif\tent.pos.z > 90 then\n\t\tfireRing = ent\n\t\tbreak\n\tend\nend\n\nfor _, ent in pairs(TensorCore.entityList(\"contentid=9711\")) do\n\tif\tent.pos.z > 90 then\n\t\tlightingRing = ent\n\t\tbreak\n\tend\nend\nd(data.MuAiGd_P1_8_2_skillType2)\nlocal targetRing\nif data.MuAiGd_P1_8_2_skillType2 == 40151 then     --雷\n    targetRing = fireRing\nelseif data.MuAiGd_P1_8_2_skillType2 == 40150 then --火\n    targetRing = lightingRing\nend\nlocal posX, posZ\nif targetRing.pos.x < 100 then\n    posX = 94\nelse\n    posX = 106\nend\n\n--- 0 : 不同组 1：同上 2：同下\nlocal divType = 0\nif table.contains(M.Config.FruCfg.CatchTwoUp, hasBuff[1])\n    and table.contains(M.Config.FruCfg.CatchTwoUp, hasBuff[2])\nthen\n    divType = 1\nelseif table.contains(M.Config.FruCfg.CatchTwoDown, hasBuff[1])\n    and table.contains(M.Config.FruCfg.CatchTwoDown, hasBuff[2]) then\n    divType = 2\nend\n\nif divType == 0 then\n    if table.contains(M.Config.FruCfg.CatchTwoUp, M.SelfPos) then\n        posZ = 95\n    else\n        posZ = 105\n    end\nelse\n    if hasBuff[1] == M.SelfPos or hasBuff[2] == M.SelfPos then\n        local selfIndex, otherIndex\n        local group\n        if divType == 1 then\n            group = M.Config.FruCfg.CatchTwoUp\n        elseif divType == 2 then\n            group = M.Config.FruCfg.CatchTwoDown\n        end\n        local other\n        if hasBuff[1] == M.SelfPos then\n            other = hasBuff[2]\n        else\n            other = hasBuff[1]\n        end\n\n        selfIndex = M.IndexOf(group, M.SelfPos)\n        otherIndex = M.IndexOf(group, other)\n        if group ~= nil then\n            if selfIndex < otherIndex then\n                M.Info(\"被连线，高优先级，去上。\")\n                posZ = 95\n            else\n                M.Info(\"被连线，低优先级，去下。\")\n                posZ = 105\n            end\n        end\n    else\n        if table.contains(M.Config.FruCfg.CatchTwoDownFall, M.SelfPos) then\n            if divType == 1 then\n                posZ = 95\n                if table.contains(M.Config.FruCfg.CatchTwoDown, M.SelfPos) then\n                    M.Info(\"两个被连线人都在上组，补位去上。\")\n                end\n            elseif divType == 2 then\n                posZ = 105\n                if table.contains(M.Config.FruCfg.CatchTwoUp, M.SelfPos) then\n                    M.Info(\"两个被连线人都在下组，补位去下。\")\n                end\n            end\n        else\n            if table.contains(M.Config.FruCfg.CatchTwoUp, M.SelfPos) then\n                posZ = 95\n            else\n                posZ = 105\n            end\n        end\n    end\nend\nif posX ~= nil and posZ ~= nil then\n    M.DirectTo(posX, posZ, 15000)\n    data.MuAiGd_P1_TwoGroupKnockPos = {}\n    if posX < 100 then\n        data.MuAiGd_P1_TwoGroupKnockPos.x = 99\n    else\n        data.MuAiGd_P1_TwoGroupKnockPos.x = 101\n    end\n    data.MuAiGd_P1_TwoGroupKnockPos.z = posZ\nend\n\nself.used = true",
+							actionLua = "local fireRing, lightingRing\nfor _, ent in pairs(TensorCore.entityList(\"contentid=9710\")) do\n    if ent.pos.z > 90 then\n        fireRing = ent\n        break\n    end\nend\n\nfor _, ent in pairs(TensorCore.entityList(\"contentid=9711\")) do\n    if ent.pos.z > 90 then\n        lightingRing = ent\n        break\n    end\nend\nif fireRing ~= nil and lightingRing ~= nil then\n    local targetRing\n    if data.MuAiGd_P1_8_2_skillType2 == 40151 then     --雷\n        targetRing = fireRing\n    elseif data.MuAiGd_P1_8_2_skillType2 == 40150 then --火\n        targetRing = lightingRing\n    end\n    data.MuAiGd_P1_8_2TargetRing = targetRing\n    local posX, posZ\n    if data.MuAiGd_P1_8_2TargetRing.pos.x < 100 then\n        posX = 94\n    else\n        posX = 106\n    end\n    if MuAiGuide.GetPlayer().pos.z > 100 then\n        posZ = 112\n    else\n        posZ = 88\n    end\n    MuAiGuide.DirectTo(posX, posZ, 4000)\n    self.used = true\nend",
+							conditions = 
+							{
+								
+								{
+									"a060c8f8-223f-44fa-813e-bf301a45a0bd",
+									true,
+								},
+							},
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "091f9c0e-d525-f38d-990e-bc279879164a",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_P1_8_2_skillType2 ~= nil and data.MuAiGd_P1_8_2_skillType2 > 0",
+							uuid = "a060c8f8-223f-44fa-813e-bf301a45a0bd",
+							version = 2,
+						},
+					},
+				},
+				eventType = 3,
+				mechanicTime = 66.2,
+				name = "[MuAiGuide]光轮出现",
+				timeRange = true,
+				timelineIndex = 18,
+				timerEndOffset = 10,
+				timerStartOffset = -10,
+				uuid = "f87c03c2-448f-ce28-a599-5810eb2e4863",
+				version = 2,
+			},
+			inheritedIndex = 1,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local hasBuff = {}\nlocal M = MuAiGuide\n\nlocal posX, posZ\nif data.MuAiGd_P1_8_2TargetRing.pos.x < 100 then\n    posX = 94\nelse\n    posX = 106\nend\n\nfor job, ent in pairs(M.Party) do\n    if TensorCore.getBuff(ent.id, 1051) and not table.contains(hasBuff, job) then\n        table.insert(hasBuff, job)\n    end\nend\n--- 0 : 不同组 1：同上 2：同下\nlocal divType = 0\nif table.contains(M.Config.FruCfg.CatchTwoUp, hasBuff[1])\n    and table.contains(M.Config.FruCfg.CatchTwoUp, hasBuff[2])\nthen\n    divType = 1\nelseif table.contains(M.Config.FruCfg.CatchTwoDown, hasBuff[1])\n    and table.contains(M.Config.FruCfg.CatchTwoDown, hasBuff[2]) then\n    divType = 2\nend\n\nif divType == 0 then\n    if table.contains(M.Config.FruCfg.CatchTwoUp, M.SelfPos) then\n        posZ = 95\n    else\n        posZ = 105\n    end\nelse\n    if hasBuff[1] == M.SelfPos or hasBuff[2] == M.SelfPos then\n        local selfIndex, otherIndex\n        local group\n        if divType == 1 then\n            group = M.Config.FruCfg.CatchTwoUp\n        elseif divType == 2 then\n            group = M.Config.FruCfg.CatchTwoDown\n        end\n        local other\n        if hasBuff[1] == M.SelfPos then\n            other = hasBuff[2]\n        else\n            other = hasBuff[1]\n        end\n\n        selfIndex = M.IndexOf(group, M.SelfPos)\n        otherIndex = M.IndexOf(group, other)\n        if group ~= nil then\n            if selfIndex < otherIndex then\n                M.Info(\"被连线，高优先级，去上。\")\n                posZ = 95\n            else\n                M.Info(\"被连线，低优先级，去下。\")\n                posZ = 105\n            end\n        end\n    else\n        if table.contains(M.Config.FruCfg.CatchTwoDownFall, M.SelfPos) then\n            if divType == 1 then\n                posZ = 95\n                if table.contains(M.Config.FruCfg.CatchTwoDown, M.SelfPos) then\n                    M.Info(\"两个被连线人都在上组，补位去上。\")\n                end\n            elseif divType == 2 then\n                posZ = 105\n                if table.contains(M.Config.FruCfg.CatchTwoUp, M.SelfPos) then\n                    M.Info(\"两个被连线人都在下组，补位去下。\")\n                end\n            end\n        else\n            if table.contains(M.Config.FruCfg.CatchTwoUp, M.SelfPos) then\n                posZ = 95\n            else\n                posZ = 105\n            end\n        end\n    end\nend\nif posX ~= nil and posZ ~= nil then\n    M.DirectTo(posX, posZ, 15000)\n    data.MuAiGd_P1_TwoGroupKnockPos = {}\n    if posX < 100 then\n        data.MuAiGd_P1_TwoGroupKnockPos.x = 99\n    else\n        data.MuAiGd_P1_TwoGroupKnockPos.x = 101\n    end\n    data.MuAiGd_P1_TwoGroupKnockPos.z = posZ\nend\n\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "0a255b62-7c0a-f9c5-9002-c75f944a5e7f",
 							version = 2.1,
@@ -545,13 +642,15 @@ local tbl =
 				{
 				},
 				mechanicTime = 66.2,
-				name = "[MuAiGuide]光轮",
+				name = "[MuAiGuide]分组指路",
+				timeRange = true,
 				timelineIndex = 18,
+				timerEndOffset = 5,
 				timerOffset = 0.5,
 				uuid = "a491ddf8-c8d6-046b-9ab0-55375ad89787",
 				version = 2,
 			},
-			inheritedIndex = 1,
+			inheritedIndex = 2,
 		},
 	},
 	[19] = 
@@ -615,6 +714,7 @@ local tbl =
 				uuid = "329ed40b-965d-e519-8bb3-c08b0c816f8e",
 				version = 2,
 			},
+			inheritedIndex = 2,
 		},
 	},
 	[23] = 
@@ -630,7 +730,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if data.MuAiGd_P1_FallOfFaithPosInfo == nil then\n    data.MuAiGd_P1_FallOfFaithPosInfo = {\n        UpLeft = { h = math.pi * 9 / 8, length = 5.65 },\n        UpRight = { h = math.pi * 7 / 8, length = 5.65 },\n        DownLeft = { h = math.pi * 15 / 8, length = 5.65 },\n        DownRight = { h = math.pi * 1 / 8, length = 5.65 },\n        UpOut = { h = math.pi, length = 6.5 },\n        UpIn = { h = math.pi, length = 5 },\n        DownOut = { h = 0, length = 6.5 },\n        DownIn = { h = 0, length = 5 },\n        -- 闲人固定使用\n        FireUp = { h = math.pi * 7 / 8 - math.pi / 36, length = 5.7 },\n        FireDown = { h = math.pi * 15 / 8 - math.pi / 36, length = 5.7 },\n    }\n    data.MuAiGd_GetFallOfFaithPos = function(posName)\n        local info = data.MuAiGd_P1_FallOfFaithPosInfo[posName]\n        local endHeading = info.h\n        if MuAiGuide.Config.FruCfg.FruLightFireDir == 1 then\n            endHeading = info.h\n        else\n            endHeading = info.h + math.pi / 2\n        end\n        return TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, endHeading, info.length)\n    end\n    data.MuAiGd_P1_FallOfFaith = {\n        Record = {},\n        --- 点名人的ID\n        LinkedJob = {},\n        --- 1 点名， 0闲人\n        IsLink = false,\n        SelfIndex = 0\n    }\nend\nlocal M = MuAiGuide\nif table.size(data.MuAiGd_P1_FallOfFaith.LinkedJob) < 4 then\n    for jobPos, ent in pairs(M.Party) do\n        local tethers = Argus.getTethersOnEnt(ent.id)\n        if tethers ~= nil and not table.contains(data.MuAiGd_P1_FallOfFaith.LinkedJob, jobPos) then\n            for _, tether in pairs(tethers) do\n                if tether.type == 31 or tether.type == 249 then\n                    local tetherName\n                    if tether.type == 31 then\n                        tetherName = \"雷\"\n                    else\n                        tetherName = \"火\"\n                    end\n                    local curRecord = {\n                        player = ent,\n                        JobPos = jobPos,\n                        tetherType = tether.type,\n                        tetherName = tetherName,\n                        orderIndex = table.size(data.MuAiGd_P1_FallOfFaith.LinkedJob) + 1\n                    }\n                    table.insert(data.MuAiGd_P1_FallOfFaith.Record, curRecord)\n                    table.insert(data.MuAiGd_P1_FallOfFaith.LinkedJob, jobPos)\n                    if M.IsMe(ent) then\n                        data.MuAiGd_P1_FallOfFaith.IsLink = true\n                        data.MuAiGd_P1_FallOfFaith.SelfIndex = curRecord.orderIndex\n                        M.Info(curRecord.orderIndex .. \"线点名\" .. curRecord.JobPos .. \"类型：\" .. curRecord.tetherName .. \"。<se.1>\")\n                        local posIndex\n                        -- 上下互换法\n                        if M.Config.FruCfg.FruLightFireType == 1 then\n                            if curRecord.orderIndex == 1 then\n                                posIndex = \"UpIn\"\n                            elseif curRecord.orderIndex == 2 then\n                                posIndex = \"DownIn\"\n                            elseif curRecord.orderIndex == 3 then\n                                posIndex = \"UpOut\"\n                            elseif curRecord.orderIndex == 4 then\n                                posIndex = \"DownOut\"\n                            end\n                        else\n                            -- 闲人固定法\n                            if tether.type == 31 then -- 雷\n                                if curRecord.orderIndex == 1 then\n                                    posIndex = \"UpIn\"\n                                elseif curRecord.orderIndex == 2 then\n                                    posIndex = \"DownIn\"\n                                elseif curRecord.orderIndex == 3 then\n                                    posIndex = \"UpRight\"\n                                elseif curRecord.orderIndex == 4 then\n                                    posIndex = \"DownLeft\"\n                                end\n                            else\n                                if curRecord.orderIndex == 1 then\n                                    posIndex = \"FireUp\"\n                                elseif curRecord.orderIndex == 2 then\n                                    posIndex = \"FireDown\"\n                                elseif curRecord.orderIndex == 3 then\n                                    posIndex = \"UpRight\"\n                                elseif curRecord.orderIndex == 4 then\n                                    posIndex = \"DownLeft\"\n                                end\n                            end\n                        end\n                        local pos = data.MuAiGd_GetFallOfFaithPos(posIndex)\n                        local time = 8500 - (curRecord.orderIndex - 1) * 1000\n                        M.DirectTo(pos.x, pos.z, time, 0.3)\n                    else\n                        M.Info(curRecord.orderIndex .. \"线点名\" .. curRecord.JobPos .. \"类型：\" .. curRecord.tetherName .. \"。\")\n                    end\n                    break\n                end\n            end\n        end\n    end\n    d(table.size(data.MuAiGd_P1_FallOfFaith.LinkedJob))\n    if table.size(data.MuAiGd_P1_FallOfFaith.LinkedJob) >= 4 then\n        local record = data.MuAiGd_P1_FallOfFaith.Record\n        M.Info(\"上：\" .. record[1].tetherName .. \"、\" .. record[3].tetherName .. \"。\")\n        M.Info(\"下：\" .. record[2].tetherName .. \"、\" .. record[4].tetherName .. \"。\")\n        if data.MuAiGd_P1_FallOfFaith.IsLink == true then\n            self.used = true\n        else\n            local cnt = 0\n            local order = M.Config.FruCfg.FruLightFirePriority\n            for i = 1, table.size(order) do\n                local curJob = order[i]\n                if not table.contains(data.MuAiGd_P1_FallOfFaith.LinkedJob, curJob) then\n                    cnt = cnt + 1\n                    if M.SelfPos == curJob then\n                        data.MuAiGd_P1_FallOfFaith.SelfIndex = cnt\n                        M.Info(\"闲人:\" .. cnt .. \"。\")\n                        local posIdx\n                        if M.Config.FruCfg.FruLightFireType == 1 then\n                            if cnt == 1 then\n                                if record[1].tetherType == 31 then\n                                    posIdx = \"UpLeft\"\n                                elseif record[1].tetherType == 249 then\n                                    posIdx = \"UpOut\"\n                                end\n                            elseif cnt == 2 then\n                                if record[1].tetherType == 31 then\n                                    posIdx = \"UpRight\"\n                                elseif record[1].tetherType == 249 then\n                                    posIdx = \"UpOut\"\n                                end\n                            elseif cnt == 3 then\n                                if record[2].tetherType == 31 then\n                                    posIdx = \"DownLeft\"\n                                elseif record[2].tetherType == 249 then\n                                    posIdx = \"DownOut\"\n                                end\n                            elseif cnt == 4 then\n                                if record[2].tetherType == 31 then\n                                    posIdx = \"DownRight\"\n                                elseif record[2].tetherType == 249 then\n                                    posIdx = \"DownOut\"\n                                end\n                            end\n                        else\n                            if cnt == 1 then\n                                posIdx = \"UpOut\"\n                            elseif cnt == 2 then\n                                posIdx = \"UpLeft\"\n                            elseif cnt == 3 then\n                                posIdx = \"DownOut\"\n                            elseif cnt == 4 then\n                                posIdx = \"DownRight\"\n                            end\n                        end\n                        local pos = data.MuAiGd_GetFallOfFaithPos(posIdx)\n                        M.DirectTo(pos.x, pos.z, 20000, 0.3)\n                        break\n                    end\n                end\n            end\n        end\n        self.used = true\n    end\nend\n",
+							actionLua = "if data.MuAiGd_P1_FallOfFaithPosInfo == nil then\n    data.MuAiGd_P1_FallOfFaithPosInfo = {\n        UpLeft = { h = math.pi * 9 / 8, length = 5.65 },\n        UpRight = { h = math.pi * 7 / 8, length = 5.65 },\n        DownLeft = { h = math.pi * 15 / 8, length = 5.65 },\n        DownRight = { h = math.pi * 1 / 8, length = 5.65 },\n        UpOut = { h = math.pi, length = 6.5 },\n        UpIn = { h = math.pi, length = 5 },\n        DownOut = { h = 0, length = 6.5 },\n        DownIn = { h = 0, length = 5 },\n        -- 闲人固定使用\n        FireUp = { h = math.pi * 7 / 8 - math.pi / 36, length = 5.7 },\n        FireDown = { h = math.pi * 15 / 8 - math.pi / 36, length = 5.7 },\n    }\n    data.MuAiGd_GetFallOfFaithPos = function(posName)\n        local info = data.MuAiGd_P1_FallOfFaithPosInfo[posName]\n        local endHeading = info.h\n        if MuAiGuide.Config.FruCfg.FruLightFireDir == 1 then\n            endHeading = info.h\n        else\n            endHeading = info.h + math.pi / 2\n        end\n        return TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, endHeading, info.length)\n    end\n    data.MuAiGd_P1_FallOfFaith = {\n        Record = {},\n        --- 点名人的ID\n        LinkedJob = {},\n        --- 1 点名， 0闲人\n        IsLink = false,\n        SelfIndex = 0\n    }\nend\nlocal M = MuAiGuide\nif table.size(data.MuAiGd_P1_FallOfFaith.LinkedJob) < 4 then\n    for jobPos, ent in pairs(M.Party) do\n        local tethers = Argus.getTethersOnEnt(ent.id)\n        if tethers ~= nil and not table.contains(data.MuAiGd_P1_FallOfFaith.LinkedJob, jobPos) then\n            for _, tether in pairs(tethers) do\n                if tether.type == 31 or tether.type == 249 then\n                    local tetherName\n                    if tether.type == 31 then\n                        tetherName = \"雷\"\n                    else\n                        tetherName = \"火\"\n                    end\n                    local curRecord = {\n                        player = ent,\n                        JobPos = jobPos,\n                        tetherType = tether.type,\n                        tetherName = tetherName,\n                        orderIndex = table.size(data.MuAiGd_P1_FallOfFaith.LinkedJob) + 1\n                    }\n                    table.insert(data.MuAiGd_P1_FallOfFaith.Record, curRecord)\n                    table.insert(data.MuAiGd_P1_FallOfFaith.LinkedJob, jobPos)\n                    if M.IsMe(ent) then\n                        data.MuAiGd_P1_FallOfFaith.IsLink = true\n                        data.MuAiGd_P1_FallOfFaith.SelfIndex = curRecord.orderIndex\n                        M.Info(curRecord.orderIndex .. \"线点名\" .. curRecord.JobPos .. \"类型：\" .. curRecord.tetherName .. \"。<se.1>\")\n                        local posIndex\n                        -- 上下互换法\n                        if M.Config.FruCfg.FruLightFireType == 1 then\n                            if curRecord.orderIndex == 1 then\n                                posIndex = \"UpIn\"\n                            elseif curRecord.orderIndex == 2 then\n                                posIndex = \"DownIn\"\n                            elseif curRecord.orderIndex == 3 then\n                                posIndex = \"UpOut\"\n                            elseif curRecord.orderIndex == 4 then\n                                posIndex = \"DownOut\"\n                            end\n                        else\n                            -- 闲人固定法\n                            if tether.type == 31 then -- 雷\n                                if curRecord.orderIndex == 1 then\n                                    posIndex = \"UpIn\"\n                                elseif curRecord.orderIndex == 2 then\n                                    posIndex = \"DownIn\"\n                                elseif curRecord.orderIndex == 3 then\n                                    posIndex = \"UpRight\"\n                                elseif curRecord.orderIndex == 4 then\n                                    posIndex = \"DownLeft\"\n                                end\n                            else\n                                if curRecord.orderIndex == 1 then\n                                    posIndex = \"FireUp\"\n                                elseif curRecord.orderIndex == 2 then\n                                    posIndex = \"FireDown\"\n                                elseif curRecord.orderIndex == 3 then\n                                    posIndex = \"UpRight\"\n                                elseif curRecord.orderIndex == 4 then\n                                    posIndex = \"DownLeft\"\n                                end\n                            end\n                        end\n                        local pos = data.MuAiGd_GetFallOfFaithPos(posIndex)\n                        M.DirectTo(pos.x, pos.z, 15000, 0.3)\n                    else\n                        M.Info(curRecord.orderIndex .. \"线点名\" .. curRecord.JobPos .. \"类型：\" .. curRecord.tetherName .. \"。\")\n                    end\n                    break\n                end\n            end\n        end\n    end\n    if table.size(data.MuAiGd_P1_FallOfFaith.LinkedJob) >= 4 then\n        local record = data.MuAiGd_P1_FallOfFaith.Record\n        M.Info(\"上：\" .. record[1].tetherName .. \"、\" .. record[3].tetherName .. \"。\")\n        M.Info(\"下：\" .. record[2].tetherName .. \"、\" .. record[4].tetherName .. \"。\")\n        if data.MuAiGd_P1_FallOfFaith.IsLink == true then\n            self.used = true\n        else\n            local cnt = 0\n            local order = M.Config.FruCfg.FruLightFirePriority\n            for i = 1, table.size(order) do\n                local curJob = order[i]\n                if not table.contains(data.MuAiGd_P1_FallOfFaith.LinkedJob, curJob) then\n                    cnt = cnt + 1\n                    if M.SelfPos == curJob then\n                        data.MuAiGd_P1_FallOfFaith.SelfIndex = cnt\n                        M.Info(\"闲人:\" .. cnt .. \"。\")\n                        local posIdx\n                        if M.Config.FruCfg.FruLightFireType == 1 then\n                            if cnt == 1 then\n                                if record[1].tetherType == 31 then\n                                    posIdx = \"UpLeft\"\n                                elseif record[1].tetherType == 249 then\n                                    posIdx = \"UpOut\"\n                                end\n                            elseif cnt == 2 then\n                                if record[1].tetherType == 31 then\n                                    posIdx = \"UpRight\"\n                                elseif record[1].tetherType == 249 then\n                                    posIdx = \"UpOut\"\n                                end\n                            elseif cnt == 3 then\n                                if record[2].tetherType == 31 then\n                                    posIdx = \"DownLeft\"\n                                elseif record[2].tetherType == 249 then\n                                    posIdx = \"DownOut\"\n                                end\n                            elseif cnt == 4 then\n                                if record[2].tetherType == 31 then\n                                    posIdx = \"DownRight\"\n                                elseif record[2].tetherType == 249 then\n                                    posIdx = \"DownOut\"\n                                end\n                            end\n                        else\n                            if cnt == 1 then\n                                posIdx = \"UpOut\"\n                            elseif cnt == 2 then\n                                posIdx = \"UpLeft\"\n                            elseif cnt == 3 then\n                                posIdx = \"DownOut\"\n                            elseif cnt == 4 then\n                                posIdx = \"DownRight\"\n                            end\n                        end\n                        local pos = data.MuAiGd_GetFallOfFaithPos(posIdx)\n                        M.DirectTo(pos.x, pos.z, 15000, 0.3)\n                        break\n                    end\n                end\n            end\n        end\n        self.used = true\n    end\nend\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							name = "雷火线",
 							uuid = "cb4d3186-1db3-26fc-a335-6849aabc5b14",

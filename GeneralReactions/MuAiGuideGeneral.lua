@@ -320,52 +320,6 @@ local tbl =
 			version = 2,
 		},
 		inheritedIndex = 7,
-	},
-	
-	{
-		data = 
-		{
-			name = "Gladiator",
-			uuid = "26d09344-efff-4580-ba15-a23485ff39db",
-			version = 2,
-		},
-		inheritedIndex = 8,
-		inheritedObjectUUID = "c7a91848-de71-fc6c-85b5-5209d81c03d0",
-		inheritedOverwrites = 
-		{
-		},
-	},
-	
-	{
-		data = 
-		{
-			name = "Channels",
-			uuid = "4879662e-5208-a073-94bf-59ccaab426c4",
-			version = 2,
-		},
-		inheritedObjectUUID = "91d05ec5-c53d-d2ac-a187-22b1c8e9323d",
-		inheritedOverwrites = 
-		{
-			conditions = 
-			{
-				
-				{
-					position = 3,
-					type = "add",
-					value = 
-					{
-						data = 
-						{
-							name = "Aloalo Island",
-							uuid = "e0b5a99e-4791-d7d4-8fa0-3ba1f56b9471",
-							version = 2,
-						},
-						inheritedIndex = 3,
-						inheritedObjectUUID = "6db5d64c-a95a-3787-8d2a-3cf42e2e92e9",
-					},
-				},
-			},
-		},
 	}, 
 	inheritedProfiles = 
 	{

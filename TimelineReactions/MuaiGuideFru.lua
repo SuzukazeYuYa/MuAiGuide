@@ -60,6 +60,35 @@ local tbl =
 				version = 2,
 			},
 		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local redDrawer = Argus2.ShapeDrawer:new(\n    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 1)),\n    6\n)\nlocal player    = TensorCore.mGetPlayer()\nredDrawer:addTimedCircle(10000, player.pos.x, player.pos.y + 0.6, player.pos.z, 0.4, 0, true)\nself.used       = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "a3227a2a-fd0d-fc6a-8da5-ae93b097ebd7",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				enabled = false,
+				mechanicTime = 13.7,
+				name = "123",
+				timelineIndex = 1,
+				uuid = "470a980c-77e0-e339-b107-c6e0fee1fa3b",
+				version = 2,
+			},
+		},
 	},
 	
 	{
@@ -2985,6 +3014,85 @@ local tbl =
 			},
 		},
 	},
+	[214] = 
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "--- 地火，作者：megaminx\n-- local drawer = TensorCore.getCachedDrawer(1275068160, 1006895359, 1174667519)\n\nlocal drawer = Argus2.ShapeDrawer:new(\n    (GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 255 / 255, 0.1)),\n    nil,\n    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0.4)),\n    (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n    1\n)\n\nlocal ent = TensorCore.mGetEntity(eventArgs.entityID)\n--drawer:addTimedRect(8000, ent.pos.x, ent.pos.y, ent.pos.z, 40, 10, ent.pos.h, 0, true)\n\nlocal dumbshit = TensorCore.getPosInDirection(ent.pos, ent.pos.h, 2.5)\ndrawer:addTimedCenteredRect(7000, dumbshit.x, 0, dumbshit.z, 5, 40, ent.pos.h, 0, true)\n\nfor i = 1, 8 do\n    local pos = TensorCore.getPosInDirection(dumbshit, ent.pos.h, 5 * (i))\n    drawer:addTimedCenteredRect(2000, pos.x, 0, pos.z, 5, 40, ent.pos.h, 7000 + (2000 * (i - 1)), true)\nend\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"a6a7f898-31a3-6089-887b-0a99f18e2f08",
+									true,
+								},
+								
+								{
+									"79f4fe9d-07e6-c26a-928f-59f32ad997b2",
+									true,
+								},
+							},
+							gVar = "ACR_RikuGNB3_CD",
+							uuid = "f536daa6-8d40-faf0-8e17-065b9c2e0982",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Event",
+							dequeueIfLuaFalse = true,
+							eventArgOptionType = 3,
+							eventArgType = 2,
+							eventSpellID = 40118,
+							spellIDList = 
+							{
+								40118,
+								40307,
+							},
+							uuid = "a6a7f898-31a3-6089-887b-0a99f18e2f08",
+							version = 2,
+						},
+					},
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return MuAiGuide.Config.FruCfg.drawShit == true",
+							name = "setting check",
+							uuid = "79f4fe9d-07e6-c26a-928f-59f32ad997b2",
+							version = 2,
+						},
+					},
+				},
+				eventType = 3,
+				loop = true,
+				mechanicTime = 1001.1,
+				name = "[megaminx]画地火",
+				timeRange = true,
+				timelineIndex = 214,
+				timerEndOffset = 250,
+				timerStartOffset = -100,
+				uuid = "3f1eab28-067f-b86b-929d-8b282470e3e1",
+				version = 2,
+			},
+			inheritedIndex = 2,
+		},
+	},
 	[215] = 
 	{
 		
@@ -2998,7 +3106,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "data.MuAiGd_P5_drawGroup = function(drawTime)\n    local curMT = TensorCore.getEntityByGroup(\"Main Tank\", \"Nearest\")\n    local curST\n    if MuAiGuide.Party[\"MT\"].id == curMT.id then\n        curST = MuAiGuide.Party[\"ST\"]\n    else\n        curST = MuAiGuide.Party[\"MT\"]\n    end\n    local purpleDrawer = Argus2.ShapeDrawer:new(\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n        2\n    )\n    local yellowDrawer = Argus2.ShapeDrawer:new(\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n        2\n    )\n    purpleDrawer:addTimedCircleOnEnt(drawTime, curMT.id, 4)\n    yellowDrawer:addTimedCircleOnEnt(drawTime, curST.id, 4)\nend\ndata.MuAiGd_P5_drawGroup(2500)\nself.used = true\n",
+							actionLua = "data.MuAiGd_P5_drawGroup = function(drawTime)\n    if MuAiGuide.Config.FruCfg.drawAknMorn == false then\n        return\n    end\n    local curMT = TensorCore.getEntityByGroup(\"Main Tank\", \"Nearest\")\n    local curST\n    if MuAiGuide.Party[\"MT\"].id == curMT.id then\n        curST = MuAiGuide.Party[\"ST\"]\n    else\n        curST = MuAiGuide.Party[\"MT\"]\n    end\n    local purpleDrawer = Argus2.ShapeDrawer:new(\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n        2\n    )\n    local yellowDrawer = Argus2.ShapeDrawer:new(\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n        2\n    )\n    purpleDrawer:addTimedCircleOnEnt(drawTime, curMT.id, 4)\n    yellowDrawer:addTimedCircleOnEnt(drawTime, curST.id, 4)\nend\ndata.MuAiGd_P5_drawGroup(2500)\nself.used = true\n",
 							gVar = "ACR_TensorRuin3_CD",
 							uuid = "5b9a62df-cb5f-675a-b1f4-849ac93d6dc9",
 							version = 2.1,
@@ -3030,12 +3138,12 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if data.MuAiGd_P5_LDStartTime1 == nil then\n    data.MuAiGd_P5_LDStartTime1 = Now()\nend\nif data.MuAiGd_P5_TowerGuide == nil then\n    data.MuAiGd_P5_TowerGuide = function(startTime, towers, castInfo)\n        local purpleDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 2)),\n            2\n        )\n        local yellowDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 2)),\n            2\n        )\n        --- 绘制左右刀和圆圈范围\n        ---@param playerId number 当前1仇\n        local drawAoeRange = function(playerId, skillId, first)\n            local targetPos = TensorCore.mGetEntity(playerId).pos\n            local curHeading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, targetPos)\n            local skillType\n            if first then\n                skillType = skillId\n            else\n                if skillId == 40313 then\n                    skillType = 40233\n                else\n                    skillType = 40313\n                end\n            end\n            if skillType == 40313 then\n                yellowDrawer:addCone(100, 0, 100, 20, math.pi * 5 / 4, curHeading + math.pi * 3 / 8, 0, false)\n                local farthest, maxDistance\n                for i, ent in pairs(MuAiGuide.Party) do\n                    local curPos = TensorCore.mGetEntity(ent.id).pos\n                    if farthest == nil then\n                        farthest = curPos\n                        maxDistance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, curPos)\n                    else\n                        local distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, curPos)\n                        if distance > maxDistance then\n                            farthest = curPos\n                            maxDistance = distance\n                        end\n                    end\n                end\n                yellowDrawer:addCircle(farthest.x, farthest.y, farthest.z, 4)\n            elseif skillType == 40233 then\n                purpleDrawer:addCone(100, 0, 100, 20, math.pi * 5 / 4, curHeading - math.pi * 3 / 8, 0, false)\n                local nearest, minDistance\n                for i, ent in pairs(MuAiGuide.Party) do\n                    local curPos = TensorCore.mGetEntity(ent.id).pos\n                    if nearest == nil then\n                        nearest = curPos\n                        minDistance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, curPos)\n                    else\n                        local distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, curPos)\n                        if distance < minDistance then\n                            nearest = curPos\n                            minDistance = distance\n                        end\n                    end\n                end\n                purpleDrawer:addCircle(nearest.x, nearest.y, nearest.z, 4)\n            end\n        end\n\n        local timeSince = TimeSince(startTime)\n        --- 下塔到中心的方向\n        local headingD2U = TensorCore.getHeadingToTarget(towers.Down, { x = 100, y = 0, z = 100 })\n\n        if timeSince < 8000 then\n            drawAoeRange(castInfo.MT.id, castInfo.SkillId, true)\n            if MuAiGuide.IsMe(castInfo.MT) then\n                local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, headingD2U, 7)\n                MuAiGuide.FrameDirect(pos.x, pos.z)\n            elseif MuAiGuide.IsMe(castInfo.ST) then\n                local heading\n                local distance\n                if castInfo.SkillId == 40313 then\n                    local mid = {\n                        x = (towers.Down.x + towers.Right.x) / 2,\n                        y = 0,\n                        z = (towers.Down.z + towers.Right.z) / 2\n                    }\n                    heading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, mid)\n                    distance = 19.5\n                elseif castInfo.SkillId == 40233 then\n                    local mid = {\n                        x = (towers.Down.x + towers.Left.x) / 2,\n                        y = 0,\n                        z = (towers.Down.z + towers.Left.z) / 2\n                    }\n                    heading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, mid)\n                    distance = 2\n                end\n                local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, distance)\n                MuAiGuide.FrameDirect(pos.x, pos.z)\n            else\n                if table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Down, MuAiGuide.SelfPos) then\n                    local towerHeading = headingD2U + math.pi\n                    local heading\n                    if castInfo.SkillId == 40313 then\n                        heading = towerHeading + 1 / 7\n                    elseif castInfo.SkillId == 40233 then\n                        heading = towerHeading - 1 / 7\n                    end\n                    local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 7)\n                    MuAiGuide.FrameDirect(pos.x, pos.z)\n                else\n                    if castInfo.SkillId == 40313 and table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Right, MuAiGuide.SelfPos) then\n                        local heading = headingD2U - math.pi / 4 - math.pi / 12\n                        local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 8)\n                        MuAiGuide.FrameDirect(pos.x, pos.z)\n                    elseif castInfo.SkillId == 40233 and table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Left, MuAiGuide.SelfPos) then\n                        local heading = headingD2U + math.pi / 4 + math.pi / 12\n                        local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 8)\n                        MuAiGuide.FrameDirect(pos.x, pos.z)\n                    end\n                end\n            end\n        elseif (timeSince < 12000) then\n            drawAoeRange(castInfo.ST.id, castInfo.SkillId, false)\n            if MuAiGuide.IsMe(castInfo.MT) then\n                local distance\n                if castInfo.SkillId == 40233 then\n                    distance = 19.5\n                elseif castInfo.SkillId == 40313 then\n                    distance = 2\n                end\n                local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, headingD2U, distance)\n                MuAiGuide.FrameDirect(pos.x, pos.z)\n            elseif MuAiGuide.IsMe(castInfo.ST) then\n                local heading\n                if castInfo.SkillId == 40313 then\n                    local mid = {\n                        x = (towers.Down.x + towers.Right.x) / 2,\n                        y = 0,\n                        z = (towers.Down.z + towers.Right.z) / 2\n                    }\n                    heading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, mid)\n                elseif castInfo.SkillId == 40233 then\n                    local mid = {\n                        x = (towers.Down.x + towers.Left.x) / 2,\n                        y = 0,\n                        z = (towers.Down.z + towers.Left.z) / 2\n                    }\n                    heading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, mid)\n                end\n                local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 7)\n                MuAiGuide.FrameDirect(pos.x, pos.z)\n            else\n                if table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Down, MuAiGuide.SelfPos) then\n                    local pos\n                    if castInfo.SkillId == 40313 then\n                        pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, headingD2U, 10)\n                    elseif castInfo.SkillId == 40233 then\n                        pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, headingD2U, 5)\n                    end\n                    MuAiGuide.FrameDirect(pos.x, pos.z)\n                else\n                    if castInfo.SkillId == 40313 and table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Left, MuAiGuide.SelfPos) then\n                        MuAiGuide.FrameDirect(towers.Left.x, towers.Left.z)\n                    elseif castInfo.SkillId == 40233 and table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Right, MuAiGuide.SelfPos) then\n                        MuAiGuide.FrameDirect(towers.Right.x, towers.Right.z)\n                    end\n                end\n            end\n        end\n    end\nend\n\ndata.MuAiGd_P5_TowerGuide(data.MuAiGd_P5_LDStartTime1, data.MuAiGd_P5_Towers, data.MuAiGd_P5CastInfo)\nself.used = true\n",
+							actionLua = "if data.MuAiGd_P5GetCastInfo == nil then\n    data.MuAiGd_P5GetCastInfo = function(skillId)\n        local curMT = TensorCore.getEntityByGroup(\"Main Tank\", \"Nearest\")\n        local curST\n        if MuAiGuide.Party[\"MT\"].id == curMT.id then\n            curST = MuAiGuide.Party[\"ST\"]\n        else\n            curST = MuAiGuide.Party[\"MT\"]\n        end\n        return { MT = curMT, ST = curST, SkillId = skillId }\n    end\nend\n\ndata.MuAiGd_P5CastInfo = data.MuAiGd_P5GetCastInfo(eventArgs.spellID)\nd(data.MuAiGd_P5CastInfo)\nself.used = true",
 							conditions = 
 							{
 								
 								{
-									"aa6083d6-9c1e-d8ad-ad02-5f22e0fae8fa",
+									"c25ee2de-b639-e5ed-8022-60cbcc01c230",
 									true,
 								},
 							},
@@ -3043,7 +3151,6 @@ local tbl =
 							uuid = "198103b8-80ac-dcac-83a6-beee85117067",
 							version = 2.1,
 						},
-						inheritedIndex = 1,
 					},
 				},
 				conditions = 
@@ -3052,23 +3159,32 @@ local tbl =
 					{
 						data = 
 						{
-							category = "Lua",
-							conditionLua = "return data.MuAiGd_P5_Towers ~= nil and data.MuAiGd_P5CastInfo ~= nil",
-							uuid = "aa6083d6-9c1e-d8ad-ad02-5f22e0fae8fa",
+							category = "Event",
+							eventArgOptionType = 3,
+							eventArgType = 2,
+							eventSpellID = 40233,
+							name = "光与暗黑的双翼",
+							spellIDList = 
+							{
+								40313,
+								40233,
+							},
+							uuid = "c25ee2de-b639-e5ed-8022-60cbcc01c230",
 							version = 2,
 						},
 					},
 				},
-				eventType = 12,
+				eventType = 3,
 				mechanicTime = 1033.6,
-				name = "[MuAiGuide]左右刀&踩塔指路",
+				name = "[MuAiGuide]读条类型分析",
 				timeRange = true,
 				timelineIndex = 222,
-				timerStartOffset = -30,
-				uuid = "39ddc27b-7256-3e58-8a24-082cca1c31db",
+				timerEndOffset = 20,
+				timerStartOffset = -20,
+				uuid = "9ed56e58-5dcd-3456-8f73-d72ffa4ec644",
 				version = 2,
 			},
-			inheritedIndex = 6,
+			inheritedIndex = 1,
 		},
 		
 		{
@@ -3132,12 +3248,12 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if data.MuAiGd_P5GetCastInfo == nil then\n    data.MuAiGd_P5GetCastInfo = function(skillId)\n        local curMT = TensorCore.getEntityByGroup(\"Main Tank\", \"Nearest\")\n        local curST\n        if MuAiGuide.Party[\"MT\"].id == curMT.id then\n            curST = MuAiGuide.Party[\"ST\"]\n        else\n            curST = MuAiGuide.Party[\"MT\"]\n        end\n        return { MT = curMT, ST = curST, SkillId = skillId }\n    end\nend\n\ndata.MuAiGd_P5CastInfo = data.MuAiGd_P5GetCastInfo(eventArgs.spellID)\nd(data.MuAiGd_P5CastInfo)\nself.used = true",
+							actionLua = "if data.MuAiGd_P5_LDStartTime1 == nil then\n    data.MuAiGd_P5_LDStartTime1 = Now()\nend\nif data.MuAiGd_P5_TowerGuide == nil then\n    data.MuAiGd_P5_TowerGuide = function(startTime, towers, castInfo)\n        local purpleDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 2)),\n            2\n        )\n        local yellowDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 2)),\n            2\n        )\n        --- 绘制左右刀和圆圈范围\n        ---@param playerId number 当前1仇\n        local drawAoeRange = function(playerId, skillId, first)\n            local targetPos = TensorCore.mGetEntity(playerId).pos\n            local curHeading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, targetPos)\n            local skillType\n            if first then\n                skillType = skillId\n            else\n                if skillId == 40313 then\n                    skillType = 40233\n                else\n                    skillType = 40313\n                end\n            end\n            if skillType == 40313 then\n                yellowDrawer:addCone(100, 0, 100, 20, math.pi * 5 / 4, curHeading + math.pi * 3 / 8, 0, false)\n                local farthest, maxDistance\n                for i, ent in pairs(MuAiGuide.Party) do\n                    local curPos = TensorCore.mGetEntity(ent.id).pos\n                    if farthest == nil then\n                        farthest = curPos\n                        maxDistance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, curPos)\n                    else\n                        local distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, curPos)\n                        if distance > maxDistance then\n                            farthest = curPos\n                            maxDistance = distance\n                        end\n                    end\n                end\n                yellowDrawer:addCircle(farthest.x, farthest.y, farthest.z, 4)\n            elseif skillType == 40233 then\n                purpleDrawer:addCone(100, 0, 100, 20, math.pi * 5 / 4, curHeading - math.pi * 3 / 8, 0, false)\n                local nearest, minDistance\n                for i, ent in pairs(MuAiGuide.Party) do\n                    local curPos = TensorCore.mGetEntity(ent.id).pos\n                    if nearest == nil then\n                        nearest = curPos\n                        minDistance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, curPos)\n                    else\n                        local distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, curPos)\n                        if distance < minDistance then\n                            nearest = curPos\n                            minDistance = distance\n                        end\n                    end\n                end\n                purpleDrawer:addCircle(nearest.x, nearest.y, nearest.z, 4)\n            end\n        end\n\n        local timeSince = TimeSince(startTime)\n        --- 下塔到中心的方向\n        local headingD2U = TensorCore.getHeadingToTarget(towers.Down, { x = 100, y = 0, z = 100 })\n\n        if timeSince < 8000 then\n            if MuAiGuide.Config.FruCfg.drawWinLight == true then\n                drawAoeRange(castInfo.MT.id, castInfo.SkillId, true)\n            end\n            if MuAiGuide.IsMe(castInfo.MT) then\n                local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, headingD2U, 7)\n                MuAiGuide.FrameDirect(pos.x, pos.z)\n            elseif MuAiGuide.IsMe(castInfo.ST) then\n                local heading\n                local distance\n                if castInfo.SkillId == 40313 then\n                    local mid = {\n                        x = (towers.Down.x + towers.Right.x) / 2,\n                        y = 0,\n                        z = (towers.Down.z + towers.Right.z) / 2\n                    }\n                    heading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, mid)\n                    distance = 19.5\n                elseif castInfo.SkillId == 40233 then\n                    local mid = {\n                        x = (towers.Down.x + towers.Left.x) / 2,\n                        y = 0,\n                        z = (towers.Down.z + towers.Left.z) / 2\n                    }\n                    heading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, mid)\n                    distance = 2\n                end\n                local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, distance)\n                MuAiGuide.FrameDirect(pos.x, pos.z)\n            else\n                if table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Down, MuAiGuide.SelfPos) then\n                    local towerHeading = headingD2U + math.pi\n                    local heading\n                    if castInfo.SkillId == 40313 then\n                        heading = towerHeading + 1 / 7\n                    elseif castInfo.SkillId == 40233 then\n                        heading = towerHeading - 1 / 7\n                    end\n                    local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 7)\n                    MuAiGuide.FrameDirect(pos.x, pos.z)\n                else\n                    if castInfo.SkillId == 40313 and table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Right, MuAiGuide.SelfPos) then\n                        local heading = headingD2U - math.pi / 4 - math.pi / 12\n                        local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 8)\n                        MuAiGuide.FrameDirect(pos.x, pos.z)\n                    elseif castInfo.SkillId == 40233 and table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Left, MuAiGuide.SelfPos) then\n                        local heading = headingD2U + math.pi / 4 + math.pi / 12\n                        local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 8)\n                        MuAiGuide.FrameDirect(pos.x, pos.z)\n                    end\n                end\n            end\n        elseif (timeSince < 12000) then\n            if MuAiGuide.Config.FruCfg.drawWinLight == true then\n                drawAoeRange(castInfo.ST.id, castInfo.SkillId, false)\n            end\n            if MuAiGuide.IsMe(castInfo.MT) then\n                local distance\n                if castInfo.SkillId == 40233 then\n                    distance = 19.5\n                elseif castInfo.SkillId == 40313 then\n                    distance = 2\n                end\n                local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, headingD2U, distance)\n                MuAiGuide.FrameDirect(pos.x, pos.z)\n            elseif MuAiGuide.IsMe(castInfo.ST) then\n                local heading\n                if castInfo.SkillId == 40313 then\n                    local mid = {\n                        x = (towers.Down.x + towers.Right.x) / 2,\n                        y = 0,\n                        z = (towers.Down.z + towers.Right.z) / 2\n                    }\n                    heading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, mid)\n                elseif castInfo.SkillId == 40233 then\n                    local mid = {\n                        x = (towers.Down.x + towers.Left.x) / 2,\n                        y = 0,\n                        z = (towers.Down.z + towers.Left.z) / 2\n                    }\n                    heading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, mid)\n                end\n                local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 7)\n                MuAiGuide.FrameDirect(pos.x, pos.z)\n            else\n                if table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Down, MuAiGuide.SelfPos) then\n                    local pos\n                    if castInfo.SkillId == 40313 then\n                        pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, headingD2U, 10)\n                    elseif castInfo.SkillId == 40233 then\n                        pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, headingD2U, 5)\n                    end\n                    MuAiGuide.FrameDirect(pos.x, pos.z)\n                else\n                    if castInfo.SkillId == 40313 and table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Left, MuAiGuide.SelfPos) then\n                        MuAiGuide.FrameDirect(towers.Left.x, towers.Left.z)\n                    elseif castInfo.SkillId == 40233 and table.contains(MuAiGuide.Config.FruCfg.DarkLightWings.Right, MuAiGuide.SelfPos) then\n                        MuAiGuide.FrameDirect(towers.Right.x, towers.Right.z)\n                    end\n                end\n            end\n        end\n    end\nend\n\ndata.MuAiGd_P5_TowerGuide(data.MuAiGd_P5_LDStartTime1, data.MuAiGd_P5_Towers, data.MuAiGd_P5CastInfo)\nself.used = true\n",
 							conditions = 
 							{
 								
 								{
-									"c25ee2de-b639-e5ed-8022-60cbcc01c230",
+									"aa6083d6-9c1e-d8ad-ad02-5f22e0fae8fa",
 									true,
 								},
 							},
@@ -3145,6 +3261,7 @@ local tbl =
 							uuid = "198103b8-80ac-dcac-83a6-beee85117067",
 							version = 2.1,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				conditions = 
@@ -3153,32 +3270,23 @@ local tbl =
 					{
 						data = 
 						{
-							category = "Event",
-							eventArgOptionType = 3,
-							eventArgType = 2,
-							eventSpellID = 40233,
-							name = "光与暗黑的双翼",
-							spellIDList = 
-							{
-								40313,
-								40233,
-							},
-							uuid = "c25ee2de-b639-e5ed-8022-60cbcc01c230",
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_P5_Towers ~= nil and data.MuAiGd_P5CastInfo ~= nil",
+							uuid = "aa6083d6-9c1e-d8ad-ad02-5f22e0fae8fa",
 							version = 2,
 						},
 					},
 				},
-				eventType = 3,
+				eventType = 12,
 				mechanicTime = 1033.6,
-				name = "[MuAiGuide]读条类型分析",
+				name = "[MuAiGuide]左右刀&踩塔指路",
 				timeRange = true,
 				timelineIndex = 222,
-				timerEndOffset = 20,
-				timerStartOffset = -20,
-				uuid = "9ed56e58-5dcd-3456-8f73-d72ffa4ec644",
+				timerStartOffset = -30,
+				uuid = "39ddc27b-7256-3e58-8a24-082cca1c31db",
 				version = 2,
 			},
-			inheritedIndex = 5,
+			inheritedIndex = 3,
 		},
 	},
 	[226] = 
@@ -3194,11 +3302,12 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if data.MuAiGd_P5_DrawPolarizing == nil then\n    data.MuAiGd_P5_DrawPolarizing = function()\n        local closest1, closest2 = nil, nil\n        local dist1, dist2 = math.huge, math.huge\n        local boss = TensorCore.mGetEntity(data.MuAiGd_P5_BOSS.id)\n        for job, ent in pairs(MuAiGuide.Party) do\n            local curPlayer = TensorCore.mGetEntity(ent.id)\n            local dist = TensorCore.getDistance2d(boss.pos, curPlayer.pos)\n            if dist < dist1 then\n                dist2 = dist1\n                closest2 = closest1\n                dist1 = dist\n                closest1 = curPlayer\n            elseif dist < dist2 then\n                dist2 = dist\n                closest2 = curPlayer\n            end\n        end\n        local purpleDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n            2\n        )\n        local yellowDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n            2\n        )\n\n        local redDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 1)),\n            2\n        )\n        local draw1, draw2\n        if MuAiGuide.GetClock(closest1.pos, closest2.pos) then\n            draw2 = yellowDrawer\n            draw1 = purpleDrawer\n        else\n            draw1 = yellowDrawer\n            draw2 = purpleDrawer\n        end\n\n        local h1 = TensorCore.getHeadingToTarget(boss.pos, closest1.pos)\n        local h2 = TensorCore.getHeadingToTarget(boss.pos, closest2.pos)\n        draw1:addRect(boss.pos.x, boss.pos.y, boss.pos.z, 40, 6, h1)\n        draw2:addRect(boss.pos.x, boss.pos.y, boss.pos.z, 40, 6, h2)\n        redDrawer:addCircle(closest1.pos.x, closest1.pos.y, closest1.pos.z, 1, false)\n        redDrawer:addCircle(closest2.pos.x, closest1.pos.y, closest1.pos.z, 1, false)\n    end\nend\ndata.MuAiGd_P5_DrawPolarizing()\nself.used = true\n",
+							actionLua = "if data.MuAiGd_P5_DrawPolarizing == nil then\n    data.MuAiGd_P5_DrawPolarizing = function()\n        if MuAiGuide.Config.FruCfg.drawWinPolarizing == false then\n            return\n        end\n        local closest1, closest2 = nil, nil\n        local dist1, dist2 = math.huge, math.huge\n        local boss = TensorCore.mGetEntity(data.MuAiGd_P5_BOSS.id)\n        for _, ent in pairs(MuAiGuide.Party) do\n            local curPlayer = TensorCore.mGetEntity(ent.id)\n            local dist = TensorCore.getDistance2d(boss.pos, curPlayer.pos)\n            if dist < dist1 then\n                dist2 = dist1\n                closest2 = closest1\n                dist1 = dist\n                closest1 = curPlayer\n            elseif dist < dist2 then\n                dist2 = dist\n                closest2 = curPlayer\n            end\n        end\n        local purpleDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n            2\n        )\n        local yellowDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.7)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n            2\n        )\n\n        local redDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 1)),\n            6\n        )\n        local draw1, draw2\n        if MuAiGuide.GetClock(closest1.pos, closest2.pos) then\n            draw2 = yellowDrawer\n            draw1 = purpleDrawer\n        else\n            draw1 = yellowDrawer\n            draw2 = purpleDrawer\n        end\n\n        local h1 = TensorCore.getHeadingToTarget(boss.pos, closest1.pos)\n        local h2 = TensorCore.getHeadingToTarget(boss.pos, closest2.pos)\n        draw1:addRect(boss.pos.x, boss.pos.y, boss.pos.z, 40, 6, h1)\n        draw2:addRect(boss.pos.x, boss.pos.y, boss.pos.z, 40, 6, h2)\n        redDrawer:addCircle(closest1.pos.x, closest1.pos.y + 0.5, closest1.pos.z, 0.5, true)\n        redDrawer:addCircle(closest2.pos.x, closest2.pos.y + 0.5, closest2.pos.z, 0.5, true)\n    end\nend\ndata.MuAiGd_P5_DrawPolarizing()\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "9fbbc434-39da-d3a3-a3fb-688fa60bb0f3",
 							version = 2.1,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				conditions = 
@@ -3246,7 +3355,7 @@ local tbl =
 				timelineIndex = 228,
 				timerEndOffset = 0.30000001192093,
 				timerOffset = -2.7000000476837,
-				timerStartOffset = -2.7000000476837,
+				timerStartOffset = -2.5,
 				uuid = "32e0afce-5c61-7e90-a3d4-59ba4a8cff58",
 				version = 2,
 			},
@@ -3282,7 +3391,7 @@ local tbl =
 				timelineIndex = 230,
 				timerEndOffset = 0.30000001192093,
 				timerOffset = -2.7000000476837,
-				timerStartOffset = -2.7000000476837,
+				timerStartOffset = -2.5,
 				uuid = "cc79fa8d-5071-f3d3-8fd6-6f908a6cf429",
 				version = 2,
 			},
@@ -3317,7 +3426,7 @@ local tbl =
 				timeRange = true,
 				timelineIndex = 232,
 				timerEndOffset = 0.30000001192093,
-				timerStartOffset = -2.7000000476837,
+				timerStartOffset = -2.5,
 				uuid = "8a475ceb-2131-8b23-964e-529bc34105d2",
 				version = 2,
 			},
@@ -3617,7 +3726,7 @@ local tbl =
 				timelineIndex = 255,
 				timerEndOffset = 0.30000001192093,
 				timerOffset = -2.7000000476837,
-				timerStartOffset = -2.7000000476837,
+				timerStartOffset = -2.5,
 				uuid = "ca7d40f4-abb5-63de-bbb5-d6134dbcf4c2",
 				version = 2,
 			},
@@ -3653,7 +3762,7 @@ local tbl =
 				timelineIndex = 257,
 				timerEndOffset = 0.30000001192093,
 				timerOffset = -2.7000000476837,
-				timerStartOffset = -2.7000000476837,
+				timerStartOffset = -2.5,
 				uuid = "80229565-48bc-9d15-a492-8dccb2633222",
 				version = 2,
 			},
@@ -3688,7 +3797,7 @@ local tbl =
 				timeRange = true,
 				timelineIndex = 259,
 				timerEndOffset = 0.30000001192093,
-				timerStartOffset = -2.7000000476837,
+				timerStartOffset = -2.5,
 				uuid = "ef1e4190-b303-ebef-8f18-25a1e50ca1dd",
 				version = 2,
 			},

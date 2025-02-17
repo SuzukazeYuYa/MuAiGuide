@@ -2493,37 +2493,6 @@ local tbl =
 			inheritedIndex = 2,
 		},
 	},
-	[167] = 
-	{
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "local guideTime  = 4000\n-- C 逆计数\nlocal selfIndex = MuAiGuide.IndexOf(data.MuAiGd_P4_1_OrderPos, MuAiGuide.SelfPos)\nlocal heading = (selfIndex - 1) * math.pi / 4 + math.pi / 8\nlocal targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 11)\nMuAiGuide.DirectTo(targetPos.x, targetPos.z, guideTime)\nself.used = true\n",
-							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "8a2c9a03-fed0-2646-b3cb-8eec38455cdc",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-				},
-				mechanicTime = 749.3,
-				name = "[MuAiGuide]光暗龙诗-分散",
-				timelineIndex = 167,
-				uuid = "eee763f0-4831-85ba-950e-9561a27390cf",
-				version = 2,
-			},
-		},
-	},
 	[169] = 
 	{
 		
@@ -2537,25 +2506,107 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if data.MuAiGd_P4_1_Converge ~= nil then\n    if MuAiGuide.SelfPos ~= data.MuAiGd_P4_1_Converge then\n        local player = MuAiGuide.Party[data.MuAiGd_P4_1_Converge]\n        MuAiGuide.DirectToEnt(player.id, 5000)\n        self.used = true\n    else\n        if TensorCore.isAnyEntityCasting(40228) then\n            data.MuAiGd_P4_1_Skill = \"Right\"\n        elseif TensorCore.isAnyEntityCasting(40229) then\n            data.MuAiGd_P4_1_Skill = \"Left\"\n        end\n        if data.MuAiGd_P4_1_Skill ~= nil then\n            local selfIndex = MuAiGuide.IndexOf(data.MuAiGd_P4_1_OrderPos, MuAiGuide.SelfPos)\n            -- 去上面\n            if 3 <= selfIndex and selfIndex <= 6 then\n                if data.MuAiGd_P4_1_Skill == \"Right\" then\n                    MuAiGuide.DirectTo(91, 91, 5000)\n                else\n                    MuAiGuide.DirectTo(109, 91, 5000)\n                end\n            else\n                -- 下面\n                if data.MuAiGd_P4_1_Skill == \"Right\" then\n                    MuAiGuide.DirectTo(91, 109, 5000)\n                else\n                    MuAiGuide.DirectTo(109, 109, 5000)\n                end\n            end\n            self.used = true\n        end\n    end\nend",
+							actionLua = "local player = MuAiGuide.Party[data.MuAiGd_P4_1_Converge]\nMuAiGuide.DirectToEnt(player.id, 5000)\nself.used = true",
+							conditions = 
+							{
+								
+								{
+									"b90eac45-89d1-764b-a307-73724fea0087",
+									true,
+								},
+							},
 							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "3953cd55-a913-da28-ac8f-e75bc5ab3536",
+							uuid = "9944cd96-a05b-8bd2-a6fb-97a6bac933c4",
 							version = 2.1,
 						},
-						inheritedIndex = 1,
 					},
 				},
 				conditions = 
 				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return MuAiGuide.SelfPos ~= data.MuAiGd_P4_1_Converge",
+							uuid = "b90eac45-89d1-764b-a307-73724fea0087",
+							version = 2,
+						},
+					},
+				},
+				mechanicTime = 752.3,
+				name = "[MuAiGuide]光暗龙诗-分摊self",
+				timelineIndex = 169,
+				timerEndOffset = 5,
+				uuid = "7689405b-5111-69a9-a90e-bf0167a9a14d",
+				version = 2,
+			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local player = TensorCore.mGetEntity(MuAiGuide.GetPlayer().id)\nif eventArgs.spellID == 40228 then\n    MuAiGuide.DirectTo(91, player.pos.z, 5000)\nelse\n    MuAiGuide.DirectTo(109, player.pos.z, 5000)\nend\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"ba71a186-7576-a4f1-b4db-a4de7c0878c2",
+									true,
+								},
+								
+								{
+									"4cd39d56-1177-db8e-b9b3-a4548e4da94d",
+									true,
+								},
+							},
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "db26d5ea-358c-ff81-b8b5-01c2ee1a66ed",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Event",
+							eventArgOptionType = 3,
+							eventArgType = 2,
+							spellIDList = 
+							{
+								40228,
+								40229,
+							},
+							uuid = "ba71a186-7576-a4f1-b4db-a4de7c0878c2",
+							version = 2,
+						},
+					},
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return MuAiGuide.SelfPos == data.MuAiGd_P4_1_Converge",
+							uuid = "4cd39d56-1177-db8e-b9b3-a4548e4da94d",
+							version = 2,
+						},
+					},
 				},
 				eventType = 3,
 				mechanicTime = 752.3,
-				name = "[MuAiGuide]光暗龙诗-分摊",
-				timeRange = true,
+				name = "[MuAiGuide]光暗龙诗-分摊other",
 				timelineIndex = 169,
-				timerEndOffset = 3,
-				timerStartOffset = -1,
-				uuid = "7689405b-5111-69a9-a90e-bf0167a9a14d",
+				uuid = "22e4a16a-8d72-cb32-aa4a-8aceeeb76fd0",
 				version = 2,
 			},
 		},
@@ -2573,7 +2624,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" then\n    local selfIndex = MuAiGuide.IndexOf(data.MuAiGd_P4_1_OrderPos, MuAiGuide.SelfPos)\n    -- 引导人群回中增加T容错\n    if selfIndex >= 3 and selfIndex <= 6 then\n        MuAiGuide.DirectTo(100, 91, 5000)\n    else\n        MuAiGuide.DirectTo(100, 109, 5000)\n    end\nend\nself.used = true",
+							actionLua = "if MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" then\n    local player = TensorCore.mGetEntity(MuAiGuide.GetPlayer().id)\n    MuAiGuide.DirectTo(100, player.pos.z, 3000)\nend\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "7210f740-d0f3-2ce3-ba75-b4075af0a2b0",
 							version = 2.1,
@@ -2588,23 +2639,6 @@ local tbl =
 				timelineIndex = 170,
 				uuid = "9e6e5623-ca59-e4d3-9b64-3656ca01e0df",
 				version = 2,
-			},
-		},
-	},
-	[172] = 
-	{
-		
-		{
-			data = 
-			{
-				name = "[Draw] Somber Farthest",
-				uuid = "905fb580-de19-a71f-b711-b39e154c9ea3",
-				version = 2,
-			},
-			inheritedObjectUUID = "b8ceffad-ca0c-f59f-bce4-6edf811a507b",
-			inheritedOverwrites = 
-			{
-				timerEndOffset = 0.34999999403954,
 			},
 		},
 	},

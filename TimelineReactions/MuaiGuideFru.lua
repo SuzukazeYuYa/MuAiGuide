@@ -2346,6 +2346,179 @@ local tbl =
 			},
 		},
 	},
+	[135] = 
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "TensorCore.API.TensorACR.setLockFaceHeading(data.MuAiGd_SelfLight.heading)\nTensorCore.API.TensorACR.toggleLockFace(true)\nself.used = true",
+							conditions = 
+							{
+								
+								{
+									"aba28404-d26b-ba41-89ec-45b696da4b98",
+									true,
+								},
+								
+								{
+									"151c40ff-5b1e-ff9d-9291-8aa11b5d4a17",
+									true,
+								},
+								
+								{
+									"bdd5eeba-e30e-fff9-91ac-94ac7b1f80cd",
+									true,
+								},
+							},
+							gVar = "ACR_TensorMagnum3_CD",
+							uuid = "59304e9f-7021-04f7-a426-b80ed792493e",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return MuAiGuide.Config.AnyOneReactionOn == false",
+							name = "检查设置",
+							uuid = "aba28404-d26b-ba41-89ec-45b696da4b98",
+							version = 2,
+						},
+					},
+					
+					{
+						data = 
+						{
+							buffCheckType = 3,
+							buffDuration = 2,
+							buffID = 2452,
+							category = "Self",
+							comparator = 2,
+							name = "回返倒计时2秒",
+							uuid = "151c40ff-5b1e-ff9d-9291-8aa11b5d4a17",
+							version = 2,
+						},
+					},
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_SelfLight ~= nil",
+							uuid = "bdd5eeba-e30e-fff9-91ac-94ac7b1f80cd",
+							version = 2,
+						},
+					},
+				},
+				eventType = 3,
+				mechanicTime = 574.9,
+				name = "[MuAiGuide]锁定面向 开",
+				timeRange = true,
+				timelineIndex = 135,
+				timerEndOffset = 5,
+				timerOffset = -3,
+				timerStartOffset = -5,
+				uuid = "7bfc7f8c-b01e-20d9-bba1-66ab1bc27dac",
+				version = 2,
+			},
+			inheritedIndex = 1,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "TensorCore.API.TensorACR.toggleLockFace(false)\nself.used = true",
+							conditions = 
+							{
+								
+								{
+									"f507d054-68b0-e7e6-83e5-499fb91178d8",
+									true,
+								},
+								
+								{
+									"5f94dfd2-c4df-7d68-b00e-c03f0b74a326",
+									true,
+								},
+							},
+							gVar = "ACR_RikuMNK2_CD",
+							name = "off lockface",
+							uuid = "9e2c54be-0bde-6201-8bfd-44bd08de14cd",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_SelfLight ~= nil",
+							uuid = "5f94dfd2-c4df-7d68-b00e-c03f0b74a326",
+							version = 2,
+						},
+						inheritedIndex = 1,
+					},
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return MuAiGuide.Config.AnyOneReactionOn == false",
+							name = "检查设置",
+							uuid = "f507d054-68b0-e7e6-83e5-499fb91178d8",
+							version = 2,
+						},
+					},
+					
+					{
+						data = 
+						{
+							buffCheckType = 3,
+							buffDuration = 0.5,
+							buffID = 2452,
+							category = "Self",
+							comparator = 2,
+							name = "回返倒计时结束",
+							uuid = "741373d2-8187-31c0-b1ce-48114ca5796c",
+							version = 2,
+						},
+					},
+				},
+				mechanicTime = 574.9,
+				name = "[MuAiGuide]锁定面向 关",
+				timelineIndex = 135,
+				timerEndOffset = 10,
+				timerOffset = 0.5,
+				timerStartOffset = 0.5,
+				uuid = "4389350f-7058-4b10-a56e-124b8b3acdf3",
+				version = 2,
+			},
+		},
+	},
 	[142] = 
 	{
 		
@@ -2554,35 +2727,6 @@ local tbl =
 				version = 2,
 			},
 			inheritedIndex = 1,
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "local M = MuAiGuide\nif table.size(data.MuAiGd_P3_2_Ids) == 6 then\n    --- 绘制方向箭头\n    local drawClock = function(clock, index)\n        local baseEnt = TensorCore.mGetEntity(data.MuAiGd_P3_2_Ids[index])\n        local baseDir = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, baseEnt.pos)\n        for i = 1, 3 do\n            local curDir\n            local heading\n            if clock then\n                curDir = baseDir - math.pi / 4 * (i - 1)\n                heading = curDir - math.pi / 2\n            else\n                curDir = baseDir - math.pi / 4 * (i + 1)\n                heading = curDir + math.pi / 2\n            end\n            local startPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, curDir, 14)\n            local pos = TensorCore.getPosInDirection(startPos, heading, -3)\n            Argus2.addTimedArrowFilled(\n                    15000,\n                    pos.x, 0, pos.z,\n                    5,\n                    2.5,\n                    3,\n                    4,\n                    heading,\n                    GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 0, 0 / 255, 0.2),\n                    GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 0, 0 / 255, 0.2),\n                    GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 0, 0 / 255, 0.2),\n                    0,\n                    nil,\n                    nil,\n                    GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1),\n                    1.0,\n                    3,\n                    0.05,\n                    false\n            )\n        end\n    end\n    local clock = M.GetClock(TensorCore.mGetEntity(data.MuAiGd_P3_2_Ids[3]).pos,\n            TensorCore.mGetEntity(data.MuAiGd_P3_2_Ids[5]).pos)\n    -- 非标准坐标系，叉乘结果要反着来\n    if clock then\n        M.Debug(\"顺时针\")\n    elseif clock then\n        M.Debug(\"逆时针\")\n    end\n    -- 画出方向箭头\n    drawClock(not nclock, 3)\n    drawClock(not clock, 4)\n\n    local firstDir = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 },\n            TensorCore.mGetEntity(data.MuAiGd_P3_2_Ids[3]).pos)\n    if firstDir > math.pi then\n        firstDir = firstDir - math.pi\n    elseif M.IsSame(firstDir, math.pi) then\n        firstDir = 0\n    end\n\n    local headTh, headDps\n    --- 特殊情况，13逆\n    if MuAiGuide.IsSame(firstDir, math.pi * 3 / 4) and not clock then\n        headTh = math.pi / 2\n        headDps = math.pi * 3 / 2\n    elseif MuAiGuide.IsSame(firstDir, math.pi / 2) and clock then\n        -- 特殊情况2，BD顺\n        headTh = math.pi * 7 / 4\n        headDps = math.pi * 3 / 4\n    else\n        local headDir1\n        local headDir2\n        if clock then\n            headDir1 = M.SetHeading2Pi(firstDir + math.pi / 4)\n            headDir2 = M.SetHeading2Pi(firstDir + math.pi * 5 / 4)\n        else\n\t\t\theadDir1 = M.SetHeading2Pi(firstDir - math.pi / 4)\n            headDir2 = M.SetHeading2Pi(firstDir - math.pi * 5 / 4)\n        end\n\n        --- b2c3\n        if M.IsSame(headDir1, 0)\n                or M.IsSame(headDir1, math.pi / 4)\n                or M.IsSame(headDir1, math.pi / 2)\n                or M.IsSame(headDir1, math.pi * 7 / 4)\n        then\n            headTh = headDir2\n            headDps = headDir1\n        else\n            headTh = headDir1\n            headDps = headDir2\n        end\n    end\n\n\t\td(headTh)\n\t\td(headDps)\n\n    local posTable\n    if clock then\n        posTable = {\n            [\"MT\"] = { h = headTh, r = 10 },\n            [\"ST\"] = { h = headTh + math.pi / 4, r = 10 },\n            [\"H1\"] = { h = headTh - math.pi / 14, r = 18 },\n            [\"H2\"] = { h = headTh + math.pi / 14, r = 18 },\n            [\"D1\"] = { h = headDps, r = 10 },\n            [\"D2\"] = { h = headDps + math.pi / 4, r = 10 },\n            [\"D3\"] = { h = headDps - math.pi / 14, r = 18 },\n            [\"D4\"] = { h = headDps + math.pi / 14, r = 18 },\n        }\n    else\n        posTable = {\n            [\"MT\"] = { h = headTh - math.pi / 4, r = 10 },\n            [\"ST\"] = { h = headTh, r = 10 },\n            [\"H1\"] = { h = headTh  - math.pi / 14, r = 18 },\n            [\"H2\"] = { h = headTh  + math.pi / 14, r = 18 },\t\t\n            [\"D1\"] = { h = headDps - math.pi / 4, r = 10 },\n            [\"D2\"] = { h = headDps, r = 10 },\n            [\"D3\"] = { h = headDps - math.pi / 14, r = 18 },\n            [\"D4\"] = { h = headDps + math.pi / 14, r = 18 },\n        }\n    end\n\t\n\tdata.MuAiGd_P3_2_SelfJob = \"H1\"\n    local Th = { \"MT\", \"ST\", \"H1\", \"H2\" }\n    local endHeading\n    if table.contains(Th, data.MuAiGd_P3_2_SelfJob) then\n        endHeading = headTh\n    else\n        endHeading = headDps\n    end\n    local point = M.GetGamePointByHeading(M.Config.FruCfg.PosInfo, endHeading)\n    M.Info(\"前往\" .. point .. \"点附近分散。\")\n    data.MuAiGd_P3_2_MoveInHeading = endHeading\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 },\n            posTable[data.MuAiGd_P3_2_SelfJob].h, posTable[data.MuAiGd_P3_2_SelfJob].r)\n    M.DirectTo(targetPos.x, targetPos.z, 10000)\n    data.MuAiGd_P3_2_GroundFireFinish = true\n    if data.MuAiGd_P3_2_SelfJob == \"MT\" then\n        local selfDir = posTable[\"MT\"]\n        local dir1 = M.SetHeading2Pi(firstDir + math.pi / 2)\n        local dir2 = M.SetHeading2Pi(firstDir - math.pi / 2)\n        if math.abs(dir1 - selfDir) < math.abs(dir2 - selfDir) then\n            data.MuAiGd_P3_2_MTHeading = dir1\n        else\n            data.MuAiGd_P3_2_MTHeading = dir2\n        end\n    end\n    M.Debug(\"地火指路完成！\")\nend\n\nself.used = true",
-							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "56ff9e7b-cf41-e3b3-baee-d0ca0ef6324b",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-				},
-				enabled = false,
-				mechanicTime = 619.6,
-				name = "test",
-				timelineIndex = 144,
-				uuid = "c5756825-e65a-fdd4-ab22-ce42821f9b57",
-				version = 2,
-			},
 		},
 	},
 	[148] = 

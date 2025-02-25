@@ -2688,7 +2688,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "for job, ent in pairs(MuAiGuide.Party) do\n    local curPlayer = TensorCore.mGetEntity(ent.id)\n    if curPlayer.marker ~= nil then\n        if curPlayer.marker <= 4 then\n            data.MuAiGd_P3_2_PlayerBuffType[MuAiGuide.SelfPos].IsLeft = true\n            if job == MuAiGuide.SelfPos then\n                MuAiGuide.Info(\"检测到攻击标记，去左侧。\")\n                MuAiGuide.DirectTo(93, 100, 4000)\n            end\n        else\n            data.MuAiGd_P3_2_PlayerBuffType[MuAiGuide.SelfPos].IsLeft = false\n            if job == MuAiGuide.SelfPos then\n                MuAiGuide.Info(\"检测到非攻击标记，去右侧。\")\n                MuAiGuide.DirectTo(107, 100, 4000)\n            end\n        end\n    end\nend\nself.used = true",
+							actionLua = "for job, ent in pairs(MuAiGuide.Party) do\n    local curPlayer = TensorCore.mGetEntity(ent.id)\n    if curPlayer.marker ~= nil then\n        if curPlayer.marker <= 4 then\n            data.MuAiGd_P3_2_PlayerBuffType[job].IsLeft = true\n            if job == MuAiGuide.SelfPos then\n                MuAiGuide.Info(\"检测到攻击标记，去左侧。\")\n                MuAiGuide.DirectTo(93, 100, 4000)\n            end\n        else\n            data.MuAiGd_P3_2_PlayerBuffType[job].IsLeft = false\n            if job == MuAiGuide.SelfPos then\n                MuAiGuide.Info(\"检测到非攻击标记，去右侧。\")\n                MuAiGuide.DirectTo(107, 100, 4000)\n            end\n        end\n    end\nend\nself.used = true\n",
 							conditions = 
 							{
 								

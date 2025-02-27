@@ -1280,6 +1280,7 @@ local tbl =
 							uuid = "39d69fbe-ac9d-4cab-b313-0ab2b33ef31e",
 							version = 2,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				mechanicTime = 270.3,
@@ -3341,7 +3342,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if data.MuAiGd_P4_WaveFrom == nil then\n    data.MuAiGd_P4_WaveFrom = {}\n    data.MuAiGd_P4_WaveGuidePos = 0\nend\n\nif table.size(data.MuAiGd_P4_WaveFrom) < 2 then\n    local entity = TensorCore.mGetEntity(eventArgs.entityID)\n    table.insert(data.MuAiGd_P4_WaveFrom, entity.pos)\n    local cnt = table.size(data.MuAiGd_P4_WaveFrom)\n    if entity.pos.x < 90 then      -- 左边\n        MuAiGuide.Info(\"地火\" .. cnt .. \"来自左边的D方向。\")\n    elseif entity.pos.x > 110 then -- 右边\n        MuAiGuide.Info(\"地火\" .. cnt .. \"来自右边的B方向。\")\n    elseif entity.pos.z < 90 then  -- 上\n        MuAiGuide.Info(\"地火\" .. cnt .. \"来自上边的A方向。\")\n    elseif entity.pos.z > 110 then -- 下\n        MuAiGuide.Info(\"地火\" .. cnt .. \"来自下边的C方向。\")\n    end\n \n    if cnt == 2 then\n        local p1 = data.MuAiGd_P4_WaveFrom[1]\n        local p2 = data.MuAiGd_P4_WaveFrom[2]\n        if MuAiGuide.Config.FruCfg.CrystallizeTimeKnockBack == 1 then --Y字\n            data.MuAiGd_P4_WaveGuideHeading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, p2)\n        else\n            local centerPoint = { x = (p1.x + p2.x) / 2, y = 0, z = (p1.z + p2.z) / 2 }\n            data.MuAiGd_P4_WaveGuideHeading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, centerPoint)\n        end\n    end\n    self.used = true\nend\n",
+							actionLua = "if data.MuAiGd_P4_WaveFrom == nil then\n    data.MuAiGd_P4_WaveFrom = {}\n    data.MuAiGd_P4_WaveGuidePos = -100\nend\n\nif table.size(data.MuAiGd_P4_WaveFrom) < 2 then\n    local entity = TensorCore.mGetEntity(eventArgs.entityID)\n    table.insert(data.MuAiGd_P4_WaveFrom, entity.pos)\n    local cnt = table.size(data.MuAiGd_P4_WaveFrom)\n    if entity.pos.x < 90 then      -- 左边\n        MuAiGuide.Info(\"地火\" .. cnt .. \"来自左边的D方向。\")\n    elseif entity.pos.x > 110 then -- 右边\n        MuAiGuide.Info(\"地火\" .. cnt .. \"来自右边的B方向。\")\n    elseif entity.pos.z < 90 then  -- 上\n        MuAiGuide.Info(\"地火\" .. cnt .. \"来自上边的A方向。\")\n    elseif entity.pos.z > 110 then -- 下\n        MuAiGuide.Info(\"地火\" .. cnt .. \"来自下边的C方向。\")\n    end\n \n    if cnt == 2 then\n        local p1 = data.MuAiGd_P4_WaveFrom[1]\n        local p2 = data.MuAiGd_P4_WaveFrom[2]\n        if MuAiGuide.Config.FruCfg.CrystallizeTimeKnockBack == 1 then --Y字\n            data.MuAiGd_P4_WaveGuideHeading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, p2)\n        else\n            local centerPoint = { x = (p1.x + p2.x) / 2, y = 0, z = (p1.z + p2.z) / 2 }\n            data.MuAiGd_P4_WaveGuideHeading = MuAiGuide.SetHeading2Pi(TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, centerPoint))\n            local point = MuAiGuide.GetGamePointByHeading(MuAiGuide.Config.FruCfg.PosInfo, data.MuAiGd_P4_WaveGuideHeading)\n            MuAiGuide.Info(\"回返放置位置：\" .. point .. \"点。\")\n        end\n    end\n    self.used = true\nend\n",
 							conditions = 
 							{
 								

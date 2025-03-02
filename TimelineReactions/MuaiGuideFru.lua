@@ -1252,20 +1252,19 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "MuAiGuide.Info(\"滑冰倒计时:3\" )\nTensorCore.addAlertText(0, \"三\", 1, 2, true)\nself.used = true",
+							actionLua = "if MuAiGuide.Config.FruCfg.SkatingHit == 1 then\n\tMuAiGuide.Info(\"滑冰倒计时:3。\" )\n\tTensorCore.addAlertText(0, \"三\", 1, 2, true)\nelseif MuAiGuide.Config.FruCfg.SkatingHit == 2 then\n\tMuAiGuide.Info(\"滑冰倒计时:3。<se.3>\" )\nend\nself.used = true",
 							conditions = 
 							{
 								
 								{
-									"39d69fbe-ac9d-4cab-b313-0ab2b33ef31e",
+									"cae4df73-fb18-225f-8589-b6e884d1bac3",
 									true,
 								},
 							},
 							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "d1150595-03f0-9ffb-9efb-e9dcc70841ae",
+							uuid = "358e80c2-70e3-b61c-9af4-08e8665cb7fb",
 							version = 2.1,
 						},
-						inheritedIndex = 1,
 					},
 				},
 				conditions = 
@@ -1275,19 +1274,18 @@ local tbl =
 						data = 
 						{
 							category = "Lua",
-							conditionLua = "return MuAiGuide.Config.FruCfg.SkatingHitOn",
+							conditionLua = "return MuAiGuide.Config.FruCfg.SkatingHit > 0",
 							name = "开启提示",
-							uuid = "39d69fbe-ac9d-4cab-b313-0ab2b33ef31e",
+							uuid = "cae4df73-fb18-225f-8589-b6e884d1bac3",
 							version = 2,
 						},
-						inheritedIndex = 1,
 					},
 				},
 				mechanicTime = 270.3,
 				name = "[MuAiGuide]滑冰噪音-倒计时3",
 				timelineIndex = 60,
 				timerOffset = -3.5,
-				uuid = "699198ee-ea0e-01a0-ac6e-b5a6d1d40274",
+				uuid = "8da97ce5-8c1d-99a6-b1a6-50dbc5bcf039",
 				version = 2,
 			},
 			inheritedIndex = 1,
@@ -1303,17 +1301,17 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "MuAiGuide.Info(\"滑冰倒计时:2\" )\nTensorCore.addAlertText(0, \"二\", 1, 2, true)\nself.used = true",
+							actionLua = "if MuAiGuide.Config.FruCfg.SkatingHit == 1 then\n\tMuAiGuide.Info(\"滑冰倒计时:2。\" )\n\tTensorCore.addAlertText(0, \"二\", 1, 2, true)\nelseif MuAiGuide.Config.FruCfg.SkatingHit == 2 then\n\tMuAiGuide.Info(\"滑冰倒计时:2。<se.3>\" )\nend\nself.used = true",
 							conditions = 
 							{
 								
 								{
-									"ae66bcf9-3c8d-5525-9de1-4dfe0b3b575e",
+									"2457176f-0a0f-eeeb-a28c-fe70479f7990",
 									true,
 								},
 							},
 							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "7d3d9c00-403d-4acc-9de0-007a94dbaa24",
+							uuid = "bdf29f9f-781e-003b-83b0-a3fc68ffe434",
 							version = 2.1,
 						},
 					},
@@ -1325,22 +1323,20 @@ local tbl =
 						data = 
 						{
 							category = "Lua",
-							conditionLua = "return MuAiGuide.Config.FruCfg.SkatingHitOn",
+							conditionLua = "return MuAiGuide.Config.FruCfg.SkatingHit > 0",
 							name = "开启提示",
-							uuid = "ae66bcf9-3c8d-5525-9de1-4dfe0b3b575e",
+							uuid = "2457176f-0a0f-eeeb-a28c-fe70479f7990",
 							version = 2,
 						},
-						inheritedIndex = 1,
 					},
 				},
 				mechanicTime = 270.3,
 				name = "[MuAiGuide]滑冰噪音-倒计时2",
 				timelineIndex = 60,
 				timerOffset = -2.5,
-				uuid = "077b8e40-875a-8df6-88a6-bd2673465f9e",
+				uuid = "b80d439c-28be-d2e2-a6d0-04226badc289",
 				version = 2,
 			},
-			inheritedIndex = 2,
 		},
 		
 		{
@@ -1353,20 +1349,19 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "MuAiGuide.Info(\"滑冰倒计时:1\" )\nTensorCore.addAlertText(0, \"一\", 1, 2, true)\nself.used = true",
+							actionLua = "if MuAiGuide.Config.FruCfg.SkatingHit == 1 then\n\tMuAiGuide.Info(\"滑冰倒计时:1。\" )\n\tTensorCore.addAlertText(0, \"一\", 1, 2, true)\nelseif MuAiGuide.Config.FruCfg.SkatingHit == 2 then\n\tMuAiGuide.Info(\"滑冰倒计时:1。<se.3>\" )\nend\nself.used = true",
 							conditions = 
 							{
 								
 								{
-									"c220c521-38d5-3bd7-ad36-21f3a8689e09",
+									"d40e5773-3218-d8dd-92e4-b514b2d1edbc",
 									true,
 								},
 							},
 							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "513f77e2-ddaa-dd5b-ab49-946fcd9a47f6",
+							uuid = "9d329f56-e896-2fcb-975b-935a259777e2",
 							version = 2.1,
 						},
-						inheritedIndex = 1,
 					},
 				},
 				conditions = 
@@ -1376,18 +1371,19 @@ local tbl =
 						data = 
 						{
 							category = "Lua",
-							conditionLua = "return MuAiGuide.Config.FruCfg.SkatingHitOn",
+							conditionLua = "return MuAiGuide.Config.FruCfg.SkatingHit > 0",
 							name = "开启提示",
-							uuid = "c220c521-38d5-3bd7-ad36-21f3a8689e09",
+							uuid = "d40e5773-3218-d8dd-92e4-b514b2d1edbc",
 							version = 2,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				mechanicTime = 270.3,
 				name = "[MuAiGuide]滑冰噪音-倒计时1",
 				timelineIndex = 60,
 				timerOffset = -1.5,
-				uuid = "dbf87455-3248-664c-abfc-e3b9eaf40ee9",
+				uuid = "61873fcf-73ef-d77a-bd87-d48d80fe1921",
 				version = 2,
 			},
 			inheritedIndex = 3,
@@ -1403,17 +1399,17 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "MuAiGuide.Info(\"滑冰，快走！\" )\nTensorCore.addAlertText(0, \"走走走!\", 1, 2, true)\nself.used = true",
+							actionLua = "if MuAiGuide.Config.FruCfg.SkatingHit == 1 then\n\tMuAiGuide.Info(\"滑冰，快走！\" )\n\tTensorCore.addAlertText(0, \"走走走!\", 1, 2, true)\nelseif MuAiGuide.Config.FruCfg.SkatingHit == 2 then\n\tMuAiGuide.Info(\"滑冰，快走！<se.1>\" )\nend\nself.used = true",
 							conditions = 
 							{
 								
 								{
-									"06852cc3-adaf-d9ef-8172-d598dad21241",
+									"b53281d1-d9f6-341d-ab24-1e29cd908afb",
 									true,
 								},
 							},
 							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "a3ccb272-4541-3e6b-a06c-ac9dbcc993cf",
+							uuid = "2fb75634-ba3b-c72c-bdee-a70deb3508c7",
 							version = 2.1,
 						},
 						inheritedIndex = 1,
@@ -1426,9 +1422,9 @@ local tbl =
 						data = 
 						{
 							category = "Lua",
-							conditionLua = "return MuAiGuide.Config.FruCfg.SkatingHitOn",
+							conditionLua = "return MuAiGuide.Config.FruCfg.SkatingHit > 0",
 							name = "开启提示",
-							uuid = "06852cc3-adaf-d9ef-8172-d598dad21241",
+							uuid = "b53281d1-d9f6-341d-ab24-1e29cd908afb",
 							version = 2,
 						},
 					},
@@ -1437,10 +1433,9 @@ local tbl =
 				name = "[MuAiGuide]滑冰噪音-GOGOGO",
 				timelineIndex = 60,
 				timerOffset = -0.5,
-				uuid = "0e0126fd-ce97-175a-8046-2a02145c37a7",
+				uuid = "49faac67-2793-a235-8148-5722cc7c6a9d",
 				version = 2,
 			},
-			inheritedIndex = 4,
 		},
 	},
 	[62] = 

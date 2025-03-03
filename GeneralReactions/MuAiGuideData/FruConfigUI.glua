@@ -381,7 +381,7 @@ local DrawFruConfigUI = function(M)
                     GUI:Dummy(0, 10)
                     GUI:TextColored(255, 0, 0, 1, "※第2波站位顺序：面向红镜子，从左到右")
                     GUI:Dummy(0, 1)
-                    local inputMelee2, inputMelee2Changed = GUI:InputText(": 近战第1波站位顺序",
+                    local inputMelee2, inputMelee2Changed = GUI:InputText(": 近战第2波站位顺序",
                             M.StringJoin(M.Config.FruCfg.MirrorPosMelee2, ","),
                             GUI.InputTextFlags_CharsNoBlank)
                     if inputMelee2Changed then

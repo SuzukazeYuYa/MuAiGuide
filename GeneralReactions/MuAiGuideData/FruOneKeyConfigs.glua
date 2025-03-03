@@ -62,7 +62,7 @@
     M.FastJapanConfig = function()
         local jpTable = {
             ApocalypseGroupType = 3,
-            ApocalypseType = 2,
+            ApocalypseType = 4,
             CatchTwoDown = { "D1", "D2", "D3", "D4" },
             CatchTwoDownFall = { "MT", "D1" },
             CatchTwoUp = { "H1", "H2", "MT", "ST" },

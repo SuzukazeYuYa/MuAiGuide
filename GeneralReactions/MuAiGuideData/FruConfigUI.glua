@@ -451,66 +451,61 @@ local DrawFruConfigUI = function(M)
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
                 if GUI:TreeNode("2.地火") then
                     GUI:Dummy(1, 5)
-                    if M.Config.FruCfg.GuideType == 1 then
-                        GUI:Text("基础方案： ")
-                        GUI:Dummy(1, 2)
-                        if GUI:Checkbox("左右预站位", M.Config.FruCfg.ApocalypseGroupType == 1) then
-                            M.Config.FruCfg.ApocalypseGroupType = 1
-                        end
-                        GUI:SameLine()
-                        if GUI:Checkbox("上下预站位", M.Config.FruCfg.ApocalypseGroupType == 3) then
-                            M.Config.FruCfg.ApocalypseGroupType = 3
-                        end
-                        GUI:SameLine()
-                        if GUI:Checkbox("ACT标点", M.Config.FruCfg.ApocalypseGroupType == 2) then
-                            M.Config.FruCfg.ApocalypseGroupType = 2
-                        end
-                        GUI:Dummy(1, 2)
-                        if M.Config.FruCfg.ApocalypseGroupType == 1 then
-                            GUI:TextColored(0, 255, 255, 1, "※左右预站位，低优先级交换（莫古力）")
-                        elseif M.Config.FruCfg.ApocalypseGroupType == 3 then
-                            GUI:TextColored(0, 255, 255, 1, "※上下预站位，高优先级交换（日基）")
-                        elseif M.Config.FruCfg.ApocalypseGroupType == 2 then
-                            GUI:TextColored(0, 255, 255, 1, "※不预站位，ACT标记（莫灵喵）")
-                        end
 
-                        drawLine2()
-                        GUI:Text("分散方案： ")
-                        GUI:Dummy(20, 0)
-                        GUI:SameLine()
-                        if GUI:Checkbox("车头法", M.Config.FruCfg.ApocalypseType == 1) then
-                            M.Config.FruCfg.ApocalypseType = 1
-                        end
-                        GUI:SameLine()
-                        GUI:Dummy(65, 0)
-                        GUI:SameLine()
-                        if GUI:Checkbox("人群法", M.Config.FruCfg.ApocalypseType == 2) then
-                            M.Config.FruCfg.ApocalypseType = 2
-                        end
-                        GUI:Dummy(20, 0)
-                        GUI:SameLine()
-                        if GUI:Checkbox("起点法", M.Config.FruCfg.ApocalypseType == 3) then
-                            M.Config.FruCfg.ApocalypseType = 3
-                        end
-                        GUI:SameLine()
-                        GUI:Dummy(70, 0)
-                        GUI:SameLine()
-                        if GUI:Checkbox("日基法", M.Config.FruCfg.ApocalypseType == 4) then
-                            M.Config.FruCfg.ApocalypseType = 4
-                        end
-                        GUI:Dummy(0, 5)
-                        if M.Config.FruCfg.ApocalypseType == 1 then
-                            GUI:TextColored(0, 255, 255, 1, "※车头固定，其他人去车头顺/逆下一个点")
-                        elseif M.Config.FruCfg.ApocalypseType == 2 then
-                            GUI:TextColored(0, 255, 255, 1, "※人群固定，车头去人群顺/逆上一个点")
-                        elseif M.Config.FruCfg.ApocalypseType == 3 then
-                            GUI:TextColored(0, 255, 255, 1, "※地火起点固定，人群去自己起点最近的一个点")
-                        elseif M.Config.FruCfg.ApocalypseType == 4 then
-                            GUI:TextColored(0, 255, 255, 1, "※日基特殊走法")
-                        end
-
-                    else
-                        GUI:TextColored(255, 0, 0, 1, "日基地火不可设置！")
+                    GUI:Text("基础方案： ")
+                    GUI:Dummy(1, 2)
+                    if GUI:Checkbox("左右预站位", M.Config.FruCfg.ApocalypseGroupType == 1) then
+                        M.Config.FruCfg.ApocalypseGroupType = 1
+                    end
+                    GUI:SameLine()
+                    if GUI:Checkbox("上下预站位", M.Config.FruCfg.ApocalypseGroupType == 3) then
+                        M.Config.FruCfg.ApocalypseGroupType = 3
+                    end
+                    GUI:SameLine()
+                    if GUI:Checkbox("ACT标点", M.Config.FruCfg.ApocalypseGroupType == 2) then
+                        M.Config.FruCfg.ApocalypseGroupType = 2
+                    end
+                    GUI:Dummy(1, 2)
+                    if M.Config.FruCfg.ApocalypseGroupType == 1 then
+                        GUI:TextColored(0, 255, 255, 1, "※左右预站位，低优先级交换（莫古力）")
+                    elseif M.Config.FruCfg.ApocalypseGroupType == 3 then
+                        GUI:TextColored(0, 255, 255, 1, "※上下预站位，高优先级交换（日基）")
+                    elseif M.Config.FruCfg.ApocalypseGroupType == 2 then
+                        GUI:TextColored(0, 255, 255, 1, "※不预站位，ACT标记（莫灵喵）")
+                    end
+                    drawLine2()
+                    GUI:Text("分散方案： ")
+                    GUI:Dummy(20, 0)
+                    GUI:SameLine()
+                    if GUI:Checkbox("车头法", M.Config.FruCfg.ApocalypseType == 1) then
+                        M.Config.FruCfg.ApocalypseType = 1
+                    end
+                    GUI:SameLine()
+                    GUI:Dummy(65, 0)
+                    GUI:SameLine()
+                    if GUI:Checkbox("人群法", M.Config.FruCfg.ApocalypseType == 2) then
+                        M.Config.FruCfg.ApocalypseType = 2
+                    end
+                    GUI:Dummy(20, 0)
+                    GUI:SameLine()
+                    if GUI:Checkbox("起点法", M.Config.FruCfg.ApocalypseType == 3) then
+                        M.Config.FruCfg.ApocalypseType = 3
+                    end
+                    GUI:SameLine()
+                    GUI:Dummy(70, 0)
+                    GUI:SameLine()
+                    if GUI:Checkbox("日基法", M.Config.FruCfg.ApocalypseType == 4) then
+                        M.Config.FruCfg.ApocalypseType = 4
+                    end
+                    GUI:Dummy(0, 5)
+                    if M.Config.FruCfg.ApocalypseType == 1 then
+                        GUI:TextColored(0, 255, 255, 1, "※车头固定，其他人去车头顺/逆下一个点")
+                    elseif M.Config.FruCfg.ApocalypseType == 2 then
+                        GUI:TextColored(0, 255, 255, 1, "※人群固定，车头去人群顺/逆上一个点")
+                    elseif M.Config.FruCfg.ApocalypseType == 3 then
+                        GUI:TextColored(0, 255, 255, 1, "※地火起点固定，人群去自己起点最近的一个点")
+                    elseif M.Config.FruCfg.ApocalypseType == 4 then
+                        GUI:TextColored(0, 255, 255, 1, "※日基特殊走法")
                     end
                     GUI:TreePop()
                     GUI:Dummy(1, 2)

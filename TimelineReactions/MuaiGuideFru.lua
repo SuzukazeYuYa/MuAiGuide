@@ -1691,7 +1691,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local guideTime = 9000\nlocal buffId = 4157\nlocal M = MuAiGuide\nlocal linkBuff = TensorCore.getBuff(M.GetPlayer().id, buffId)\n\n-- 计算是否有线（是否有线BUFF）\nif linkBuff ~= nil then\n    --连线定名\n    local TGroup = {}\n    local DGroup = {}\n    for i = 1, 8 do\n        if i <= 4 then\n            table.insert(TGroup, MuAiGuide.Config.FruCfg.FruLightRampantOrder[i])\n        else\n            table.insert(DGroup, MuAiGuide.Config.FruCfg.FruLightRampantOrder[i])\n        end\n    end\n\n    local selfLinkOrder = 0 --计算自己是第几个有线\n    local targetHeading = 0\n    if table.contains(TGroup, M.SelfPos) then\n        local index = M.IndexOf(TGroup, M.SelfPos)\n        for i = 1, index do\n            local curPlayer = M.Party[TGroup[i]]\n            if TensorCore.getBuff(curPlayer.id, buffId) then\n                selfLinkOrder = selfLinkOrder + 1\n            end\n        end\n        if selfLinkOrder == 1 then\n            targetHeading = math.pi * 4 / 3\n            M.Info(\"我是上1，去左上。\")\n        elseif selfLinkOrder == 2 then\n            M.Info(\"我是上2，去下。\")\n            targetHeading = 0\n        elseif selfLinkOrder == 3 then\n            M.Info(\"我是上3，去右上。\")\n            targetHeading = math.pi * 2 / 3\n        elseif selfLinkOrder == 4 then\n            M.Info(\"我是上4，需要补位去左下。\")\n            targetHeading = math.pi * 5 / 3\n        end\n    elseif table.contains(DGroup, M.SelfPos) then\n        local index = M.IndexOf(DGroup, M.SelfPos)\n        for i = 1, index do\n            local curPlayer = M.Party[DGroup[i]]\n            if TensorCore.getBuff(curPlayer.id, buffId) then\n                selfLinkOrder = selfLinkOrder + 1\n            end\n        end\n        if selfLinkOrder == 1 then\n            M.Info(\"我是下1，去右下。\")\n            targetHeading = math.pi / 3\n        elseif selfLinkOrder == 2 then\n            M.Info(\"我是下2，去上。\")\n            targetHeading = math.pi\n        elseif selfLinkOrder == 3 then\n            M.Info(\"我是下3，去左下。\")\n            targetHeading = math.pi * 5 / 3\n        elseif selfLinkOrder == 4 then\n            targetHeading = math.pi * 2 / 3\n            M.Info(\"我是下4，需要补位去右上。\")\n        end\n    end\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, targetHeading, 18)\n    M.DirectTo(targetPos.x, targetPos.z, guideTime)\nelse\n    M.Info(\"被点名了，放五个圈。\")\n    data.MuAiGd_P2_IsDrop = true\nend\nself.used = true\n",
+							actionLua = "local guideTime = 9000\nlocal buffId = 4157\nlocal M = MuAiGuide\nlocal linkBuff = TensorCore.getBuff(M.GetPlayer().id, buffId)\n\n-- 计算是否有线（是否有线BUFF）\nif linkBuff ~= nil then\n    --连线定名\n    local TGroup = {}\n    local DGroup = {}\n    for i = 1, 8 do\n        if i <= 4 then\n            table.insert(TGroup, MuAiGuide.Config.FruCfg.FruLightRampantOrder[i])\n        else\n            table.insert(DGroup, MuAiGuide.Config.FruCfg.FruLightRampantOrder[i])\n        end\n    end\n\n    local selfLinkOrder = 0 --计算自己是第几个有线\n    local targetHeading = 0\n    if table.contains(TGroup, M.SelfPos) then\n        local index = M.IndexOf(TGroup, M.SelfPos)\n        for i = 1, index do\n            local curPlayer = M.Party[TGroup[i]]\n            if TensorCore.getBuff(curPlayer.id, buffId) then\n                selfLinkOrder = selfLinkOrder + 1\n            end\n        end\n        if selfLinkOrder == 1 then\n            targetHeading = math.pi * 4 / 3\n            M.Info(\"我是上1，去左上。\")\n        elseif selfLinkOrder == 2 then\n            M.Info(\"我是上2，去下。\")\n            targetHeading = 0\n        elseif selfLinkOrder == 3 then\n            M.Info(\"我是上3，去右上。\")\n            targetHeading = math.pi * 2 / 3\n        elseif selfLinkOrder == 4 then\n            M.Info(\"我是上4，需要补位去左下。\")\n            targetHeading = math.pi * 5 / 3\n        end\n    elseif table.contains(DGroup, M.SelfPos) then\n        local index = M.IndexOf(DGroup, M.SelfPos)\n        for i = 1, index do\n            local curPlayer = M.Party[DGroup[i]]\n            if TensorCore.getBuff(curPlayer.id, buffId) then\n                selfLinkOrder = selfLinkOrder + 1\n            end\n        end\n        if selfLinkOrder == 1 then\n            M.Info(\"我是下1，去右下。\")\n            targetHeading = math.pi / 3\n        elseif selfLinkOrder == 2 then\n            M.Info(\"我是下2，去上。\")\n            targetHeading = math.pi\n        elseif selfLinkOrder == 3 then\n            M.Info(\"我是下3，去左下。\")\n            targetHeading = math.pi * 5 / 3\n        elseif selfLinkOrder == 4 then\n            targetHeading = math.pi * 2 / 3\n            M.Info(\"我是下4，需要补位去右上。\")\n        end\n    end\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, targetHeading, 18)\n    M.DirectTo(targetPos.x, targetPos.z, guideTime)\n\tdata.MuAiGd_P2_IsDrop = false\nelse\n    M.Info(\"被点名了，放五个圈。\")\n    data.MuAiGd_P2_IsDrop = true\nend\nself.used = true\n",
 							conditions = 
 							{
 								
@@ -1728,25 +1728,6 @@ local tbl =
 				uuid = "df04ad36-0dec-a5b8-86b0-2187c689b527",
 				version = 2,
 			},
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-				},
-				conditions = 
-				{
-				},
-				enabled = false,
-				mechanicTime = 331.8,
-				name = "------------------------",
-				timelineIndex = 80,
-				uuid = "df9ca235-046e-2fed-ba65-535f3c57a28a",
-				version = 2,
-			},
-			inheritedIndex = 3,
 		},
 		
 		{
@@ -1796,6 +1777,25 @@ local tbl =
 				version = 2,
 			},
 			inheritedIndex = 3,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+				},
+				conditions = 
+				{
+				},
+				enabled = false,
+				mechanicTime = 331.8,
+				name = "------------------------",
+				timelineIndex = 80,
+				uuid = "df9ca235-046e-2fed-ba65-535f3c57a28a",
+				version = 2,
+			},
+			inheritedIndex = 4,
 		},
 		
 		{
@@ -1858,7 +1858,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local guideTime = 9500\nlocal buffId = 4157\nlocal linkBuff = TensorCore.getBuff(MuAiGuide.GetPlayer().id, buffId)\nif linkBuff then\n    -- 灰9计数表，C逆 一周弧度算位置\n    local headings = {\n        [\"C\"] = 0,\n        [\"3\"] = math.pi / 3,\n        [\"2\"] = 2 * math.pi / 3,\n        [\"A\"] = math.pi,\n        [\"1\"] = 4 * math.pi / 3,\n        [\"4\"] = 5 * math.pi / 3\n    }\n\n    local valueTable = {\n        [\"MT\"] = { \"C\", \"/\", \"/\" },\n        [\"D4\"] = { \"1\", \"C\", \"/\" },\n        [\"ST\"] = { \"2\", \"1\", \"C\" },\n        [\"D2\"] = { \"4\", \"2\", \"1\" },\n        [\"H2\"] = { \"3\", \"4\", \"2\" },\n        [\"D1\"] = { \"A\", \"3\", \"4\" },\n        [\"H1\"] = { \"/\", \"A\", \"3\" },\n        [\"D3\"] = { \"/\", \"/\", \"A\" },\n    }\n\n    -- A顺优先级\n    local order = { \"MT\", \"D4\", \"ST\", \"D2\", \"H2\", \"D1\", \"H1\", \"D3\" }\n    local selfIndex = MuAiGuide.IndexOf(order, MuAiGuide.SelfPos)\n    local cnt = 0\n    for i = 1, selfIndex do\n        local curJobPos = order[i]\n        local curPlayer = MuAiGuide.Party[curJobPos]\n        if not TensorCore.getBuff(curPlayer.id, buffId) then\n            cnt = cnt + 1\n        end\n    end\n    local targetDir = valueTable[MuAiGuide.SelfPos][cnt + 1]\n    local targetHeading = headings[targetDir]\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, targetHeading, 17)\n    MuAiGuide.DirectTo(targetPos.x, targetPos.z, guideTime)\nelse\n    data.MuAiGd_P2_IsDrop = true\nend\nself.used = true\n",
+							actionLua = "local guideTime = 9500\nlocal buffId = 4157\nlocal linkBuff = TensorCore.getBuff(MuAiGuide.GetPlayer().id, buffId)\nif linkBuff then\n    -- 灰9计数表，C逆 一周弧度算位置\n    local headings = {\n        [\"C\"] = 0,\n        [\"3\"] = math.pi / 3,\n        [\"2\"] = 2 * math.pi / 3,\n        [\"A\"] = math.pi,\n        [\"1\"] = 4 * math.pi / 3,\n        [\"4\"] = 5 * math.pi / 3\n    }\n\n    local valueTable = {\n        [\"MT\"] = { \"C\", \"/\", \"/\" },\n        [\"D4\"] = { \"1\", \"C\", \"/\" },\n        [\"ST\"] = { \"2\", \"1\", \"C\" },\n        [\"D2\"] = { \"4\", \"2\", \"1\" },\n        [\"H2\"] = { \"3\", \"4\", \"2\" },\n        [\"D1\"] = { \"A\", \"3\", \"4\" },\n        [\"H1\"] = { \"/\", \"A\", \"3\" },\n        [\"D3\"] = { \"/\", \"/\", \"A\" },\n    }\n\n    -- A顺优先级\n    local order = { \"MT\", \"D4\", \"ST\", \"D2\", \"H2\", \"D1\", \"H1\", \"D3\" }\n    local selfIndex = MuAiGuide.IndexOf(order, MuAiGuide.SelfPos)\n    local cnt = 0\n    for i = 1, selfIndex do\n        local curJobPos = order[i]\n        local curPlayer = MuAiGuide.Party[curJobPos]\n        if not TensorCore.getBuff(curPlayer.id, buffId) then\n            cnt = cnt + 1\n        end\n    end\n    local targetDir = valueTable[MuAiGuide.SelfPos][cnt + 1]\n    local targetHeading = headings[targetDir]\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, targetHeading, 17)\n    MuAiGuide.DirectTo(targetPos.x, targetPos.z, guideTime)\n\tdata.MuAiGd_P2_IsDrop = false\nelse\n    data.MuAiGd_P2_IsDrop = true\nend\nself.used = true\n",
 							conditions = 
 							{
 								
@@ -1992,6 +1992,14 @@ local tbl =
 						{
 							aType = "Lua",
 							actionLua = "local M = MuAiGuide\nif data.MuAiGd_P2_LRDropTable == nil then\n    data.MuAiGd_P2_LRDropState = 1\n    local dropTable = {}\n    if M.Config.FruCfg.FruLightRampantType == 1 then\n        if M.Config.FruCfg.FruLightRampantDropType == 1 then\n           dropTable = { {}, {} }\n            for i = 1, 4 do\n                local pos1 = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 7 / 8 - (i - 1) * math.pi / 4, 8)\n                table.insert(dropTable[1], pos1)\n                local pos2 = TensorCore.getPosInDirection({x = 100, y = 0, z = 100}, math.pi * 15 / 8 - (i - 1) * math.pi / 4, 8)\n                table.insert(dropTable[2], pos2)\n            end\n            table.insert(dropTable[1], { x =dropTable[1][4].x, y = 0, z = 114 })\n            table.insert(dropTable[1], { x =dropTable[2][4].x, y = 0, z = 86 })\n        else\n           dropTable = {\n                -- 2\n                [1] = {\n                    { x = 97, z = 103 },\n                    { x = 92.7, z = 107.3 },\n                    { x = 92, z = 100 },\n                    { x = 94.3, z = 94.3 },\n                    { x = 100, z = 89 },\n                },\n                -- 4\n                [2] = {\n                    { x = 103, z = 97 },\n                    { x = 107.3, z = 92.7 },\n                    { x = 108, z = 100 },\n                    { x = 105.7, z = 105.7 },\n                    { x = 100, z = 111 },\n                },\n            }\n        end\n    else\n       dropTable = {\n            -- D\n            [1] = {\n                { x = 92, z = 100 },\n                { x = 94.3, z = 94.3 },\n                { x = 100, z = 92, },\n                { x = 106, z = 90 },\n                { x = 112, z = 88 },\n            },\n            -- B\n            [2] = {\n                { x = 108, z = 100 },\n                { x = 105.7, z = 105.7 },\n                { x = 100, z = 108, },\n                { x = 94, z = 110, },\n                { x = 88, z = 112 },\n            }\n        }\n    end\n    local playerPos = MuAiGuide.GetPlayer().pos\n    local distance1 = TensorCore.getDistance2d(dropTable[1][1], playerPos)\n    local distance2 = TensorCore.getDistance2d(dropTable[2][1], playerPos)\n    if distance1 < distance2 then\n        data.MuAiGd_P2_LRDropTable = dropTable[1]\n    else\n        data.MuAiGd_P2_LRDropTable = dropTable[2]\n    end\nend\nif  data.MuAiGd_P2_LRDropTable ~= nil and  data.MuAiGd_P2_LRDropState > 0 then\nd(data.MuAiGd_P2_LRDropState)\n   local curPos =  data.MuAiGd_P2_LRDropTable[data.MuAiGd_P2_LRDropState] \n   MuAiGuide.FrameDirect(curPos.x, curPos.z)\nend\nself.used = true",
+							conditions = 
+							{
+								
+								{
+									"18e2136d-485f-dc51-92b9-31efb5d7cc41",
+									true,
+								},
+							},
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "c25112e0-ec6e-1365-843a-443b8188ba4b",
 							version = 2.1,
@@ -2000,6 +2008,16 @@ local tbl =
 				},
 				conditions = 
 				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_P2_IsDrop~= nil and data.MuAiGd_P2_IsDrop = true",
+							uuid = "18e2136d-485f-dc51-92b9-31efb5d7cc41",
+							version = 2,
+						},
+					},
 				},
 				eventType = 12,
 				mechanicTime = 339.7,
@@ -2181,14 +2199,33 @@ local tbl =
 						{
 							aType = "Lua",
 							actionLua = "if data.MuAiGd_P2_LRDropTable ~= nil and data.MuAiGd_P2_LRDropState > 0 then\nd(data.MuAiGd_P2_LRDropState)\n   local curPos =  data.MuAiGd_P2_LRDropTable[data.MuAiGd_P2_LRDropState] \n    MuAiGuide.FrameDirect(curPos.x, curPos.z)\nend\nself.used = true",
+							conditions = 
+							{
+								
+								{
+									"54f1dde5-3d51-033c-8a90-3318b3f18550",
+									true,
+								},
+							},
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "c25112e0-ec6e-1365-843a-443b8188ba4b",
 							version = 2.1,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				conditions = 
 				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_P2_IsDrop~= nil and data.MuAiGd_P2_IsDrop = true",
+							uuid = "54f1dde5-3d51-033c-8a90-3318b3f18550",
+							version = 2,
+						},
+					},
 				},
 				eventType = 12,
 				mechanicTime = 345.9,

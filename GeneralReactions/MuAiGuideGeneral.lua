@@ -189,6 +189,15 @@ local tbl =
 					{
 						aType = "Lua",
 						actionLua = "MuAiGuide.DrawMainUI()\nself.used = true",
+						conditions = 
+						{
+							
+							{
+								"edc3f9f7-c453-c8a3-aac2-4dc7bff618a0",
+								true,
+							},
+						},
+						gVar = "ACR_RikuWHM3_CD",
 						name = "DrawMainUI",
 						uuid = "24e9b704-79ee-959e-b704-1882e46ecaeb",
 						version = 2.1,
@@ -201,10 +210,20 @@ local tbl =
 					{
 						aType = "Lua",
 						actionLua = "MuAiGuide.DrawFriConfigUI()\nself.used = true",
+						conditions = 
+						{
+							
+							{
+								"edc3f9f7-c453-c8a3-aac2-4dc7bff618a0",
+								true,
+							},
+						},
+						gVar = "ACR_RikuWHM3_CD",
 						name = "DrawFruConfig",
 						uuid = "ef3917b1-00b3-772e-8302-b4f58fbce07e",
 						version = 2.1,
 					},
+					inheritedIndex = 3,
 				},
 			},
 			conditions = 

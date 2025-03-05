@@ -1,7 +1,7 @@
 ﻿local loadConfigs = function(M)
     --- 快速莫古力&mmw攻略
     M.FastMgl = function()
-        local configTbl = {
+        local configTbl1 = {
             --- 标点
             PosInfo = { "C", "3", "B", "2", "A", "1", "D", "4" },
             --- 基础8方位置
@@ -116,12 +116,12 @@
             drawWinLight = M.Config.FruCfg.drawWinLight,
             drawWinPolarizing = M.Config.FruCfg.drawWinPolarizing,
         }
-        M.Config.FruCfg = configTbl
+        M.Config.FruCfg = configTbl1
         M.Info("已切换为莫古力&MMW攻略默认配置。")
     end
     --- 快速日基
     M.FastJapanConfig = function()
-        local configTbl = {
+        local configTbl2 = {
             --- 标点
             PosInfo = { "C", "2", "B", "1", "A", "4", "D", "3" },
             --- 基础8方位置
@@ -236,7 +236,7 @@
             drawWinLight = M.Config.FruCfg.drawWinLight,
             drawWinPolarizing = M.Config.FruCfg.drawWinPolarizing,
         }
-        M.Config.FruCfg = configTbl
+        M.Config.FruCfg = configTbl2
         M.Info("已切换为日基攻略默认配置。")
     end
     

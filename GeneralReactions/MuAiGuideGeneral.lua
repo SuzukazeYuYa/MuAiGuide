@@ -337,7 +337,7 @@ local tbl =
 					data = 
 					{
 						aType = "Lua",
-						actionLua = "if not MuAiGuide.UIPop then\n    MuAiGuide.UIPop = false\nend\n\nif MuAiGuide and not MuAiGuide.UIPop and MuAiGuide.UI.open == false then\n    local party = MuAiGuide.GetPartyPlayers()\n    if party and table.size(party) >= 8 then\n        if MuAiGuide.Party == nil or table.size(MuAiGuide.Party) < 8 then\n            MuAiGuide.LoadParty()\n\t\t\tMuAiGuide.Debug(\"已读取小队列表\")\n\t\t\tMuAiGuide.UI.open = true\n\t\t\tMuAiGuide.UIPop = true\n\t\t\tMuAiGuide.Info(\"欢迎使用暮霭指路系列时间轴, 作者QQ：2437365584，欢迎BUG反馈！\")\n        end      \n\t\tself.used = true\n    end\nend\n",
+						actionLua = "if not MuAiGuide.UIPop then\n    MuAiGuide.UIPop = false\nend\n\nif MuAiGuide and not MuAiGuide.UIPop and MuAiGuide.UI.open == false then\n    local party = MuAiGuide.GetPartyPlayers()\n    if party and table.size(party) >= 8 then\n        if MuAiGuide.Party == nil or table.size(MuAiGuide.Party) < 8 then\n            MuAiGuide.LoadParty()\n\t\t\tMuAiGuide.Debug(\"已读取小队列表\")\n\t\t\tMuAiGuide.UI.open = true\n\t\t\tMuAiGuide.UIPop = true\n        end      \n\t\tself.used = true\n    end\nend\n",
 						conditions = 
 						{
 							

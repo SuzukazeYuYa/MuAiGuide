@@ -1,7 +1,4 @@
 local DrawFruConfigUI = function(M)
-    if M == nil or not M.FruConfigUI.open then
-        return
-    end
     local drawLine = function()
         GUI:Dummy(1, 1)
         GUI:Separator()

@@ -193,7 +193,7 @@ local tbl =
 						{
 							
 							{
-								"edc3f9f7-c453-c8a3-aac2-4dc7bff618a0",
+								"ec6a59d3-5181-45e9-a1d5-f0809fd79304",
 								true,
 							},
 						},
@@ -214,7 +214,7 @@ local tbl =
 						{
 							
 							{
-								"edc3f9f7-c453-c8a3-aac2-4dc7bff618a0",
+								"fbb3ae05-9eee-8e39-bde7-611e12205b06",
 								true,
 							},
 						},
@@ -239,6 +239,28 @@ local tbl =
 						version = 2,
 					},
 					inheritedIndex = 1,
+				},
+				
+				{
+					data = 
+					{
+						category = "Lua",
+						conditionLua = "return MuAiGuide~= nil \n\t   and MuAiGuide.FruConfigUI~= nil \n\t   and MuAiGuide.FruConfigUI.open == true",
+						name = "伊甸设置UI打开",
+						uuid = "fbb3ae05-9eee-8e39-bde7-611e12205b06",
+						version = 2,
+					},
+				},
+				
+				{
+					data = 
+					{
+						category = "Lua",
+						conditionLua = "return MuAiGuide~= nil \n\t   and MuAiGuide.UI~= nil \n\t   and MuAiGuide.UI.open == true",
+						name = "Main设置UI打开",
+						uuid = "ec6a59d3-5181-45e9-a1d5-f0809fd79304",
+						version = 2,
+					},
 				},
 			},
 			eventType = 13,

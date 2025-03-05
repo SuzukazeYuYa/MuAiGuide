@@ -1,7 +1,4 @@
 local DrawMainUI = function(M)
-    if M == nil or not M.UI.open then
-        return
-    end
     if M.ConfigUI == nil then
         M.ConfigUI = {}
         M.ConfigUI.GuideColorChange = false

@@ -178,13 +178,11 @@ end
 
 M.CreateFruDefaultCfg = function()
     return {
-        ---全局指路方式 1：国服 2：日基
-        GuideType = 1,
         --- 标点
         PosInfo = { "C", "3", "B", "2", "A", "1", "D", "4" },
         --- 基础8方位置
         JobPos = { "H2", "D2", "ST", "D4", "MT", "D3", "H1", "D1" },
-        
+
         ----------------------------- P1 -----------------------------
         --- 雾龙8方站位 C逆
         FruUtopainSkyPosInfo = { "H2", "D2", "D4", "ST", "MT", "D3", "H1", "D1" },
@@ -217,6 +215,8 @@ M.CreateFruDefaultCfg = function()
         ----------------------------- P2 -----------------------------
         --- DD 换位方式 1： 同组互换，2：全员顺时针
         DDChangeType = 1,
+        --- DD 分组方式 1: A1D4/2B3C / 2: 2A1D,B4C3
+        DDGroupType = 1,
         --- 滑冰提示TTS
         SkatingHit = 2,
         --- 镜子
@@ -231,7 +231,7 @@ M.CreateFruDefaultCfg = function()
         FruLightRampantOrder = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
         --- 放圈方案 1 莫古力 2 日基
         FruLightRampantDropType = 1,
-        
+
         ----------------------------- P3 -----------------------------
         --- P3 1运处理方案 1 灰9式，2遗迹王国式
         UltimateRelativityType = 1,
@@ -241,26 +241,27 @@ M.CreateFruDefaultCfg = function()
         ApocalypseChangePos = 1,
         --- P3地火解法 1：车头法 2：人群法 3：起点法 4：双分组
         ApocalypseType = 1,
-        
+
         ----------------------------- P4 -----------------------------
         --- 光暗龙诗优先级
         DarkLitOrder = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
         --- 光暗龙诗 翻花绳4边形时候 谁换，1左换，2右换
-        DarkLitChangeType = 1, 
+        DarkLitChangeType = 1,
         --- 时间结晶优先级
         CrystallizeTimePriority = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
-        --- 时间结晶处理方式：1:固定吃，2:标点，3:自动摇号
+        --- Buff 处理方式， 1，基本，2，日基
+        CrystallizeTimeBuffType = 1,
+        --- 时间结晶贡品处理方式：1:固定吃，2:标点，3:自动摇号
         CrystallizeTimeType = 1,
         --- 时间结晶击退处理方式：1 Y字， 2：角落
         CrystallizeTimeKnockBack = 1,
         -- 固定吃, 顺序
-        CrystallizeTimeFix = {
-            [2460] = "D", -- 暗
-            [2454] = "B", -- 摊
-            [2462] = "3", -- 冰
-            [2461] = "4", -- 水
+        CrystallizeTimeByBuff = {
+            2461, -- 水
+            2462, -- 冰
+            2454, -- 摊
+            2460, -- 暗
         },
-
         CrystallizeMark = {
             ["D"] = 1,
             ["B"] = 2,
@@ -283,7 +284,7 @@ M.CreateFruDefaultCfg = function()
             Left = { "D3", "D4" },
             Right = { "D1", "D2" },
         },
-        
+
         --- 绘图开关
         drawAknMorn = true,
         drawShit = true,

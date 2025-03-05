@@ -65,21 +65,7 @@ local DrawFruConfigUI = function(M)
                 end
                 drawLine()
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
-                if GUI:TreeNode("2.全局指路方式：") then
-                    GUI:Dummy(1, 1)
-                    GUI:TextColored(255, 0, 0, 1, "※仅为不可设置内容的全局更改，不包含可设置内容！")
-                    if GUI:Checkbox("国服     ", M.Config.FruCfg.GuideType == 1) then
-                        M.Config.FruCfg.GuideType = 1
-                    end
-                    GUI:SameLine()
-                    if GUI:Checkbox("日基", M.Config.FruCfg.GuideType == 2) then
-                        M.Config.FruCfg.GuideType = 2
-                    end
-                    GUI:TreePop()
-                end
-                drawLine()
-                GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
-                if GUI:TreeNode("3.基础站位：") then
+                if GUI:TreeNode("2.基础站位：") then
                     GUI:Dummy(1, 1)
                     GUI:PushItemWidth(180)
                     GUI:TextColored(255, 0, 0, 1, "※填写方向：C开始逆时针一周")
@@ -94,10 +80,11 @@ local DrawFruConfigUI = function(M)
                 end
                 drawLine()
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
-                if GUI:TreeNode("4.基础点位：") then
+                if GUI:TreeNode("3.基础点位：") then
                     GUI:Dummy(1, 1)
                     GUI:PushItemWidth(120)
                     GUI:TextColored(255, 0, 0, 1, "※填写方向：C开始逆时针一周")
+                    GUI:TextColored(255, 255, 0, 1, "※本设置影响部分下面设置的显示")
                     local markPos, markPosChanged = GUI:InputText("：标点", M.StringJoin(M.Config.FruCfg.PosInfo, ","),
                             GUI.InputTextFlags_CharsNoBlank)
                     if markPosChanged then
@@ -310,6 +297,23 @@ local DrawFruConfigUI = function(M)
                         M.Config.FruCfg.DDChangeType = 2
                     end
                     drawLine2()
+                    local fCfg = M.Config.FruCfg.PosInfo
+                    local dGroup1Str = fCfg[5] .. fCfg[6] .. fCfg[7] .. fCfg[8] .. "/" .. fCfg[4] .. fCfg[3] .. fCfg[2] .. fCfg[1]
+                    local dGroup2Str = fCfg[4] .. fCfg[5] .. fCfg[6] .. fCfg[7] .. "/" .. fCfg[3] .. fCfg[2] .. fCfg[1] .. fCfg[8]
+                    GUI:BulletText("分组方式：")
+                    GUI:Dummy(1, 1)
+                    GUI:Dummy(20, 0)
+                    GUI:SameLine()
+                    if GUI:Checkbox(dGroup1Str, M.Config.FruCfg.DDGroupType == 1) then
+                        M.Config.FruCfg.DDGroupType = 1
+                    end
+                    GUI:SameLine()
+                    GUI:Dummy(30, 0)
+                    GUI:SameLine()
+                    if GUI:Checkbox(dGroup2Str, M.Config.FruCfg.DDGroupType == 2) then
+                        M.Config.FruCfg.DDGroupType = 2
+                    end
+                    drawLine2()
                     GUI:BulletText("滑冰提示：")
                     GUI:Dummy(1, 1)
                     GUI:SameLine()
@@ -509,7 +513,7 @@ local DrawFruConfigUI = function(M)
                                 M.Config.FruCfg.ApocalypseChangePos = 1
                             end
                             GUI:Dummy(0, 2)
-                            GUI:TextColored(0, 255, 255, 1, "※调整后根据第1次时候的相对位置处理")
+                            GUI:TextColored(0, 255, 255, 1, "※调整后根据第1次分摊时相对位置处理分散")
                         end
                         drawLine2()
                         GUI:BulletText("分散方案： ")
@@ -589,6 +593,19 @@ local DrawFruConfigUI = function(M)
                     end
                     GUI:PopItemWidth()
                     drawLine2()
+                    GUI:BulletText("上方无人红冰方案：")
+                    GUI:Dummy(1, 1)
+                    if GUI:Checkbox("先躲开大圈", M.Config.FruCfg.CrystallizeTimeBuffType == 1) then
+                        M.Config.FruCfg.CrystallizeTimeBuffType = 1
+                    end
+                    GUI:SameLine()
+                    GUI:Dummy(35, 0)
+                    GUI:SameLine()
+                    if GUI:Checkbox("疾跑冲向A（日基）", M.Config.FruCfg.CrystallizeTimeBuffType == 2) then
+                        M.Config.FruCfg.CrystallizeTimeBuffType = 2
+                    end
+                    drawLine2()
+
                     GUI:BulletText("贡品拾取方案： ")
                     GUI:Dummy(1, 1)
                     if GUI:Checkbox("根据BUFF  ", M.Config.FruCfg.CrystallizeTimeType == 1) then
@@ -604,65 +621,55 @@ local DrawFruConfigUI = function(M)
                     end
                     drawLine2()
                     GUI:BulletText("贡品拾取位置： ")
-                    GUI:Dummy(1, 1)
+                    local leftStr = M.Config.FruCfg.PosInfo[7]
+                    local rightStr = M.Config.FruCfg.PosInfo[3]
+                    local rightDownStr = M.Config.FruCfg.PosInfo[2]
+                    local leftDownStr = M.Config.FruCfg.PosInfo[8]
                     if M.Config.FruCfg.CrystallizeTimeType == 1 then
-                        M.FruConfigUI.FixInputRight = true
-                        GUI:PushItemWidth(20)
-                        local inputFlame, inputFlameChanged = GUI:InputText(":暗焰 ",
-                                M.Config.FruCfg.CrystallizeTimeFix[2460],
-                                GUI.InputTextFlags_CharsNoBlank)
-                        if inputFlameChanged then
-                            if table.contains(M.FruConfigUI.BluePos, inputFlame) then
-                                M.Config.FruCfg.CrystallizeTimeFix[2460] = inputFlame
-                            else
-                                M.FruConfigUI.FixInputRight = false
+                        GUI:Dummy(0, 5)
+                        local labels = {leftStr , rightStr, rightDownStr , leftDownStr}
+                        GUI:PushItemWidth(50)
+                        local buffIds = { 2460, 2454, 2462, 2461 }
+                        local buffNames = { "暗焰", "分摊", "冰封", "狂水" }
+                        local indexChange = {1,2,4,3}
+                        for i = 1, 4 do
+                            local index = indexChange[i]
+                            local buffId = tonumber(M.Config.FruCfg.CrystallizeTimeByBuff[index])
+                            local buffIndex = M.IndexOf(buffIds, buffId)
+                            local newIndex, changed = GUI:Combo(":去[" .. labels[index] .. "] ", buffIndex, buffNames, 4)
+                            if changed then
+                                local newBuff = buffIds[newIndex]
+                                local oldIndex
+                                for j = 1, 4 do
+                                    if newBuff == tonumber(M.Config.FruCfg.CrystallizeTimeByBuff[j]) then
+                                        oldIndex = j
+                                        break
+                                    end
+                                end
+                                M.Config.FruCfg.CrystallizeTimeByBuff[i] = M.Config.FruCfg.CrystallizeTimeByBuff[oldIndex]
+                                M.Config.FruCfg.CrystallizeTimeByBuff[oldIndex] = buffId
+                            end
+                            if i == 1 then
+                                GUI:SameLine()
+                                GUI:Dummy(60, 0)
+                                GUI:SameLine()
+                            elseif i == 2 then
+                                GUI:Dummy(1, 5)
+                                GUI:Dummy(20, 0)
+                                GUI:SameLine()
+                            elseif i == 3 then
+                                GUI:SameLine()
+                                GUI:Dummy(10, 0)
+                                GUI:SameLine()
                             end
                         end
-                        GUI:SameLine()
-                        local inputConverge, inputConvergeChanged = GUI:InputText(":分摊  ",
-                                M.Config.FruCfg.CrystallizeTimeFix[2454],
-                                GUI.InputTextFlags_CharsNoBlank)
-                        if inputConvergeChanged then
-                            if table.contains(M.FruConfigUI.BluePos, inputConverge) then
-                                M.Config.FruCfg.CrystallizeTimeFix[2454] = inputConverge
-                            else
-                                M.FruConfigUI.FixInputRight = false
-                            end
-                        end
-                        GUI:SameLine()
-                        local inputIce, inputIceChanged = GUI:InputText(":冰  ", M.Config.FruCfg.CrystallizeTimeFix
-                        [2462],
-                                GUI.InputTextFlags_CharsNoBlank)
-                        if inputIceChanged then
-                            if table.contains(M.FruConfigUI.BluePos, inputIce) then
-                                M.Config.FruCfg.CrystallizeTimeFix[2462] = inputIce
-                            else
-                                M.FruConfigUI.FixInputRight = false
-                            end
-                        end
-                        GUI:SameLine()
-                        local inputWater, inputWaterChanged = GUI:InputText(":水",
-                                M.Config.FruCfg.CrystallizeTimeFix[2461],
-                                GUI.InputTextFlags_CharsNoBlank)
-                        if inputWaterChanged then
-                            if table.contains(M.FruConfigUI.BluePos, inputWater) then
-                                M.Config.FruCfg.CrystallizeTimeFix[2461] = inputWater
-                            else
-                                M.FruConfigUI.FixInputRight = false
-                            end
-                        end
-                        if not M.FruConfigUI.FixInputRight then
-                            GUI:TextColored(255, 0, 0, 1, "错误，请检查填写的内容!")
-                        end
+
                         GUI:PopItemWidth()
                     else
                         GUI:SameLine()
                         GUI:TextColored(0, 255, 0, 1, "※攻击1到攻击4标记具体位置")
                         GUI:PushItemWidth(20)
-                        local leftStr = M.Config.FruCfg.PosInfo[7]
-                        local rightStr = M.Config.FruCfg.PosInfo[3]
-                        local rightDownStr = M.Config.FruCfg.PosInfo[2]
-                        local leftDownStr = M.Config.FruCfg.PosInfo[8]
+                     
                         M.FruConfigUI.MarkInputRight = true
                         GUI:Dummy(0, 5)
                         local inputStrD, DChanged = GUI:InputText(":去[" .. leftStr .. "] ",
@@ -840,6 +847,7 @@ local DrawFruConfigUI = function(M)
                 GUI:SameLine()
                 GUI:Text("各大挂群群友、DC群友")
             end
+
         end
         M.SaveConfig()
         GUI:SetWindowSize(350, 0)

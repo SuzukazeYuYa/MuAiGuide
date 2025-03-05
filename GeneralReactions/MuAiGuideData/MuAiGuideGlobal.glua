@@ -182,8 +182,9 @@ M.CreateFruDefaultCfg = function()
         PosInfo = { "C", "3", "B", "2", "A", "1", "D", "4" },
         --- 基础8方位置
         JobPos = { "H2", "D2", "ST", "D4", "MT", "D3", "H1", "D1" },
-
         ----------------------------- P1 -----------------------------
+        --- 分散方案 1 TH逆DPS顺，2 全顺
+        ProteanType = 1,
         --- 雾龙8方站位 C逆
         FruUtopainSkyPosInfo = { "H2", "D2", "D4", "ST", "MT", "D3", "H1", "D1" },
         --- 抓人分组上

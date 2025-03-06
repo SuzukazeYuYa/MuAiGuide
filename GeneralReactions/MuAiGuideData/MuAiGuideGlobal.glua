@@ -12,17 +12,17 @@ local MagicJob = { 25, 27, 35, 42 }
 local JobIds = {
     19, 21, 32, 37,
     24, 33, 40, 28,
-    20, 22, 30, 34, 39, 41,
+    34, 20, 22, 30, 39, 41,
     31, 23, 38,
-    25, 27, 35, 42
+    35, 27, 42, 25
 }
 
 local JobName = {
     "骑士", "战士", "黑骑", "绝枪",
     "白魔", "占星", "贤者", "学者",
-    "武僧", "龙骑", "忍者", "武士", "钐镰", "蝰蛇",
+    "武士", "武僧", "龙骑", "忍者", "钐镰", "蝰蛇",
     "机工", "诗人", "舞者",
-    "黑魔", "召唤", "赤魔", "绘灵"
+    "赤魔", "黑魔", "绘灵", "召唤"
 }
 
 M.JobPosName = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" }
@@ -95,6 +95,56 @@ M.GetJobNameById = function(job)
     end
 end
 
+--- 计算索引位置
+--- @param orderTable table 基于哪个优先级序列的表
+--- @param value any 元素成员
+--- @return number index 索引
+M.IndexOf = function(orderTable, value)
+    for i = 1, #orderTable, 1 do
+        if value == orderTable[i] then
+            return i
+        end
+    end
+    return 0
+end
+
+--- 字符串分割
+--- @param str string 待分割的字符串
+--- @return table list 分割后的列表
+M.StringSplit = function(str, mark)
+    local t = {}
+    local pattern = "([^" .. mark .. "]+)"
+    for match in string.gmatch(str, pattern) do
+        table.insert(t, match)
+    end
+    return t
+end
+
+--- 列表进行拼接
+--- @param str string 待分割的字符串
+--- @return table result 拼合后的字符串
+M.StringJoin = function(tbl, mark)
+    local result = ""
+    for i, v in ipairs(tbl) do
+        if i > 1 then
+            result = result .. mark
+        end
+        result = result .. v
+    end
+    return result
+end
+
+--- 将表B合并到表A中
+M.Append = function(tblA, tblB)
+    local tbl = {}
+    for _, v in ipairs(tblA) do
+        table.insert(tbl, v)
+    end
+    for _, v in ipairs(tblB) do
+        table.insert(tbl, v)
+    end
+    return tbl
+end
 --- 读取小队列表
 M.GetPartyPlayers = function()
     local curPt = TensorCore.getEntityGroupList("Party")
@@ -315,6 +365,7 @@ M.PreviousSave = M.LoadConfig()
 M.LoadParty = function()
     M.Party = {}
     local members = M.GetPartyPlayers()
+    table.sort(members, function(job1, job2) return M.IndexOf(JobIds, job1) < M.IndexOf(JobIds, job2) end)
     if members == nil or table.size(members) < 8 then
         M.Info("当前没有组队。")
         return
@@ -432,57 +483,6 @@ M.GetOtherPlayer = function(id)
         end
     end
     return nil
-end
-
---- 计算索引位置
---- @param orderTable table 基于哪个优先级序列的表
---- @param value any 元素成员
---- @return number index 索引
-M.IndexOf = function(orderTable, value)
-    for i = 1, #orderTable, 1 do
-        if value == orderTable[i] then
-            return i
-        end
-    end
-    return 0
-end
-
---- 字符串分割
---- @param str string 待分割的字符串
---- @return table list 分割后的列表
-M.StringSplit = function(str, mark)
-    local t = {}
-    local pattern = "([^" .. mark .. "]+)"
-    for match in string.gmatch(str, pattern) do
-        table.insert(t, match)
-    end
-    return t
-end
-
---- 列表进行拼接
---- @param str string 待分割的字符串
---- @return table result 拼合后的字符串
-M.StringJoin = function(tbl, mark)
-    local result = ""
-    for i, v in ipairs(tbl) do
-        if i > 1 then
-            result = result .. mark
-        end
-        result = result .. v
-    end
-    return result
-end
-
---- 将表B合并到表A中
-M.Append = function(tblA, tblB)
-    local tbl = {}
-    for _, v in ipairs(tblA) do
-        table.insert(tbl, v)
-    end
-    for _, v in ipairs(tblB) do
-        table.insert(tbl, v)
-    end
-    return tbl
 end
 
 --- 判断当前物体是否是自己

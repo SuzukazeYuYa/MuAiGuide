@@ -62,12 +62,13 @@ local DrawFruConfigUI = function(M)
             if GUI:CollapsingHeader("P1.绝命战士") then
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
                 if GUI:TreeNode("1.八方分散&雾龙") then
-                    M.FruConfigUI.AddLabel("分散处理方式：", false)
+                    M.FruConfigUI.AddLabel("分散方式：", false, 118)
                     GUI:PushItemWidth(80)
                     local ProteanType, ProteanTypeCg = GUI:Combo("##ProteanType", M.Config.FruCfg.ProteanType, { "TH逆,D顺", "全顺时针" }, 4)
                     if ProteanTypeCg then
                         M.Config.FruCfg.ProteanType = ProteanType
                     end
+                    GUI:PopItemWidth()
                     M.FruConfigUI.AddLabel("雾龙站位：", false)
                     GUI:PushItemWidth(180)
                     local utopainSkyPosInput, utopainSkyPosInputChanged = GUI:InputText("##FruUtopainSkyPosInfo", M.StringJoin(M.Config.FruCfg.FruUtopainSkyPosInfo, ","), GUI.InputTextFlags_CharsNoBlank)
@@ -81,20 +82,19 @@ local DrawFruConfigUI = function(M)
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
                 if GUI:TreeNode("2.双分组") then
                     GUI:TextColored(255, 255, 0, 1, "※含优先级设置，如高换反着写即可")
-                    M.FruConfigUI.AddLabel("上方：", true)
-                    GUI:SameLine()
+                    M.FruConfigUI.AddLabel("上方分组：", false, 127)
                     GUI:PushItemWidth(90)
                     local inputGroupUp, inputGroupUpChanged = GUI:InputText("##CatchTwoUp", M.StringJoin(M.Config.FruCfg.CatchTwoUp, ","), GUI.InputTextFlags_CharsNoBlank)
                     if inputGroupUpChanged then
                         M.Config.FruCfg.CatchTwoUp = M.StringSplit(inputGroupUp, ",")
                     end
-                    GUI:SameLine(0, 10)
-                    M.FruConfigUI.AddLabel("下方：", true)
+                    M.FruConfigUI.AddLabel("下方分组：", false, 127)
+                    GUI:PushItemWidth(90)
                     local inputGroupDown, inputGroupDownChanged = GUI:InputText("##CatchTwoDown", M.StringJoin(M.Config.FruCfg.CatchTwoDown, ","), GUI.InputTextFlags_CharsNoBlank)
                     if inputGroupDownChanged then
                         M.Config.FruCfg.CatchTwoDown = M.StringSplit(inputGroupDown, ",")
                     end
-                    M.FruConfigUI.AddLabel("需要换位时", true)
+                    M.FruConfigUI.AddLabel("需要换位时：", false)
                     GUI:PushItemWidth(50)
                     local inputGroupFall, inputGroupFallDownChanged = GUI:InputText("##CatchTwoDownFall", M.StringJoin(M.Config.FruCfg.CatchTwoDownFall, ","), GUI.InputTextFlags_CharsNoBlank)
                     if inputGroupFallDownChanged then
@@ -108,61 +108,63 @@ local DrawFruConfigUI = function(M)
                 GUI:Separator()
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
                 if GUI:TreeNode("3.雷火线") then
-                    M.FruConfigUI.AddLabel("优先级：", true)
-                    GUI:PushItemWidth(180)
+                    M.FruConfigUI.AddLabel("优先级：", false, 113)
+                    GUI:PushItemWidth(185)
                     local FruLightFirePriority, FruLightFirePriorityChanged = GUI:InputText("##FruLightFirePriority", M.StringJoin(M.Config.FruCfg.FruLightFirePriority, ","), GUI.InputTextFlags_CharsNoBlank)
                     if FruLightFirePriorityChanged then
                         M.Config.FruCfg.FruLightFirePriority = M.StringSplit(FruLightFirePriority, ",")
                     end
-                    GUI:AlignFirstTextHeightToWidgets()
+                    M.FruConfigUI.AddLabel("处理方式：", false)
                     GUI:PushItemWidth(50)
-                    local FruLightFireDir, FruLightFireDirIdxChanged = GUI:Combo("分成两组", M.Config.FruCfg.FruLightFireDir, { "上下", "左右" }, 4)
+                    local FruLightFireDir, FruLightFireDirIdxChanged = GUI:Combo("##FruLightFireDir", M.Config.FruCfg.FruLightFireDir, { "上下", "左右" }, 4)
                     if FruLightFireDirIdxChanged then
                         M.Config.FruCfg.FruLightFireDir = FruLightFireDir
                     end
-                    GUI:SameLine(0, 20)
+                    GUI:SameLine(0, 2)
+                    M.FruConfigUI.AddLabel("方向分组", true, 218)
                     GUI:PushItemWidth(80)
-                    local FruLightFireType, FruLightFireTypeIdxChanged = GUI:Combo("方式处理", M.Config.FruCfg.FruLightFireType, { "上下互换", "闲人固定" }, 4)
+                    local FruLightFireType, FruLightFireTypeIdxChanged = GUI:Combo("##FruLightFireType", M.Config.FruCfg.FruLightFireType, { "内外互换", "闲人固定" }, 4)
                     if FruLightFireTypeIdxChanged then
                         M.Config.FruCfg.FruLightFireType = FruLightFireType
                     end
                     if M.Config.FruCfg.FruLightFireType == 1 then
-                        M.FruConfigUI.AddLabel("闲人站位：", false)
+                        M.FruConfigUI.AddLabel("闲人站位：", false, 113)
                         GUI:PushItemWidth(70)
                         local restPos, restPosChanged = GUI:InputText("##FruLightFireRestPos", M.StringJoin(M.Config.FruCfg.FruLightFireRestPos, ","), GUI.InputTextFlags_CharsNoBlank)
                         GUI:PopItemWidth()
                         if restPosChanged then
                             M.Config.FruCfg.FruLightFireRestPos = M.StringSplit(restPos, ",")
                         end
-                        GUI:TextColored(0, 255, 0, 1, "※左上、右上、左下、右下分别对应几号闲人")
+                        GUI:TextColored(0, 255, 0, 1, "   ※左上、右上、左下、右下分别对应几号闲人")
                     end
                     GUI:TreePop()
                 end
                 GUI:Separator()
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
                 if GUI:TreeNode("4.踩塔") then
-                    M.FruConfigUI.AddLabel("基本方案：", false)
+                    M.FruConfigUI.AddLabel("基本方案：", false, 130)
                     GUI:PushItemWidth(90)
                     local TakeTowerType, TakeTowerTypeIdxChanged = GUI:Combo("##TakeTowerType", M.Config.FruCfg.TakeTowerType, { "填充数数", "固定和补位", "日野主流" }, 4)
                     if TakeTowerTypeIdxChanged then
                         M.Config.FruCfg.TakeTowerType = TakeTowerType
                     end
                     GUI:PopItemWidth()
-                    GUI:BulletText("成员设置：")
+
                     if M.Config.FruCfg.TakeTowerType == 1 then
-                        M.FruConfigUI.AddLabel("按照", true)
+                        M.FruConfigUI.AddLabel("填充优先级：", false)
                         GUI:PushItemWidth(140)
                         local fallInput, fallInputChanged = GUI:InputText("##FallTowerOrder", M.StringJoin(M.Config.FruCfg.FallTowerOrder, ","), GUI.InputTextFlags_CharsNoBlank)
                         if fallInputChanged then
                             M.Config.FruCfg.FallTowerOrder = M.StringSplit(fallInput, ",")
                         end
                         GUI:PopItemWidth()
-                        GUI:SameLine()
-                        GUI:Text("顺序依次填充")
                     elseif M.Config.FruCfg.TakeTowerType == 2 then
+                        GUI:BulletText("成员设置：")
                         GUI:SameLine()
                         GUI:TextColored(0, 255, 0, 1, "※第一个是固定，第二个是补位")
                         GUI:PushItemWidth(45)
+                        GUI:Dummy(10, 0)
+                        GUI:SameLine()
                         local inputFixUp, inputFixUpChanged = GUI:InputText(":上塔 ", M.StringJoin(M.Config.FruCfg.FixTowerUp, ","), GUI.InputTextFlags_CharsNoBlank)
                         if inputFixUpChanged then
                             M.Config.FruCfg.FixTowerUp = M.StringSplit(inputFixUp, ",")
@@ -179,8 +181,11 @@ local DrawFruConfigUI = function(M)
                         end
                         GUI:PopItemWidth()
                     elseif M.Config.FruCfg.TakeTowerType == 3 then
+                        GUI:BulletText("成员设置：")
                         GUI:SameLine()
                         GUI:TextColored(0, 255, 0, 1, "※对应位置以及优先级")
+                        GUI:Dummy(10, 0)
+                        GUI:SameLine()
                         GUI:PushItemWidth(65)
                         local inputFixJp, inputFixJpChanged = GUI:InputText("固定  ", M.StringJoin(M.Config.FruCfg.JapanTowerFix, ","), GUI.InputTextFlags_CharsNoBlank)
                         if inputFixJpChanged then
@@ -370,7 +375,7 @@ local DrawFruConfigUI = function(M)
                         M.Config.FruCfg.DarkLitOrder = M.StringSplit(DarkLitOrder, ",")
                     end
                     GUI:PopItemWidth()
-                    M.FruConfigUI.AddLabel("翻花绳四边形时换位人：", false,204)
+                    M.FruConfigUI.AddLabel("翻花绳四边形时换位人：", false, 204)
                     GUI:PushItemWidth(80)
                     local DarkLitChangeType, DarkLitChangeTypeCg = GUI:Combo("##DarkLitChangeType", M.Config.FruCfg.DarkLitChangeType, { "左边两人", "右边两人" }, 4)
                     if DarkLitChangeTypeCg then
@@ -397,7 +402,7 @@ local DrawFruConfigUI = function(M)
                     end
                     GUI:PopItemWidth()
                     GUI:PushItemWidth(110)
-                    M.FruConfigUI.AddLabel("贡品拾取方式：", false,162)
+                    M.FruConfigUI.AddLabel("贡品拾取方式：", false, 162)
                     local CrystallizeTimeType, CrystallizeTimeTypeCG = GUI:Combo("##CrystallizeTimeType", M.Config.FruCfg.CrystallizeTimeType, { "BUFF固定", "科技标点", "自动摇到的号" }, 4)
                     if CrystallizeTimeTypeCG then
                         M.Config.FruCfg.CrystallizeTimeType = CrystallizeTimeType
@@ -410,6 +415,8 @@ local DrawFruConfigUI = function(M)
                     local rightDownStr = M.Config.FruCfg.PosInfo[2]
                     local leftDownStr = M.Config.FruCfg.PosInfo[8]
                     if M.Config.FruCfg.CrystallizeTimeType == 1 then
+                        GUI:Dummy(10, 0)
+                        GUI:SameLine()
                         local labels = { leftStr, rightStr, rightDownStr, leftDownStr }
                         GUI:PushItemWidth(50)
                         local buffIds = { 2460, 2454, 2462, 2461 }
@@ -434,9 +441,9 @@ local DrawFruConfigUI = function(M)
                                 M.Config.FruCfg.CrystallizeTimeByBuff[oldIndex] = buffId
                             end
                             if i == 1 then
-                                GUI:SameLine(0, 120)
+                                GUI:SameLine(0, 100)
                             elseif i == 2 then
-                                GUI:Dummy(30, 0)
+                                GUI:Dummy(35, 0)
                                 GUI:SameLine()
                             elseif i == 3 then
                                 GUI:SameLine(0, 50)
@@ -449,6 +456,8 @@ local DrawFruConfigUI = function(M)
                         GUI:TextColored(0, 255, 0, 1, "※攻击1到4标记位置")
                         GUI:PushItemWidth(20)
                         M.FruConfigUI.MarkInputRight = true
+                        GUI:Dummy(10, 0)
+                        GUI:SameLine()
                         M.FruConfigUI.AddLabel("[" .. leftStr .. "]", true)
                         local inputStrD, DChanged = GUI:InputText("##CrystallizeMarkD", M.Config.FruCfg.CrystallizeMark["D"], GUI.InputTextFlags_CharsNoBlank)
                         if DChanged then
@@ -458,7 +467,7 @@ local DrawFruConfigUI = function(M)
                                 M.Config.FruCfg.CrystallizeMark["D"] = inputStrD
                             end
                         end
-                        GUI:SameLine(0, 185)
+                        GUI:SameLine(0, 160)
                         M.FruConfigUI.AddLabel("[" .. rightStr .. "]", true)
                         local inputStrB, BChanged = GUI:InputText("##CrystallizeMarkB", M.Config.FruCfg.CrystallizeMark["B"], GUI.InputTextFlags_CharsNoBlank)
                         if BChanged then
@@ -468,7 +477,7 @@ local DrawFruConfigUI = function(M)
                                 M.Config.FruCfg.CrystallizeMark["B"] = inputStrB
                             end
                         end
-                        GUI:Dummy(40, 0)
+                        GUI:Dummy(45, 0)
                         GUI:SameLine()
                         M.FruConfigUI.AddLabel("[" .. leftDownStr .. "]", true)
                         local inputStr4, _4Changed = GUI:InputText("##CrystallizeMark4", M.Config.FruCfg.CrystallizeMark["4"], GUI.InputTextFlags_CharsNoBlank)

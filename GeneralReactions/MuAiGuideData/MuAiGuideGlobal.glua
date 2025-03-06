@@ -365,7 +365,7 @@ M.PreviousSave = M.LoadConfig()
 M.LoadParty = function()
     M.Party = {}
     local members = M.GetPartyPlayers()
-    table.sort(members, function(job1, job2) return M.IndexOf(JobIds, job1) < M.IndexOf(JobIds, job2) end)
+    table.sort(members, function(p1, p2) return M.IndexOf(JobIds, p1.job) < M.IndexOf(JobIds, p2.job) end)
     if members == nil or table.size(members) < 8 then
         M.Info("当前没有组队。")
         return
@@ -376,7 +376,7 @@ M.LoadParty = function()
             if M.Party.MT == nil then
                 M.Party.MT = members[i]
                 table.insert(memberHasSet, members[i])
-            else
+            elseif M.Party.ST == nil then
                 M.Party.ST = members[i]
                 table.insert(memberHasSet, members[i])
             end
@@ -384,7 +384,7 @@ M.LoadParty = function()
             if M.Party.H1 == nil then
                 M.Party.H1 = members[i]
                 table.insert(memberHasSet, members[i])
-            else
+            elseif M.Party.H2 == nil then
                 M.Party.H2 = members[i]
                 table.insert(memberHasSet, members[i])
             end
@@ -392,7 +392,7 @@ M.LoadParty = function()
             if M.Party.D1 == nil then
                 M.Party.D1 = members[i]
                 table.insert(memberHasSet, members[i])
-            else
+            elseif M.Party.D2 == nil then
                 M.Party.D2 = members[i]
                 table.insert(memberHasSet, members[i])
             end

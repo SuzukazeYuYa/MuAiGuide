@@ -609,26 +609,42 @@ M.GetClock = function(posA, posB)
 end
 
 --- 计算基础搭档
-M.GetBasePartner = function()
-    local partner
-    if M.SelfPos == "MT" then
-        partner = "D3"
-    elseif M.SelfPos == "ST" then
-        partner = "D4"
-    elseif M.SelfPos == "H1" then
-        partner = "D1"
-    elseif M.SelfPos == "H2" then
-        partner = "D2"
-    elseif M.SelfPos == "D1" then
-        partner = "H1"
-    elseif M.SelfPos == "D2" then
-        partner = "H2"
-    elseif M.SelfPos == "D3" then
-        partner = "MT"
-    elseif M.SelfPos == "D4" then
-        partner = "ST"
+M.GetBasePartner = function(config)
+    if config ~= nil then
+        local jobPos = config.JobPos
+        for i = 1, 8 do
+            local curJob = jobPos[i]
+            if curJob == M.SelfPos then
+                local pIndex
+                if i % 2 == 0 then
+                    pIndex = i - 1
+                else
+                    pIndex = i + 1
+                end
+                return jobPos[pIndex]
+            end
+        end
+    else
+        local partner
+        if M.SelfPos == "MT" then
+            partner = "D3"
+        elseif M.SelfPos == "ST" then
+            partner = "D4"
+        elseif M.SelfPos == "H1" then
+            partner = "D1"
+        elseif M.SelfPos == "H2" then
+            partner = "D2"
+        elseif M.SelfPos == "D1" then
+            partner = "H1"
+        elseif M.SelfPos == "D2" then
+            partner = "H2"
+        elseif M.SelfPos == "D3" then
+            partner = "MT"
+        elseif M.SelfPos == "D4" then
+            partner = "ST"
+        end
+        return partner
     end
-    return partner
 end
 
 --- 计算同为远程/近战搭档

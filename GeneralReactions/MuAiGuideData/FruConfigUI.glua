@@ -42,7 +42,8 @@ local DrawFruConfigUI = function(M)
                 if GUI:IsItemClicked(0) then
                     M.FastMgl()
                 end
-                M.FruConfigUI.AddLabel("基础八方站位：", false)
+                GUI:Separator()
+                M.FruConfigUI.AddLabel("基础八方：", false, 93)
                 GUI:PushItemWidth(180)
                 local gJobPos, gJobPosChanged = GUI:InputText("##JobPos", M.StringJoin(M.Config.FruCfg.JobPos, ","), GUI.InputTextFlags_CharsNoBlank)
                 if gJobPosChanged then
@@ -50,7 +51,7 @@ local DrawFruConfigUI = function(M)
                 end
                 GUI:PopItemWidth()
                 M.FruConfigUI.AddLabel("场地标点：", false)
-                GUI:PushItemWidth(120)
+                GUI:PushItemWidth(115)
                 local markPos, markPosChanged = GUI:InputText("##PosInfo", M.StringJoin(M.Config.FruCfg.PosInfo, ","), GUI.InputTextFlags_CharsNoBlank)
                 if markPosChanged then
                     M.Config.FruCfg.PosInfo = M.StringSplit(markPos, ",")

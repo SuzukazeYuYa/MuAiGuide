@@ -139,7 +139,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local heading = data.MuAiGd_P1_8_BaseHeading\nlocal tankHealer = { \"MT\", \"ST\", \"H1\", \"H2\" }\nif table.contains(tankHealer, MuAiGuide.SelfPos) then\n    heading = heading + math.pi / 8\nelse\n    heading = heading - math.pi / 8\nend\n\nlocal bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance = TensorCore.getDistance2d(MuAiGuide.GetPlayer().pos, bossPos)\nlocal pos = TensorCore.getPosInDirection(bossPos, heading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
+							actionLua = "local heading = data.MuAiGd_P1_8_BaseHeading\nif MuAiGuide.Config.FruCfg.ProteanType == 1 then\n    local tankHealer = { \"MT\", \"ST\", \"H1\", \"H2\" }\n    if table.contains(tankHealer, MuAiGuide.SelfPos) then\n        heading = heading + math.pi / 8\n    else\n        heading = heading - math.pi / 8\n    end\nelse\n    heading = heading - math.pi / 8\nend\n\nlocal bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance = TensorCore.getDistance2d(MuAiGuide.GetPlayer().pos, bossPos)\nlocal pos = TensorCore.getPosInDirection(bossPos, heading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "eb782d2d-bfbe-5bd9-bcf4-ccd1a584451d",
 							version = 2.1,
@@ -441,7 +441,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local heading3 \nif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi / 4) then\n    heading3 = 0\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 1 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 4) then\n    heading3 = math.pi * 3 / 4\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 5 / 4) then\n    heading3 = math.pi\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 7 / 4) then\n    heading3 = math.pi * 7 / 4\nend\nlocal distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, MuAiGuide.GetPlayer().pos)\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading3, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
+							actionLua = "local heading3 \nif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, 0) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi / 4) then\n    heading3 = 0\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 1 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 4) then\n    heading3 = math.pi * 3 / 4\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 5 / 4) then\n    heading3 = math.pi\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 7 / 4) then\n    heading3 = math.pi * 7 / 4\nend\nlocal distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, MuAiGuide.GetPlayer().pos)\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading3, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "2e1a3fd2-50a0-02c9-b8d7-3482e43fbe36",
 							version = 2.1,

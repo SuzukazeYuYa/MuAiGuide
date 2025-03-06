@@ -10,14 +10,12 @@ local DrawMainUI = function(M)
     GUI:SetNextWindowSize(200, 0, GUI.SetCond_Appearing)
     M.UI.visible, M.UI.open = GUI:Begin("MuAiGuide Setting", M.UI.open)
     if M.UI.visible then
-        GUI:Dummy(1, 1)
-        GUI:Separator() ------------------------------------------------------------------------------
     if GUI:CollapsingHeader("基础设置") then
         GUI:Text(" ")
         GUI:SameLine()
         M.Config.AnyOneReactionOn = GUI:Checkbox("是否启用了Anyone", M.Config.AnyOneReactionOn)
         GUI:SameLine()
-        GUI:TextColored(0, 255, 0, 1, "[打钩将关闭重复功能]")
+        GUI:TextColored(0, 255, 0, 1, "※如果不用A轴请取消勾选")
         GUI:Text(" ")
         GUI:SameLine()
         M.Config.GuideColor.r, M.Config.GuideColor.g, M.Config.GuideColor.b, M.Config.GuideColor.a, M.ConfigUI.GuideColorChange =
@@ -56,7 +54,7 @@ local DrawMainUI = function(M)
         if GUI:CollapsingHeader("职能设置", GUI.TreeNodeFlags_SDefaultOpen) then
             GUI:Dummy(1, 1)
             if M.SelfPos then
-                GUI:Text("   玩家当前职能")
+                GUI:BulletText("玩家当前职能")
                 GUI:SameLine()
                 if M.DebugMode then
                     GUI:TextColored(255, 0, 0, 1, "[" .. M.SelfPos .. "][调试]")
@@ -64,7 +62,7 @@ local DrawMainUI = function(M)
                     GUI:TextColored(255, 0, 0, 1, "[" .. M.SelfPos .. "]")
                 end
                 GUI:SameLine()
-                GUI:TextColored(0, 255, 0, 1, "[拖动角色名进行职能修改]")
+                GUI:TextColored(0, 255, 0, 1, "※拖动角色名进行职能修改")
             else
                 GUI:TextColored(255, 0, 0, 1, "当前没有加入队伍")
             end
@@ -120,10 +118,7 @@ local DrawMainUI = function(M)
                 end
                 GUI:SameLine()
                 if ptMember.info ~= nil and ptMember.info.job ~= nil and ptMember.info.name ~= nil then
-                    GUI:Selectable(
-                            "   " .. M.GetJobNameById(ptMember.info.job) .. "      " .. ptMember.info.name,
-                            IsSelected()
-                    )
+                    GUI:Selectable( "   " .. M.GetJobNameById(ptMember.info.job) .. "      " .. ptMember.info.name,  IsSelected())
                 else
                     GUI:Selectable("   " .. "未知" .. "      " .. "未知玩家" .. i, IsSelected())
                 end
@@ -181,7 +176,7 @@ local DrawMainUI = function(M)
             end
             GUI:Text(" ")
             GUI:SameLine()
-            GUI:Button("              重新加载小队列表              ")
+            GUI:Button("重新加载小队列表", 305, 30)
             if GUI:IsItemClicked(0) then
                 M.LoadParty()
             end
@@ -190,7 +185,7 @@ local DrawMainUI = function(M)
         if GUI:CollapsingHeader("副本设置", GUI.TreeNodeFlags_SDefaultOpen) then
             GUI:Text(" ")
             GUI:SameLine()
-            GUI:Button("打开绝伊甸设置")
+            GUI:Button("绝伊甸设置", 150, 30)
             if GUI:IsItemClicked(0) then
                 M.ConfigFruInit = false
                 M.FruConfigUI.open = not M.FruConfigUI.open

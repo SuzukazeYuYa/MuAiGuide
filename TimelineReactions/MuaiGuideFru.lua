@@ -1013,7 +1013,7 @@ local tbl =
 						data = 
 						{
 							category = "Lua",
-							conditionLua = "return MuGuide.SelfPos ~= \"MT\" and MuGuide.SelfPos ~= \"ST\" ",
+							conditionLua = "return MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" ",
 							name = "非T",
 							uuid = "d2d3b4e0-d500-7bf6-8aed-3e193e02d15a",
 							version = 2,
@@ -3221,41 +3221,7 @@ local tbl =
 				mechanicTime = 642.1,
 				name = "[MuAiGuide]T远离引导跳跃",
 				timelineIndex = 149,
-				timerOffset = 1,
 				uuid = "72261fa9-7173-7feb-88c9-529ebc9fec51",
-				version = 2,
-			},
-		},
-	},
-	[150] = 
-	{
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "if data.MuAiGd_P3_2_SelfJob == \"MT\" then\n    local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, data.MuAiGd_P3_2_MTHeading, 18)\n    MuAiGuide.Info(\"远离引导跳跃。\")\n    MuAiGuide.DirectTo(pos.x, pos.z, 2000, 0.5)\nend\nself.used = true\n",
-							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "404c2b89-13f1-141b-a6fd-aff6ed9dfca7",
-							version = 2.1,
-						},
-						inheritedIndex = 1,
-					},
-				},
-				conditions = 
-				{
-				},
-				mechanicTime = 644.3,
-				name = "[MuAiGuide]MT远离引导跳跃",
-				timelineIndex = 150,
-				timerOffset = -2,
-				uuid = "4043c439-e649-5f81-910a-644f1ae4f1eb",
 				version = 2,
 			},
 		},
@@ -3273,7 +3239,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if data.MuAiGd_KnockBackTime == nil then\n    data.MuAiGd_KnockBackTime = Now()\n    if data.MuAiGd_P3_2_PlayerBuffType[MuAiGuide.SelfPos].IsLeft\n            or data.MuAiGd_P3_2_PlayerBuffType[MuAiGuide.SelfPos].IsUp then\n        MuAiGuide.Info(\"BOSS左后击退。\")\n    else\n        MuAiGuide.Info(\"BOSS右后击退。\")\n    end\nend\n\nif data.MuAiGd_P3_BOSS then\n\n    local isLeadTank = (MuAiGuide.SelfPos == \"MT\" and MuAiGuide.Config.FruConfig.P3DarkestDanceTaker == 1\n            or MuAiGuide.SelfPos == \"ST\" and MuAiGuide.Config.FruConfig.P3DarkestDanceTaker == 2)\n    if not isLeadTank or TimeSince(data.MuAiGd_KnockBackTime) > 2000 then\n        local pos = TensorCore.mGetEntity(data.MuAiGd_P3_BOSS.id).pos\n        local endHeading\n        if data.MuAiGd_P3_2_PlayerBuffType[MuAiGuide.SelfPos].IsLeft\n                or data.MuAiGd_P3_2_PlayerBuffType[MuAiGuide.SelfPos].IsUp then\n            endHeading = pos.h + math.pi * 15 / 18\n        else\n            endHeading = pos.h - math.pi * 15 / 18\n        end\n        local endPos = TensorCore.getPosInDirection(pos, endHeading, 2)\n        MuAiGuide.FrameDirect(endPos.x, endPos.z, 0.3)\n    end\nend\nself.used = true\n",
+							actionLua = "if data.MuAiGd_KnockBackTime == nil then\n    data.MuAiGd_KnockBackTime = Now()\n    if data.MuAiGd_P3_2_PlayerBuffType[MuAiGuide.SelfPos].IsLeft\n            or data.MuAiGd_P3_2_PlayerBuffType[MuAiGuide.SelfPos].IsUp then\n        MuAiGuide.Info(\"BOSS左后击退。\")\n    else\n        MuAiGuide.Info(\"BOSS右后击退。\")\n    end\nend\n\n\nif data.MuAiGd_P3_BOSS == nil then\n    for _, ent in pairs(TensorCore.entityList(\"contentid=9832\")) do\n        if Argus.isEntityVisible(ent) then\n            data.MuAiGd_P3_BOSS = ent\n            break\n        end\n    end\nend\n\nif data.MuAiGd_P3_BOSS then\n    local isLeadTank = (MuAiGuide.SelfPos == \"MT\" and MuAiGuide.Config.FruConfig.P3DarkestDanceTaker == 1\n            or MuAiGuide.SelfPos == \"ST\" and MuAiGuide.Config.FruConfig.P3DarkestDanceTaker == 2)\n    if not isLeadTank or TimeSince(data.MuAiGd_KnockBackTime) > 2000 then\n        local pos = TensorCore.mGetEntity(data.MuAiGd_P3_BOSS.id).pos\n        local endHeading\n        if data.MuAiGd_P3_2_PlayerBuffType[MuAiGuide.SelfPos].IsLeft\n                or data.MuAiGd_P3_2_PlayerBuffType[MuAiGuide.SelfPos].IsUp then\n            endHeading = pos.h + math.pi * 15 / 18\n        else\n            endHeading = pos.h - math.pi * 15 / 18\n        end\n        local endPos = TensorCore.getPosInDirection(pos, endHeading, 2)\n        MuAiGuide.FrameDirect(endPos.x, endPos.z, 0.3)\n    end\nend\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "b6db2169-6a93-ee27-9d27-151e7ba3b19e",
 							version = 2.1,

@@ -559,7 +559,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local heading4\nif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi / 4) then\n    heading4 = math.pi / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 1 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 4) then\n    heading4 = math.pi * 7 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 5 / 4) then\n    heading4 = math.pi * 9 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 7 / 4) then\n    heading4 = math.pi * 15 / 8\nend\nlocal distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, MuAiGuide.GetPlayer().pos)\nif distance < 13 then\n\tdistance = 13\nend\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading4, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
+							actionLua = "local heading4\nif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, 0) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi / 4) then\n    heading4 = math.pi / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 1 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 4) then\n    heading4 = math.pi * 7 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 5 / 4) then\n    heading4 = math.pi * 9 / 8\nelseif MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 3 / 2) or MuAiGuide.IsSame(data.MuAiGd_P1_8_BaseHeading, math.pi * 7 / 4) then\n    heading4 = math.pi * 15 / 8\nend\nlocal distance = TensorCore.getDistance2d({ x = 100, y = 0, z = 100 }, MuAiGuide.GetPlayer().pos)\nif distance < 13 then\n\tdistance = 13\nend\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading4, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 3000)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "3322ab0a-b0ae-ef80-8982-9573c746bd05",
 							version = 2.1,
@@ -969,7 +969,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local M = MuAiGuide\nif M.SelfPos ~= \"MT\" and M.SelfPos ~= \"ST\" then\n    local towers = table.deepcopy(data.MuAiGd_P1_Towers)\n    table.sort(towers, function(a, b)\n        return a.entity.pos.z < b.entity.pos.z\n    end)\n    local infoPos = function(index)\n        if index == 1 then\n            return \"上\"\n        elseif index == 2 then\n            return \"中\"\n        elseif index == 3 then\n            return \"下\"\n        end\n        return \"\"\n    end\n    local towerIdx\n    -- 小学塔\n    if M.Config.FruCfg.TakeTowerType == 1 then\n        local selfIndex = M.IndexOf(M.Config.FruCfg.FallTowerOrder, M.SelfPos)\n        if selfIndex <= towers[1].need then\n            towerIdx = 1\n        elseif towers[1].need < selfIndex and selfIndex <= towers[1].need + towers[2].need then\n            towerIdx = 2\n        elseif towers[1].need + towers[2].need < selfIndex and selfIndex <= 6 then\n            towerIdx = 3\n        end\n        M.Info(\"填充踩塔，去\" .. infoPos(towerIdx) .. \"塔\")\n    elseif M.Config.FruCfg.TakeTowerType == 2 then\n        if table.contains(M.Config.FruCfg.FixTowerUp, M.SelfPos) then\n            if M.Config.FruCfg.FixTowerUp[1] == M.SelfPos or towers[1].need >= 2 then\n                towerIdx = 1\n            else\n                if towers[2].need > 2 then\n                    towerIdx = 2\n                else\n                    towerIdx = 3\n                end\n            end\n        elseif table.contains(M.Config.FruCfg.FixTowerMid, M.SelfPos) then\n            if M.Config.FruCfg.FixTowerMid[1] == M.SelfPos or towers[2].need >= 2 then\n                towerIdx = 2\n            else\n                if towers[1].need > 2 then\n                    towerIdx = 1\n                else\n                    towerIdx = 3\n                end\n            end\n        elseif table.contains(M.Config.FruCfg.FixTowerDown, M.SelfPos) then\n            if M.Config.FruCfg.FixTowerDown[1] == M.SelfPos or towers[3].need >= 2 then\n                towerIdx = 3\n            else\n                if towers[1].need > 2 then\n                    towerIdx = 1\n                else\n                    towerIdx = 2\n                end\n            end\n        end\n        M.Info(\"固定踩塔，去\" .. infoPos(towerIdx) .. \"塔\")\n    elseif M.Config.FruCfg.TakeTowerType == 3 then\n        if table.contains(M.Config.FruCfg.JapanTowerFix, M.SelfPos) then\n            towerIdx = M.IndexOf(M.Config.FruCfg.JapanTowerFix, M.SelfPos)\n        else\n            local selfIndex = M.IndexOf(M.Config.FruCfg.JapanTowerFall, M.SelfPos)\n            if selfIndex <= towers[1].need - 1 then\n                towerIdx = 1\n            elseif towers[1].need - 1 < selfIndex and selfIndex <= towers[1].need + towers[2].need - 2 then\n                towerIdx = 2\n            elseif towers[1].need + towers[2].need - 2 < selfIndex and selfIndex <= 3 then\n                towerIdx = 3\n            end\n        end\n        M.Info(\"日基踩塔，去\" .. infoPos(towerIdx) .. \"塔\")\n    end\n\n    local towerPos = towers[towerIdx].entity.pos\n    data.MuAiGd_P1_SelfTowerInfo = { Index = towerIdx, Pos = towerPos }\n    if data.MuAiGd_P1_TowerCastingType == 40129 then\n        local posX, posZ\n        if towerPos.x > 100 then\n            posX = 106\n        else\n            posX = 94\n        end\n        if towerIdx == 1 then\n            posZ = 94\n        elseif towerIdx == 2 then\n            posZ = 100\n        elseif towerIdx == 3 then\n            posZ = 106\n        end\n        M.DirectTo(posX, posZ, 6000)\n    elseif data.MuAiGd_P1_TowerCastingType == 40133 then\n        M.DirectTo(towerPos.x, towerPos.z, 10000)\n    end\nelse\n\nend\nself.used = true\n",
+							actionLua = "local M = MuAiGuide\nif M.SelfPos ~= \"MT\" and M.SelfPos ~= \"ST\" then\n    local towers = table.deepcopy(data.MuAiGd_P1_Towers)\n    table.sort(towers, function(a, b)\n        return a.entity.pos.z < b.entity.pos.z\n    end)\n    local infoPos = function(index)\n        if index == 1 then\n            return \"上\"\n        elseif index == 2 then\n            return \"中\"\n        elseif index == 3 then\n            return \"下\"\n        end\n        return \"\"\n    end\n    local towerIdx\n    -- 小学塔\n    if M.Config.FruCfg.TakeTowerType == 1 then\n        local selfIndex = M.IndexOf(M.Config.FruCfg.FallTowerOrder, M.SelfPos)\n        if selfIndex <= towers[1].need then\n            towerIdx = 1\n        elseif towers[1].need < selfIndex and selfIndex <= towers[1].need + towers[2].need then\n            towerIdx = 2\n        elseif towers[1].need + towers[2].need < selfIndex and selfIndex <= 6 then\n            towerIdx = 3\n        end\n        M.Info(\"填充踩塔，去\" .. infoPos(towerIdx) .. \"塔\")\n    elseif M.Config.FruCfg.TakeTowerType == 2 then\n        if table.contains(M.Config.FruCfg.FixTowerUp, M.SelfPos) then\n            if M.Config.FruCfg.FixTowerUp[1] == M.SelfPos or towers[1].need >= 2 then\n                towerIdx = 1\n            else\n                if towers[2].need > 2 then\n                    towerIdx = 2\n                else\n                    towerIdx = 3\n                end\n            end\n        elseif table.contains(M.Config.FruCfg.FixTowerMid, M.SelfPos) then\n            if M.Config.FruCfg.FixTowerMid[1] == M.SelfPos or towers[2].need >= 2 then\n                towerIdx = 2\n            else\n                if towers[1].need > 2 then\n                    towerIdx = 1\n                else\n                    towerIdx = 3\n                end\n            end\n        elseif table.contains(M.Config.FruCfg.FixTowerDown, M.SelfPos) then\n            if M.Config.FruCfg.FixTowerDown[1] == M.SelfPos or towers[3].need >= 2 then\n                towerIdx = 3\n            else\n                if towers[1].need > 2 then\n                    towerIdx = 1\n                else\n                    towerIdx = 2\n                end\n            end\n        end\n        M.Info(\"固定踩塔，去\" .. infoPos(towerIdx) .. \"塔\")\n    elseif M.Config.FruCfg.TakeTowerType == 3 then\n        if table.contains(M.Config.FruCfg.JapanTowerFix, M.SelfPos) then\n            towerIdx = M.IndexOf(M.Config.FruCfg.JapanTowerFix, M.SelfPos)\n        else\n            local selfIndex = M.IndexOf(M.Config.FruCfg.JapanTowerFall, M.SelfPos)\n            if selfIndex <= towers[1].need - 1 then\n                towerIdx = 1\n            elseif towers[1].need - 1 < selfIndex and selfIndex <= towers[1].need + towers[2].need - 2 then\n                towerIdx = 2\n            elseif towers[1].need + towers[2].need - 2 < selfIndex and selfIndex <= 3 then\n                towerIdx = 3\n            end\n        end\n        M.Info(\"日基踩塔，去\" .. infoPos(towerIdx) .. \"塔\")\n    end\n\n    local towerPos = towers[towerIdx].entity.pos\n    data.MuAiGd_P1_SelfTowerInfo = { Index = towerIdx, Pos = towerPos }\n    if data.MuAiGd_P1_TowerCastingType == 40129 then\n        local posX, posZ\n        if towerPos.x > 100 then\n            posX = 106\n        else\n            posX = 94\n        end\n        if towerIdx == 1 then\n            posZ = 94\n        elseif towerIdx == 2 then\n            posZ = 100\n        elseif towerIdx == 3 then\n            posZ = 106\n        end\n        M.DirectTo(posX, posZ, 6000)\n    elseif data.MuAiGd_P1_TowerCastingType == 40133 then\n        M.DirectTo(towerPos.x, towerPos.z, 10000)\n    end\nelse\n    local posX, posZ\n    if M.SelfPos == \"MT\" then\n        posZ = 94\n    else\n        posZ = 106\n    end\n    if data.MuAiGd_P1_Towers[1].entity.pos.x > 100 then\n        data.MuAiGd_P1_TowerIsLeft = false\n        if data.MuAiGd_P1_TowerCastingType == 40129 then\n            posX = 94\n        elseif data.MuAiGd_P1_TowerCastingType == 40133 then\n            posX = 85\n        end\n    else\n        data.MuAiGd_P1_TowerIsLeft = true\n        if data.MuAiGd_P1_TowerCastingType == 40129 then\n            posX = 106\n        elseif data.MuAiGd_P1_TowerCastingType == 40133 then\n            posX = 115\n        end\n    end\n    M.DirectTo(posX, posZ, 10000)\nend\nself.used = true\n",
 							conditions = 
 							{
 								
@@ -1007,7 +1007,7 @@ local tbl =
 				uuid = "d313db81-8d8e-da94-8c73-d3d01aebbffc",
 				version = 2,
 			},
-			inheritedIndex = 7,
+			inheritedIndex = 3,
 		},
 		
 		{
@@ -1020,34 +1020,16 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if data.MuAiGd_P1_TowerCastingType == 40129 then\n    local posX, posZ\n    if data.MuAiGd_P1_SelfTowerInfo.Pos.x > 100 then\n        posX = 101\n    else\n        posX = 99\n    end\n    if data.MuAiGd_P1_SelfTowerInfo.Index == 1 then\n        posZ = 94\n    elseif data.MuAiGd_P1_SelfTowerInfo.Index == 2 then\n        posZ = 100\n    elseif data.MuAiGd_P1_SelfTowerInfo.Index == 3 then\n        posZ = 106\n    end\n    MuAiGuide.DirectTo(posX, posZ, 4000)\nend\nself.used = true\n",
-							conditions = 
-							{
-								
-								{
-									"d2d3b4e0-d500-7bf6-8aed-3e193e02d15a",
-									true,
-								},
-							},
+							actionLua = "if MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" then\n    if data.MuAiGd_P1_TowerCastingType == 40129 then\n        local posX, posZ\n        if data.MuAiGd_P1_SelfTowerInfo.Pos.x > 100 then\n            posX = 101\n        else\n            posX = 99\n        end\n        if data.MuAiGd_P1_SelfTowerInfo.Index == 1 then\n            posZ = 94\n        elseif data.MuAiGd_P1_SelfTowerInfo.Index == 2 then\n            posZ = 100\n        elseif data.MuAiGd_P1_SelfTowerInfo.Index == 3 then\n            posZ = 106\n        end\n        MuAiGuide.DirectTo(posX, posZ, 4000)\n    end\nelse\n    local posX, posZ\n    if data.MuAiGd_P1_TowerIsLeft == true then\n        posX = 101\n    else\n        posX = 99\n    end\n    if MuAiGuide.SelfPos == \"MT\" then\n        posZ = 94\n    else\n        posZ = 106\n    end\n    MuAiGuide.DirectTo(posX, posZ, 2500)\nend\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "56b76848-40a6-9c88-a384-92eb80bf56e2",
 							version = 2.1,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				conditions = 
 				{
-					
-					{
-						data = 
-						{
-							category = "Lua",
-							conditionLua = "return MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" ",
-							name = "非T",
-							uuid = "d2d3b4e0-d500-7bf6-8aed-3e193e02d15a",
-							version = 2,
-						},
-					},
 				},
 				mechanicTime = 140.9,
 				name = "[MuAiGuide]火靠近",
@@ -1071,7 +1053,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if data.MuAiGd_P1_TowerCastingType == 40129 then\n    local towerPos = data.MuAiGd_P1_SelfTowerInfo.Pos\n    MuAiGuide.DirectTo(towerPos.x, towerPos.z, 2100)\nend\nself.used = true\n",
+							actionLua = "if MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" and data.MuAiGd_P1_TowerCastingType == 40129 then\n    local towerPos = data.MuAiGd_P1_SelfTowerInfo.Pos\n    MuAiGuide.DirectTo(towerPos.x, towerPos.z, 2100)\nend\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "11df3678-7386-177e-aba4-19239e145091",
 							version = 2.1,
@@ -1653,41 +1635,20 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local guideTime = 5000\nlocal posTable = { math.pi * 11 / 8, math.pi * 9 / 8, math.pi * 7 / 8, math.pi * 5 / 8,\n                   math.pi * 13 / 8, math.pi * 15 / 8, math.pi * 1 / 8, math.pi * 3 / 8 }\nlocal posOrder = MuAiGuide.Config.FruCfg.FruLightRampantOrder\nlocal selfIndex = MuAiGuide.IndexOf(posOrder, MuAiGuide.SelfPos)\nlocal heading = posTable[selfIndex]\n\nlocal targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 6.5)\nMuAiGuide.DirectTo(targetPos.x, targetPos.z, guideTime)\nself.used = true\n",
-							conditions = 
-							{
-								
-								{
-									"d61da128-1e8a-58ef-a605-bd41ca15d360",
-									true,
-								},
-							},
+							actionLua = "local dropTable = {}\nif MuAiGuide.Config.FruCfg.FruLightRampantType == 1 then\n    if MuAiGuide.Config.FruCfg.FruLightRampantDropType == 1 then\n        dropTable = { {}, {} }\n        for i = 1, 4 do\n            local pos1 = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 7 / 8 - (i - 1) * math.pi / 4, 8)\n            table.insert(dropTable[1], pos1)\n            local pos2 = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 15 / 8 - (i - 1) * math.pi / 4, 8)\n            table.insert(dropTable[2], pos2)\n        end\n        table.insert(dropTable[1], { x = dropTable[1][4].x, y = 0, z = 114 })\n        table.insert(dropTable[2], { x = dropTable[2][4].x, y = 0, z = 86 })\n        local posUp = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math. pi * 7 / 8, 19)\n        local posDown = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, -math. pi / 8, 19)\n        table.insert(dropTable[1], posDown)\n        table.insert(dropTable[2], posUp)\n    else\n        dropTable = {\n            -- 1\n            [1] = {\n                { x = 103, z = 97 },\n                { x = 107.3, z = 92.7 },\n                { x = 108, z = 100 },\n                { x = 105.7, z = 105.7 },\n                { x = 100, z = 111 },\n            },\n            -- 4\n            [2] = {\n                { x = 97, z = 103 },\n                { x = 92.7, z = 107.3 },\n                { x = 92, z = 100 },\n                { x = 94.3, z = 94.3 },\n                { x = 100, z = 89 },\n            },\n        }\n        local posUp = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math. pi * 7 / 8, 19)\n        local posDown = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, -math. pi / 8, 19)\n        table.insert(dropTable[1], posDown)\n        table.insert(dropTable[2], posUp)\n    end\nelse\n    dropTable = {\n        -- D\n        [1] = {\n            { x = 92, z = 100 },\n            { x = 94.3, z = 94.3 },\n            { x = 100, z = 92, },\n            { x = 106, z = 90 },\n            { x = 112, z = 88 },\n            { x = 119, z = 100 },\n        },\n        -- B\n        [2] = {\n            { x = 108, z = 100 },\n            { x = 105.7, z = 105.7 },\n            { x = 100, z = 108, },\n            { x = 94, z = 110, },\n            { x = 88, z = 112 },\n            { x = 81, z = 100, },\n        }\n    }\nend\ndata.MuAiGd_P2_LightRampantDropPos = dropTable\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
-							name = "MGL光暴-预站位",
-							uuid = "2e6576e5-8d1c-70dc-a78e-692bd7a9da41",
+							uuid = "9d58ab7e-c3d1-fa76-b194-c2702ea11d90",
 							version = 2.1,
 						},
 					},
 				},
 				conditions = 
 				{
-					
-					{
-						data = 
-						{
-							category = "Lua",
-							conditionLua = "return MuAiGuide and MuAiGuide.Config.FruCfg.FruLightRampantType == 1",
-							name = "田园郡式",
-							uuid = "d61da128-1e8a-58ef-a605-bd41ca15d360",
-							version = 2,
-						},
-					},
 				},
 				mechanicTime = 331.8,
-				name = "[MuAiGuide]MGL光暴-预站位",
+				name = "[MuAiGuide]光之暴走-放圈位置定义",
 				timelineIndex = 80,
-				timerOffset = -5,
-				uuid = "38b9f6af-b0a3-156e-a702-5c7db4f787b1",
+				uuid = "04c8c1dd-c213-b432-ab82-1fd67b858a16",
 				version = 2,
 			},
 			inheritedIndex = 1,
@@ -1703,17 +1664,41 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local guideTime = 9000\nlocal buffId = 4157\nlocal M = MuAiGuide\nlocal linkBuff = TensorCore.getBuff(M.GetPlayer().id, buffId)\n\n-- 计算是否有线（是否有线BUFF）\nif linkBuff ~= nil then\n    --连线定名\n    local TGroup = {}\n    local DGroup = {}\n    for i = 1, 8 do\n        if i <= 4 then\n            table.insert(TGroup, MuAiGuide.Config.FruCfg.FruLightRampantOrder[i])\n        else\n            table.insert(DGroup, MuAiGuide.Config.FruCfg.FruLightRampantOrder[i])\n        end\n    end\n\n    local selfLinkOrder = 0 --计算自己是第几个有线\n    local targetHeading = 0\n    if table.contains(TGroup, M.SelfPos) then\n        local index = M.IndexOf(TGroup, M.SelfPos)\n        for i = 1, index do\n            local curPlayer = M.Party[TGroup[i]]\n            if TensorCore.getBuff(curPlayer.id, buffId) then\n                selfLinkOrder = selfLinkOrder + 1\n            end\n        end\n        if selfLinkOrder == 1 then\n            targetHeading = math.pi * 4 / 3\n            M.Info(\"我是上1，去左上。\")\n        elseif selfLinkOrder == 2 then\n            M.Info(\"我是上2，去下。\")\n            targetHeading = 0\n        elseif selfLinkOrder == 3 then\n            M.Info(\"我是上3，去右上。\")\n            targetHeading = math.pi * 2 / 3\n        elseif selfLinkOrder == 4 then\n            M.Info(\"我是上4，需要补位去左下。\")\n            targetHeading = math.pi * 5 / 3\n        end\n    elseif table.contains(DGroup, M.SelfPos) then\n        local index = M.IndexOf(DGroup, M.SelfPos)\n        for i = 1, index do\n            local curPlayer = M.Party[DGroup[i]]\n            if TensorCore.getBuff(curPlayer.id, buffId) then\n                selfLinkOrder = selfLinkOrder + 1\n            end\n        end\n        if selfLinkOrder == 1 then\n            M.Info(\"我是下1，去右下。\")\n            targetHeading = math.pi / 3\n        elseif selfLinkOrder == 2 then\n            M.Info(\"我是下2，去上。\")\n            targetHeading = math.pi\n        elseif selfLinkOrder == 3 then\n            M.Info(\"我是下3，去左下。\")\n            targetHeading = math.pi * 5 / 3\n        elseif selfLinkOrder == 4 then\n            targetHeading = math.pi * 2 / 3\n            M.Info(\"我是下4，需要补位去右上。\")\n        end\n    end\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, targetHeading, 18)\n    M.DirectTo(targetPos.x, targetPos.z, guideTime)\n\tdata.MuAiGd_P2_IsDrop = false\nelse\n    M.Info(\"被点名了，放五个圈。\")\n    data.MuAiGd_P2_IsDrop = true\nend\nself.used = true\n",
-							conditions = 
-							{
-								
-								{
-									"cf85f192-7932-8d1a-aa9a-11eb68d7a4f8",
-									true,
-								},
-							},
+							actionLua = "local guideTime = 5000\nif MuAiGuide.Config.FruCfg.FruLightRampantType == 1 then\n    local posTable = { math.pi * 11 / 8, math.pi * 9 / 8, math.pi * 7 / 8, math.pi * 5 / 8,\n                       math.pi * 13 / 8, math.pi * 15 / 8, math.pi * 1 / 8, math.pi * 3 / 8 }\n    local posOrder = MuAiGuide.Config.FruCfg.FruLightRampantOrder\n    local selfIndex = MuAiGuide.IndexOf(posOrder, MuAiGuide.SelfPos)\n    local heading = posTable[selfIndex]\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 6)\n    MuAiGuide.DirectTo(targetPos.x, targetPos.z, guideTime)\nelseif MuAiGuide.Config.FruCfg.FruLightRampantType == 2 then\n    local posOrder = { \"H2\", \"D2\", \"ST\", \"D4\", \"MT\", \"D3\", \"H1\", \"D1\" }\n    local selfIndex = MuAiGuide.IndexOf(posOrder, MuAiGuide.SelfPos)\n    local heading = (selfIndex - 1) * math.pi / 4\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 6)\n    MuAiGuide.DirectTo(targetPos.x, targetPos.z, guideTime)\nend\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
-							name = "MGL光暴-线分析&指路",
+							name = "预站位",
+							uuid = "2e6576e5-8d1c-70dc-a78e-692bd7a9da41",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 331.8,
+				name = "[MuAiGuide]光之暴走-预站位",
+				timelineIndex = 80,
+				timerOffset = -5,
+				uuid = "38b9f6af-b0a3-156e-a702-5c7db4f787b1",
+				version = 2,
+			},
+			inheritedIndex = 2,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local guideTime = 9000\nlocal buffId = 4157\nlocal M = MuAiGuide\nlocal linkBuff = TensorCore.getBuff(M.GetPlayer().id, buffId)\nlocal dropTable = data.MuAiGd_P2_LightRampantDropPos \nif M.Config.FruCfg.FruLightRampantType == 1 then\n    -- 计算是否有线（是否有线BUFF）\n    if linkBuff ~= nil then\n        --连线定名\n        local TGroup = {}\n        local DGroup = {}\n        for i = 1, 8 do\n            if i <= 4 then\n                table.insert(TGroup, M.Config.FruCfg.FruLightRampantOrder[i])\n            else\n                table.insert(DGroup, M.Config.FruCfg.FruLightRampantOrder[i])\n            end\n        end\n    \n        local selfLinkOrder = 0 --计算自己是第几个有线\n        local targetHeading = 0\n        if table.contains(TGroup, M.SelfPos) then\n            local index = M.IndexOf(TGroup, M.SelfPos)\n            for i = 1, index do\n                local curPlayer = M.Party[TGroup[i]]\n                if TensorCore.getBuff(curPlayer.id, buffId) then\n                    selfLinkOrder = selfLinkOrder + 1\n                end\n            end\n            if selfLinkOrder == 1 then\n                targetHeading = math.pi * 4 / 3\n                M.Info(\"上1，去左上踩塔。\")\n            elseif selfLinkOrder == 2 then\n                M.Info(\"上2，去下方踩塔。\")\n                targetHeading = 0\n            elseif selfLinkOrder == 3 then\n                M.Info(\"上3，去右上踩塔。\")\n                targetHeading = math.pi * 2 / 3\n            elseif selfLinkOrder == 4 then\n                M.Info(\"上4，补位，去左下踩塔。\")\n                targetHeading = math.pi * 5 / 3\n            end\n        elseif table.contains(DGroup, M.SelfPos) then\n            local index = M.IndexOf(DGroup, M.SelfPos)\n            for i = 1, index do\n                local curPlayer = M.Party[DGroup[i]]\n                if TensorCore.getBuff(curPlayer.id, buffId) then\n                    selfLinkOrder = selfLinkOrder + 1\n                end\n            end\n            if selfLinkOrder == 1 then\n                M.Info(\"下1，去右下踩塔。\")\n                targetHeading = math.pi / 3\n            elseif selfLinkOrder == 2 then\n                M.Info(\"下2，去上踩塔。\")\n                targetHeading = math.pi\n            elseif selfLinkOrder == 3 then\n                M.Info(\"下3，去左下踩塔。\")\n                targetHeading = math.pi * 5 / 3\n            elseif selfLinkOrder == 4 then\n                targetHeading = math.pi * 2 / 3\n                M.Info(\"下4，补位，去右上踩塔。\")\n            end\n        end\n        local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, targetHeading, 18)\n        M.DirectTo(targetPos.x, targetPos.z, guideTime)\n    else\n        M.Info(\"放圈点名。\")\n        local noBuffOther\n        for i = 1, 8 do\n            local curJobPos = M.JobPosName[i]\n            if curJobPos ~= M.SelfPos and TensorCore.getBuff(M.Party[curJobPos].id, buffId) == nil then\n                noBuffOther = curJobPos\n            end\n        end\n        --判断优先级\n        local selfIdx = M.IndexOf(M.Config.FruCfg.FruLightRampantOrder, M.SelfPos)\n        local otherIdx = M.IndexOf(M.Config.FruCfg.FruLightRampantOrder, noBuffOther)\n\n        if selfIdx < otherIdx then\n            M.DirectTo(dropTable[1][1].x ,dropTable[1][1].z, 2850)\n        else\n            M.DirectTo(dropTable[2][1].x ,dropTable[2][1].z, 2850)\n        end\n        data.MuAiGd_P2_IsDrop = true\n    end\nelseif M.Config.FruCfg.FruLightRampantType == 2 then\n    if linkBuff then\n        -- 灰9计数表，C逆 一周弧度算位置\n        local headings = {\n            [\"C\"] = 0,\n            [\"3\"] = math.pi / 3,\n            [\"2\"] = 2 * math.pi / 3,\n            [\"A\"] = math.pi,\n            [\"1\"] = 4 * math.pi / 3,\n            [\"4\"] = 5 * math.pi / 3\n        }\n\n        local valueTable = {\n            [\"MT\"] = { \"C\", \"/\", \"/\" },\n            [\"D4\"] = { \"1\", \"C\", \"/\" },\n            [\"ST\"] = { \"2\", \"1\", \"C\" },\n            [\"D2\"] = { \"4\", \"2\", \"1\" },\n            [\"H2\"] = { \"3\", \"4\", \"2\" },\n            [\"D1\"] = { \"A\", \"3\", \"4\" },\n            [\"H1\"] = { \"/\", \"A\", \"3\" },\n            [\"D3\"] = { \"/\", \"/\", \"A\" },\n        }\n\n        -- A顺优先级\n        local order = { \"MT\", \"D4\", \"ST\", \"D2\", \"H2\", \"D1\", \"H1\", \"D3\" }\n        local selfIndex = M.IndexOf(order, M.SelfPos)\n        local cnt = 0\n        for i = 1, selfIndex do\n            local curJobPos = order[i]\n            local curPlayer = M.Party[curJobPos]\n            if not TensorCore.getBuff(curPlayer.id, buffId) then\n                cnt = cnt + 1\n            end\n        end\n        local targetDir = valueTable[M.SelfPos][cnt + 1]\n        local targetHeading = headings[targetDir]\n        local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, targetHeading, 17)\n        M.DirectTo(targetPos.x, targetPos.z, guideTime)\n        data.MuAiGd_P2_IsDrop = false\n        M.Info(\"去\" .. targetDir .. \"点踩塔。\")\n    else\n        data.MuAiGd_P2_IsDrop = true\n        M.FruConfigUI(dropTable[1][1].x ,dropTable[1][1].z, 2850, 0.5)\n        M.FruConfigUI(dropTable[2][1].x ,dropTable[2][1].z, 2850, 0.5)\n    end\nend\nself.used = true\n",
+							gVar = "ACR_TensorRequiem3_CD",
+							name = "线分析&指路",
 							uuid = "63c0bd19-de44-6780-822c-251564f6c733",
 							version = 2.1,
 						},
@@ -1721,20 +1706,9 @@ local tbl =
 				},
 				conditions = 
 				{
-					
-					{
-						data = 
-						{
-							category = "Lua",
-							conditionLua = "return MuAiGuide and MuAiGuide.Config.FruCfg.FruLightRampantType == 1",
-							name = "田园郡式",
-							uuid = "cf85f192-7932-8d1a-aa9a-11eb68d7a4f8",
-							version = 2,
-						},
-					},
 				},
 				mechanicTime = 331.8,
-				name = "[MuAiGuide]MGL光暴-线分析&指路",
+				name = "[MuAiGuide]光之暴走-分析线&指路",
 				timelineIndex = 80,
 				timerOffset = 1,
 				uuid = "df04ad36-0dec-a5b8-86b0-2187c689b527",
@@ -1752,15 +1726,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local M = MuAiGuide\n--连线定名\nlocal TGroup = {}\nlocal DGroup = {}\nfor i = 1, 8 do\n    if i <= 4 then\n        table.insert(TGroup, MuAiGuide.Config.FruCfg.FruLightRampantOrder[i])\n    else\n        table.insert(DGroup, MuAiGuide.Config.FruCfg.FruLightRampantOrder[i])\n    end\nend\ndata.MuAiGd_LightRampantGroupUp = {}\ndata.MuAiGd_LightRampantGroupDown = {}\nlocal buffCnt = 0\nfor i = 1, 4 do\n    local curPlayer = M.Party[TGroup[i]]\n    if TensorCore.getBuff(curPlayer.id, 4157) then\n        buffCnt = buffCnt + 1\n        if buffCnt == 2 or buffCnt == 4 then\n            table.insert(data.MuAiGd_LightRampantGroupDown, TGroup[i])\n        else\n            table.insert(data.MuAiGd_LightRampantGroupUp, TGroup[i])\n        end\n    end\nend\nbuffCnt = 0\nfor i = 1, 4 do\n    local curPlayer = M.Party[DGroup[i]]\n    if TensorCore.getBuff(curPlayer.id, 4157) then\n        buffCnt = buffCnt + 1\n        if buffCnt == 2 or buffCnt == 4 then\n            table.insert(data.MuAiGd_LightRampantGroupUp, DGroup[i])\n        else\n            table.insert(data.MuAiGd_LightRampantGroupDown, DGroup[i])\n        end\n    end\nend\nself.used = true\n",
-							conditions = 
-							{
-								
-								{
-									"9fb670e4-237b-04bd-8112-2c00b7a31ac3",
-									true,
-								},
-							},
+							actionLua = "local M = MuAiGuide\nif M.Config.FruCfg.FruLightRampantType == 1 then\n    local TGroup = {}\n    local DGroup = {}\n    for i = 1, 8 do\n        if i <= 4 then\n            table.insert(TGroup, M.Config.FruCfg.FruLightRampantOrder[i])\n        else\n            table.insert(DGroup, M.Config.FruCfg.FruLightRampantOrder[i])\n        end\n    end\n    data.MuAiGd_LightRampantGroupUp = {}\n    data.MuAiGd_LightRampantGroupDown = {}\n    local buffCnt = 0\n    for i = 1, 4 do\n        local curPlayer = M.Party[TGroup[i]]\n        if TensorCore.getBuff(curPlayer.id, 4157) then\n            buffCnt = buffCnt + 1\n            if buffCnt == 2 or buffCnt == 4 then\n                table.insert(data.MuAiGd_LightRampantGroupDown, TGroup[i])\n            else\n                table.insert(data.MuAiGd_LightRampantGroupUp, TGroup[i])\n            end\n        end\n    end\n    buffCnt = 0\n    for i = 1, 4 do\n        local curPlayer = M.Party[DGroup[i]]\n        if TensorCore.getBuff(curPlayer.id, 4157) then\n            buffCnt = buffCnt + 1\n            if buffCnt == 2 or buffCnt == 4 then\n                table.insert(data.MuAiGd_LightRampantGroupUp, DGroup[i])\n            else\n                table.insert(data.MuAiGd_LightRampantGroupDown, DGroup[i])\n            end\n        end\n    end\nelseif M.Config.FruCfg.FruLightRampantType == 2 then\n    local valueTable = {\n        [\"MT\"] = { \"C\", \"/\", \"/\" },\n        [\"D4\"] = { \"1\", \"C\", \"/\" },\n        [\"ST\"] = { \"2\", \"1\", \"C\" },\n        [\"D2\"] = { \"4\", \"2\", \"1\" },\n        [\"H2\"] = { \"3\", \"4\", \"2\" },\n        [\"D1\"] = { \"A\", \"3\", \"4\" },\n        [\"H1\"] = { \"/\", \"A\", \"3\" },\n        [\"D3\"] = { \"/\", \"/\", \"A\" },\n    }\n    local left = { \"A\", \"1\", \"4\" }\n    data.MuAiGd_LightRampantGroupLeft = {}\n    data.MuAiGd_LightRampantGroupRight = {}\n    -- A顺优先级\n    local order = { \"MT\", \"D4\", \"ST\", \"D2\", \"H2\", \"D1\", \"H1\", \"D3\" }\n    local cnt = 0\n    for i = 1, 8 do\n        local curJobPos = order[i]\n        local curPlayer = M.Party[curJobPos]\n        local buff = TensorCore.getBuff(curPlayer.id, 4157)\n        if buff == nil then\n            cnt = cnt + 1\n        else\n            local index = cnt + 1\n            local endPos = valueTable[curJobPos][index]\n            if table.contains(left, endPos) then\n                table.insert(data.MuAiGd_LightRampantGroupLeft, curJobPos)\n            else\n                table.insert(data.MuAiGd_LightRampantGroupRight, curJobPos)\n            end\n        end\n    end\nend\nself.used = true\n\n\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "c641c1e0-c330-93d6-a98e-c1a1d2d5c619",
 							version = 2.1,
@@ -1769,194 +1735,15 @@ local tbl =
 				},
 				conditions = 
 				{
-					
-					{
-						data = 
-						{
-							category = "Lua",
-							conditionLua = "return MuAiGuide and MuAiGuide.Config.FruCfg.FruLightRampantType == 1",
-							name = "田园郡式",
-							uuid = "9fb670e4-237b-04bd-8112-2c00b7a31ac3",
-							version = 2,
-						},
-					},
 				},
 				mechanicTime = 331.8,
-				name = "[MuAiGuide]MGL光暴-上下分组统计",
+				name = "[MuAiGuide]光之暴走-分摊分组计算",
 				timelineIndex = 80,
 				timerOffset = 2,
 				uuid = "cb6be8aa-dbad-5a0b-aafb-b2019b193705",
 				version = 2,
 			},
-			inheritedIndex = 3,
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-				},
-				conditions = 
-				{
-				},
-				enabled = false,
-				mechanicTime = 331.8,
-				name = "------------------------",
-				timelineIndex = 80,
-				uuid = "df9ca235-046e-2fed-ba65-535f3c57a28a",
-				version = 2,
-			},
 			inheritedIndex = 4,
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "local guideTime = 5000\nlocal posOrder = { \"H2\", \"D2\", \"ST\", \"D4\", \"MT\", \"D3\", \"H1\", \"D1\" }\nlocal selfIndex = MuAiGuide.IndexOf(posOrder, MuAiGuide.SelfPos)\nlocal heading = (selfIndex - 1) * math.pi / 4\nlocal targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 6)\nMuAiGuide.DirectTo(targetPos.x, targetPos.z, guideTime)\nself.used = true\n",
-							conditions = 
-							{
-								
-								{
-									"d61da128-1e8a-58ef-a605-bd41ca15d360",
-									true,
-								},
-							},
-							gVar = "ACR_TensorRequiem3_CD",
-							name = "MGL光暴-预站位",
-							uuid = "2e6576e5-8d1c-70dc-a78e-692bd7a9da41",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-					
-					{
-						data = 
-						{
-							category = "Lua",
-							conditionLua = "return MuAiGuide and MuAiGuide.Config.FruCfg.FruLightRampantType == 2",
-							name = "灰9式",
-							uuid = "d61da128-1e8a-58ef-a605-bd41ca15d360",
-							version = 2,
-						},
-					},
-				},
-				mechanicTime = 331.8,
-				name = "[MuAiGuide]灰9光暴-预站位",
-				timelineIndex = 80,
-				timerOffset = -5,
-				uuid = "932d70b5-d3ab-f3f1-94b1-e21c9605aaad",
-				version = 2,
-			},
-			inheritedIndex = 5,
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "local guideTime = 9500\nlocal buffId = 4157\nlocal linkBuff = TensorCore.getBuff(MuAiGuide.GetPlayer().id, buffId)\nif linkBuff then\n    -- 灰9计数表，C逆 一周弧度算位置\n    local headings = {\n        [\"C\"] = 0,\n        [\"3\"] = math.pi / 3,\n        [\"2\"] = 2 * math.pi / 3,\n        [\"A\"] = math.pi,\n        [\"1\"] = 4 * math.pi / 3,\n        [\"4\"] = 5 * math.pi / 3\n    }\n\n    local valueTable = {\n        [\"MT\"] = { \"C\", \"/\", \"/\" },\n        [\"D4\"] = { \"1\", \"C\", \"/\" },\n        [\"ST\"] = { \"2\", \"1\", \"C\" },\n        [\"D2\"] = { \"4\", \"2\", \"1\" },\n        [\"H2\"] = { \"3\", \"4\", \"2\" },\n        [\"D1\"] = { \"A\", \"3\", \"4\" },\n        [\"H1\"] = { \"/\", \"A\", \"3\" },\n        [\"D3\"] = { \"/\", \"/\", \"A\" },\n    }\n\n    -- A顺优先级\n    local order = { \"MT\", \"D4\", \"ST\", \"D2\", \"H2\", \"D1\", \"H1\", \"D3\" }\n    local selfIndex = MuAiGuide.IndexOf(order, MuAiGuide.SelfPos)\n    local cnt = 0\n    for i = 1, selfIndex do\n        local curJobPos = order[i]\n        local curPlayer = MuAiGuide.Party[curJobPos]\n        if not TensorCore.getBuff(curPlayer.id, buffId) then\n            cnt = cnt + 1\n        end\n    end\n    local targetDir = valueTable[MuAiGuide.SelfPos][cnt + 1]\n    local targetHeading = headings[targetDir]\n    local targetPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, targetHeading, 17)\n    MuAiGuide.DirectTo(targetPos.x, targetPos.z, guideTime)\n\tdata.MuAiGd_P2_IsDrop = false\nelse\n    data.MuAiGd_P2_IsDrop = true\nend\nself.used = true\n",
-							conditions = 
-							{
-								
-								{
-									"b83bf4e1-6302-cb46-bd67-8ebfa3564893",
-									true,
-								},
-							},
-							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "a6c1ea18-2ef9-0376-85e3-11c4f319846d",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-					
-					{
-						data = 
-						{
-							category = "Lua",
-							conditionLua = "return MuAiGuide and MuAiGuide.Config.FruCfg.FruLightRampantType == 2",
-							name = "灰9式",
-							uuid = "b83bf4e1-6302-cb46-bd67-8ebfa3564893",
-							version = 2,
-						},
-					},
-				},
-				mechanicTime = 331.8,
-				name = "[MuAiGuide]灰9光暴-线分析&指路",
-				timelineIndex = 80,
-				timerOffset = 1,
-				uuid = "b40533b2-40cc-bd08-a899-c36cbb637e0f",
-				version = 2,
-			},
-			inheritedIndex = 6,
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "local valueTable = {\n    [\"MT\"] = { \"C\", \"/\", \"/\" },\n    [\"D4\"] = { \"1\", \"C\", \"/\" },\n    [\"ST\"] = { \"2\", \"1\", \"C\" },\n    [\"D2\"] = { \"4\", \"2\", \"1\" },\n    [\"H2\"] = { \"3\", \"4\", \"2\" },\n    [\"D1\"] = { \"A\", \"3\", \"4\" },\n    [\"H1\"] = { \"/\", \"A\", \"3\" },\n    [\"D3\"] = { \"/\", \"/\", \"A\" },\n}\nlocal left = { \"A\", \"1\", \"4\" }\ndata.MuAiGd_LightRampantGroupLeft = {}\ndata.MuAiGd_LightRampantGroupRight = {}\n-- A顺优先级\nlocal order = { \"MT\", \"D4\", \"ST\", \"D2\", \"H2\", \"D1\", \"H1\", \"D3\" }\nlocal cnt = 0\nfor i = 1, 8 do\n    local curJobPos = order[i]\n    local curPlayer = MuAiGuide.Party[curJobPos]\n    local buff = TensorCore.getBuff(curPlayer.id, 4157)\n    if buff == nil then\n        cnt = cnt + 1\n    else\n        local index = cnt + 1\n        local endPos = valueTable[curJobPos][index]\n        if table.contains(left, endPos) then\n            table.insert(data.MuAiGd_LightRampantGroupLeft, curJobPos)\n        else\n            table.insert(data.MuAiGd_LightRampantGroupRight, curJobPos)\n        end\n    end\nend\nself.used = true\n",
-							conditions = 
-							{
-								
-								{
-									"b83bf4e1-6302-cb46-bd67-8ebfa3564893",
-									true,
-								},
-							},
-							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "a6c1ea18-2ef9-0376-85e3-11c4f319846d",
-							version = 2.1,
-						},
-						inheritedIndex = 1,
-					},
-				},
-				conditions = 
-				{
-					
-					{
-						data = 
-						{
-							category = "Lua",
-							conditionLua = "return MuAiGuide and MuAiGuide.Config.FruCfg.FruLightRampantType == 2",
-							name = "灰9式",
-							uuid = "b83bf4e1-6302-cb46-bd67-8ebfa3564893",
-							version = 2,
-						},
-					},
-				},
-				mechanicTime = 331.8,
-				name = "[MuAiGuide]灰9光暴-左右分组统计",
-				timelineIndex = 80,
-				timerOffset = 2,
-				uuid = "4024946b-384d-3afd-9a92-b04378894619",
-				version = 2,
-			},
-			inheritedIndex = 7,
 		},
 	},
 	[82] = 
@@ -1984,7 +1771,7 @@ local tbl =
 				{
 				},
 				mechanicTime = 339.7,
-				name = "[MuAiGuide]分组修正",
+				name = "[MuAiGuide]光之暴走-分组补充",
 				timelineIndex = 82,
 				timerOffset = -2,
 				uuid = "c49867de-10d6-b9eb-9d12-6ac9faa926aa",
@@ -2003,7 +1790,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local M = MuAiGuide\nif data.MuAiGd_P2_LRDropTable == nil then\n    data.MuAiGd_P2_LRDropState = 1\n    local dropTable = {}\n    if M.Config.FruCfg.FruLightRampantType == 1 then\n        if M.Config.FruCfg.FruLightRampantDropType == 1 then\n            dropTable = { {}, {} }\n            for i = 1, 4 do\n                local pos1 = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 7 / 8 - (i - 1) * math.pi / 4, 8)\n                table.insert(dropTable[1], pos1)\n                local pos2 = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math.pi * 15 / 8 - (i - 1) * math.pi / 4, 8)\n                table.insert(dropTable[2], pos2)\n            end\n            table.insert(dropTable[1], { x = dropTable[1][4].x, y = 0, z = 114 })\n            table.insert(dropTable[2], { x = dropTable[2][4].x, y = 0, z = 86 })\n            local posUp = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math. pi * 7 / 8, 19)\n            local posDown = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, -math. pi / 8, 19)\n            table.insert(dropTable[1], posDown)\n            table.insert(dropTable[2], posUp)\n        else\n            dropTable = {\n                -- 4\n                [1] = {\n                    { x = 97, z = 103 },\n                    { x = 92.7, z = 107.3 },\n                    { x = 92, z = 100 },\n                    { x = 94.3, z = 94.3 },\n                    { x = 100, z = 89 },\n                },\n                -- 2\n                [2] = {\n                    { x = 103, z = 97 },\n                    { x = 107.3, z = 92.7 },\n                    { x = 108, z = 100 },\n                    { x = 105.7, z = 105.7 },\n                    { x = 100, z = 111 },\n                },\n            }\n            local posUp = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, math. pi * 7 / 8, 19)\n            local posDown = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, -math. pi / 8, 19)\n            table.insert(dropTable[1], posUp)\n            table.insert(dropTable[2], posDown)\n        end\n    else\n        dropTable = {\n            -- D\n            [1] = {\n                { x = 92, z = 100 },\n                { x = 94.3, z = 94.3 },\n                { x = 100, z = 92, },\n                { x = 106, z = 90 },\n                { x = 112, z = 88 },\n                { x = 119, z = 100 },\n            },\n            -- B\n            [2] = {\n                { x = 108, z = 100 },\n                { x = 105.7, z = 105.7 },\n                { x = 100, z = 108, },\n                { x = 94, z = 110, },\n                { x = 88, z = 112 },\n                { x = 81, z = 100, },\n            }\n        }\n    end\n    local playerPos = MuAiGuide.GetPlayer().pos\n    local distance1 = TensorCore.getDistance2d(dropTable[1][1], playerPos)\n    local distance2 = TensorCore.getDistance2d(dropTable[2][1], playerPos)\n    if distance1 < distance2 then\n        data.MuAiGd_P2_LRDropTable = dropTable[1]\n    else\n        data.MuAiGd_P2_LRDropTable = dropTable[2]\n    end\nend \nif data.MuAiGd_P2_LRDropTable ~= nil and data.MuAiGd_P2_LRDropState > 0 then\n    local curPos = data.MuAiGd_P2_LRDropTable[data.MuAiGd_P2_LRDropState]\n    MuAiGuide.FrameDirect(curPos.x, curPos.z)\nend \nself.used = true\n\n",
+							actionLua = "local M = MuAiGuide\nif data.MuAiGd_P2_LRDropTable == nil then\n    data.MuAiGd_P2_LRDropState = 1\n    local dropTable = data.MuAiGd_P2_LightRampantDropPos\n    local playerPos = M.GetPlayer().pos\n    local distance1 = TensorCore.getDistance2d(dropTable[1][1], playerPos)\n    local distance2 = TensorCore.getDistance2d(dropTable[2][1], playerPos)\n    if distance1 < distance2 then\n        data.MuAiGd_P2_LRDropTable = dropTable[1]\n    else\n        data.MuAiGd_P2_LRDropTable = dropTable[2]\n    end\nend\nif data.MuAiGd_P2_LRDropTable ~= nil and data.MuAiGd_P2_LRDropState > 0 then\n    local curPos = data.MuAiGd_P2_LRDropTable[data.MuAiGd_P2_LRDropState]\n    M.FrameDirect(curPos.x, curPos.z)\nend\nself.used = true\n\n",
 							conditions = 
 							{
 								
@@ -2034,7 +1821,7 @@ local tbl =
 				},
 				eventType = 12,
 				mechanicTime = 339.7,
-				name = "[MuAiGuide]放圈指路",
+				name = "[MuAiGuide]光之暴走-放圈指路",
 				randomOffset = 3.2000000476837,
 				timeRange = true,
 				timelineIndex = 82,
@@ -2068,7 +1855,7 @@ local tbl =
 				{
 				},
 				mechanicTime = 339.7,
-				name = "[MuAiGuide]放圈1",
+				name = "[MuAiGuide]光之暴走-放圈1完毕",
 				timelineIndex = 82,
 				uuid = "c16e0482-22ba-c8f9-9967-d0394ec98d1c",
 				version = 2,
@@ -2099,7 +1886,7 @@ local tbl =
 				{
 				},
 				mechanicTime = 341.3,
-				name = "[MuAiGuide]放圈2",
+				name = "[MuAiGuide]光之暴走-放圈2完毕",
 				timelineIndex = 83,
 				uuid = "61e92956-264b-9dd2-be52-513fc5dd4d76",
 				version = 2,
@@ -2130,7 +1917,7 @@ local tbl =
 				{
 				},
 				mechanicTime = 342.9,
-				name = "[MuAiGuide]放圈3",
+				name = "[MuAiGuide]光之暴走-放圈3完毕",
 				timelineIndex = 84,
 				uuid = "ebc998ee-3b70-8dae-ac3b-43d34b7021bb",
 				version = 2,
@@ -2213,7 +2000,7 @@ local tbl =
 				{
 				},
 				mechanicTime = 344.3,
-				name = "[MuAiGuide]放圈4",
+				name = "[MuAiGuide]光之暴走-放圈4完毕",
 				randomOffset = 0.10000000149012,
 				timelineIndex = 86,
 				uuid = "20096af3-c6cd-2ae7-9495-5b7c3ea3bf03",
@@ -2245,7 +2032,7 @@ local tbl =
 				{
 				},
 				mechanicTime = 345.9,
-				name = "[MuAiGuide]放圈5",
+				name = "[MuAiGuide]光之暴走-放圈5完毕",
 				timelineIndex = 87,
 				uuid = "a3f96fa1-b32d-ae88-a093-1747d1332164",
 				version = 2,
@@ -2294,12 +2081,12 @@ local tbl =
 					},
 				},
 				mechanicTime = 345.9,
-				name = "[MuAiGuide]放圈人分摊",
+				name = "[MuAiGuide]光之暴走-放圈人和人群合流",
 				timelineIndex = 87,
 				uuid = "4573448a-388b-0815-86bd-8a25e2db037d",
 				version = 2,
 			},
-			inheritedIndex = 3,
+			inheritedIndex = 2,
 		},
 	},
 	[91] = 
@@ -2361,7 +2148,7 @@ local tbl =
 				{
 				},
 				mechanicTime = 360.8,
-				name = "[MuAiGuide]分摊or分散",
+				name = "[MuAiGuide]光爆后-分摊or分散",
 				timelineIndex = 92,
 				timerOffset = -3,
 				uuid = "9aec1874-ca9e-70f8-8369-9cea58d56a80",
@@ -2392,7 +2179,7 @@ local tbl =
 				{
 				},
 				mechanicTime = 360.8,
-				name = "[MuAiGuide]8方分散",
+				name = "[MuAiGuide]光爆后-8方分散",
 				timelineIndex = 92,
 				uuid = "512895ab-c36c-02d0-b277-f03e589afade",
 				version = 2,
@@ -2590,7 +2377,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local guideTime = 6000\nlocal M = MuAiGuide\nif data.MuAiGd_RelativityFlag == nil then\n    data.MuAiGd_RelativityFlag = {\n        StartPos = false,\n        Fire = false,\n        Fire2 = false,\n        Delay = false,\n        ReturnBuff = false,\n        Converge = false,\n        Ice = false,\n        Turing = false,\n        TuringBack = false,\n        EndGuide = false\n    }\n    data.MuAiGd_P3_BackCenter = function()\n        if data.MuAiGd_P3_CenterPos == nil then\n            data.MuAiGd_P3_CenterPos = TensorCore.getPosInDirection({ x = 100, 0, z = 100 },\n                data.MuAiGd_SelfLight.heading, 1)\n        end\n        local targetPos = data.MuAiGd_P3_CenterPos\n        M.DirectTo(targetPos.x, targetPos.z, guideTime, 0.3)\n    end\nend\n-- 火\nlocal fire = TensorCore.getBuff(M.GetPlayer().id, 2455)\n-- 冰\nlocal ice = TensorCore.getBuff(M.GetPlayer().id, 2462)\n-- 分摊\nlocal converge = TensorCore.getBuff(M.GetPlayer().id, 2454)\n-- 回返（未放置）\nlocal delay = TensorCore.getBuff(M.GetPlayer().id, 2464)\n-- 暗焰\nlocal darkFlame = TensorCore.getBuff(M.GetPlayer().id, 2460)\n-- 回返（放置）\nlocal returnBuff = TensorCore.getBuff(M.GetPlayer().id, 2452)\n\n-- 初始位置\nif not data.MuAiGd_RelativityFlag.StartPos and (fire or ice) then\n    if data.MuAiGd_P3_1_type == 3 then\n        local targetPos = TensorCore.getPosInDirection({ x = 100, 0, z = 100 }, data.MuAiGd_SelfLight.heading, 15.5)\n        M.DirectTo(targetPos.x, targetPos.z, guideTime)\n    else\n        data.MuAiGd_P3_BackCenter()\n    end\n    data.MuAiGd_RelativityFlag.StartPos = true\nend\n\n-- 火BUFF\nif not data.MuAiGd_RelativityFlag.Fire and fire then\n    if data.MuAiGd_P3_1_type == 3 then\n        data.MuAiGd_RelativityFlag.Fire = true\n    elseif fire.duration < 5.1 then\n        local targetPos = TensorCore.getPosInDirection({ x = 100, 0, z = 100 }, data.MuAiGd_SelfLight.heading, 15.5)\n        M.DirectTo(targetPos.x, targetPos.z, guideTime)\n        data.MuAiGd_RelativityFlag.Fire = true\n        M.Info(\"火BUFF即将判定，去场外！\")\n    end\nend\n\nif data.MuAiGd_P3_1_type == 2 or data.MuAiGd_P3_1_type == 1 then\n    if not data.MuAiGd_RelativityFlag.Fire2 and (fire == nil or fire.duration < 0.1) then\n        data.MuAiGd_P3_BackCenter()\n        M.Info(\"火BUFF放置完毕，回场中。\")\n        data.MuAiGd_RelativityFlag.Fire2 = true\n    end\nend\n\n-- 回返\nif not data.MuAiGd_RelativityFlag.Delay and delay then\n    if delay.duration < 5.1 then\n        if darkFlame == nil then\n            targetPos = TensorCore.getPosInDirection({ x = 100, 0, z = 100 }, data.MuAiGd_SelfLight.heading, 1)\n            M.Info(\"场中放置回返。\")\n        else\n            targetPos = data.MuAiGd_SelfLight.entity.pos\n            M.Info(\"灯下放置回返。\")\n        end\n        data.MuAiGd_RelativityFlag.Delay = true\n        M.DirectTo(targetPos.x, targetPos.z, guideTime, 0.3)\n    end\nend\n\n-- 放完回返\nif not data.MuAiGd_RelativityFlag.ReturnBuff and returnBuff then\n    data.MuAiGd_RelativityFlag.ReturnBuff = true\n    if not fire or fire.duration >= 10 then\n        M.Info(\"回返放完了，回场中。\")\n        data.MuAiGd_P3_BackCenter()\n    end\nend\n\n-- 分摊\nif not data.MuAiGd_RelativityFlag.Converge and converge then\n    if converge.duration < 5.1 then\n        data.MuAiGd_P3_BackCenter()\n        M.Info(\"分摊，回场中。\")\n        data.MuAiGd_RelativityFlag.Converge = true\n    end\nend\n\n-- 冰\nif not data.MuAiGd_RelativityFlag.Ice and ice then\n    if ice.duration < 5.1 then\n        data.MuAiGd_P3_BackCenter()\n        M.Info(\"冰，回场中。\")\n        data.MuAiGd_RelativityFlag.Ice = true\n    end\nend\n\n-- 终点\nif data.MuAiGd_RelativityFlag.ReturnBuff and not data.MuAiGd_RelativityFlag.EndGuide then\n    if returnBuff == nil or returnBuff.duration < 0.1 then\n        local targetPos = TensorCore.getPosInDirection({ x = 100, 0, z = 100 }, data.MuAiGd_SelfLight.heading, 1)\n        MuAiGuide.DirectTo(targetPos.x, targetPos.z, 10000)\n        data.MuAiGd_RelativityFlag.EndGuide = true\n        M.Info(\"全BUFF处理完毕，回场中等待分摊！\")\n        self.used = true\n    end\nend\n\n-- 灯开始转了\n-- 黄/顺\nif not data.MuAiGd_RelativityFlag.Turing then\n    local turing = TensorCore.getBuff(data.MuAiGd_SelfLight.entity.id, 2970)\n    if turing and turing.duration > 0 then\n        local posDir\n        if turing.stacks == 269 then\n            M.Info(\"引导逆时针的灯!\")\n            posDir = data.MuAiGd_SelfLight.heading - 7 / 18 * math.pi;\n        elseif turing.stacks == 348 then\n            M.Info(\"引导顺时针的灯!\")\n            posDir = data.MuAiGd_SelfLight.heading + 7 / 18 * math.pi;\n        end\n        local pos = data.MuAiGd_SelfLight.entity.pos\n        if not M.Config.AnyOneReactionOn then\n            Argus2.addTimedArrowFilled(\n                guideTime,\n                pos.x, 0, pos.z,\n                2, 0.2, 1, 0.25,\n                posDir,\n                GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 0 / 255, 0.5),\n                GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 0 / 255, 0.5),\n                GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 0 / 255, 0.5),\n                0,\n                nil,\n                nil,\n                GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1),\n                1.0,\n                3,\n                0.05,\n                true\n            )\n        end\n        local targetPos = TensorCore.getPosInDirection(pos, posDir, 1.5)\n        M.DirectTo(targetPos.x, targetPos.z, guideTime, 0.2)\n        data.MuAiGd_RelativityFlag.Turing = true\n    end\nend\n\n-- 引导灯结束了 且 获得了火伤buff，需要回中了\nif data.MuAiGd_RelativityFlag.Turing and not data.MuAiGd_RelativityFlag.TuringBack then\n    local buff = TensorCore.getBuff(M.GetPlayer().id, 4383)\n    if buff and buff.duration >= 11 then\n        M.Info(\"引导灯完成, 回场中！\")\n        data.MuAiGd_P3_BackCenter()\n        data.MuAiGd_RelativityFlag.TuringBack = true\n    end\nend\n",
+							actionLua = "local guideTime = 6000\nlocal M = MuAiGuide\nif data.MuAiGd_RelativityFlag == nil then\n    data.MuAiGd_RelativityFlag = {\n        StartPos = false,\n        Fire = false,\n        Fire2 = false,\n        Delay = false,\n        ReturnBuff = false,\n        Converge = false,\n        Ice = false,\n        Turing = false,\n        TuringBack = false,\n        EndGuide = false\n    }\n    data.MuAiGd_P3_BackCenter = function()\n        if data.MuAiGd_P3_CenterPos == nil then\n            data.MuAiGd_P3_CenterPos = TensorCore.getPosInDirection({ x = 100, 0, z = 100 },\n                data.MuAiGd_SelfLight.heading, 1)\n        end\n        local targetPos = data.MuAiGd_P3_CenterPos\n        M.DirectTo(targetPos.x, targetPos.z, guideTime, 0.3)\n    end\nend\n-- 火\nlocal fire = TensorCore.getBuff(M.GetPlayer().id, 2455)\n-- 冰\nlocal ice = TensorCore.getBuff(M.GetPlayer().id, 2462)\n-- 分摊\nlocal converge = TensorCore.getBuff(M.GetPlayer().id, 2454)\n-- 回返（未放置）\nlocal delay = TensorCore.getBuff(M.GetPlayer().id, 2464)\n-- 暗焰\nlocal darkFlame = TensorCore.getBuff(M.GetPlayer().id, 2460)\n-- 回返（放置）\nlocal returnBuff = TensorCore.getBuff(M.GetPlayer().id, 2452)\n\n-- 初始位置\nif not data.MuAiGd_RelativityFlag.StartPos and (fire or ice) then\n    if data.MuAiGd_P3_1_type == 3 then\n        local targetPos = TensorCore.getPosInDirection({ x = 100, 0, z = 100 }, data.MuAiGd_SelfLight.heading, 15.5)\n        M.DirectTo(targetPos.x, targetPos.z, guideTime)\n    else\n        data.MuAiGd_P3_BackCenter()\n    end\n    data.MuAiGd_RelativityFlag.StartPos = true\nend\n\n-- 火BUFF\nif not data.MuAiGd_RelativityFlag.Fire and fire then\n    if data.MuAiGd_P3_1_type == 3 then\n        data.MuAiGd_RelativityFlag.Fire = true\n    elseif fire.duration < 5.1 then\n        local targetPos = TensorCore.getPosInDirection({ x = 100, 0, z = 100 }, data.MuAiGd_SelfLight.heading, 15.5)\n        M.DirectTo(targetPos.x, targetPos.z, guideTime)\n        data.MuAiGd_RelativityFlag.Fire = true\n        M.Info(\"火BUFF即将判定，去场外！\")\n    end\nend\n\nif data.MuAiGd_P3_1_type == 2 or data.MuAiGd_P3_1_type == 1 then\n    if not data.MuAiGd_RelativityFlag.Fire2 and (fire == nil or fire.duration < 0.1) then\n        data.MuAiGd_P3_BackCenter()\n        M.Info(\"火BUFF放置完毕，回场中。\")\n        data.MuAiGd_RelativityFlag.Fire2 = true\n    end\nend\n\n-- 回返\nif not data.MuAiGd_RelativityFlag.Delay and delay then\n    if delay.duration < 5.1 then\n        local targetPos\n        if darkFlame == nil then\n            targetPos = TensorCore.getPosInDirection({ x = 100, 0, z = 100 }, data.MuAiGd_SelfLight.heading, 1)\n            M.Info(\"场中放置回返。\")\n        else\n            local distance = TensorCore.getDistance2d({x = 100, y = 0, z = 100}, data.MuAiGd_SelfLight.entity.pos)\n            targetPos = TensorCore.getPosInDirection({x = 100, y = 0, z = 100}, data.MuAiGd_SelfLight.heading, distance - 0.8)\n            M.Info(\"灯下放置回返。\")\n        end\n        data.MuAiGd_RelativityFlag.Delay = true\n        M.DirectTo(targetPos.x, targetPos.z, guideTime, 0.3)\n    end\nend\n\n-- 放完回返\nif not data.MuAiGd_RelativityFlag.ReturnBuff and returnBuff then\n    data.MuAiGd_RelativityFlag.ReturnBuff = true\n    if not fire or fire.duration >= 10 then\n        M.Info(\"回返放完了，回场中。\")\n        data.MuAiGd_P3_BackCenter()\n    end\nend\n\n-- 分摊\nif not data.MuAiGd_RelativityFlag.Converge and converge then\n    if converge.duration < 5.1 then\n        data.MuAiGd_P3_BackCenter()\n        M.Info(\"分摊，回场中。\")\n        data.MuAiGd_RelativityFlag.Converge = true\n    end\nend\n\n-- 冰\nif not data.MuAiGd_RelativityFlag.Ice and ice then\n    if ice.duration < 5.1 then\n        data.MuAiGd_P3_BackCenter()\n        M.Info(\"冰，回场中。\")\n        data.MuAiGd_RelativityFlag.Ice = true\n    end\nend\n\n-- 终点\nif data.MuAiGd_RelativityFlag.ReturnBuff and not data.MuAiGd_RelativityFlag.EndGuide then\n    if returnBuff == nil or returnBuff.duration < 0.1 then\n        local targetPos = TensorCore.getPosInDirection({ x = 100, 0, z = 100 }, data.MuAiGd_SelfLight.heading, 1)\n        MuAiGuide.DirectTo(targetPos.x, targetPos.z, 10000)\n        data.MuAiGd_RelativityFlag.EndGuide = true\n        M.Info(\"全BUFF处理完毕，回场中等待分摊！\")\n        self.used = true\n    end\nend\n\n-- 灯开始转了\n-- 黄/顺\nif not data.MuAiGd_RelativityFlag.Turing then\n    local turing = TensorCore.getBuff(data.MuAiGd_SelfLight.entity.id, 2970)\n    if turing and turing.duration > 0 then\n        local posDir\n        if turing.stacks == 269 then\n            M.Info(\"引导逆时针的灯!\")\n            posDir = data.MuAiGd_SelfLight.heading - 3 / 8 * math.pi;\n        elseif turing.stacks == 348 then\n            M.Info(\"引导顺时针的灯!\")\n            posDir = data.MuAiGd_SelfLight.heading + 3 / 8 * math.pi;\n        end\n        local pos = data.MuAiGd_SelfLight.entity.pos\n        if not M.Config.AnyOneReactionOn then\n            Argus2.addTimedArrowFilled(\n                guideTime,\n                pos.x, 0, pos.z,\n                2, 0.2, 1, 0.25,\n                posDir,\n                GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 0 / 255, 0.5),\n                GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 0 / 255, 0.5),\n                GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 0 / 255, 0.5),\n                0,\n                nil,\n                nil,\n                GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1),\n                1.0,\n                3,\n                0.05,\n                true\n            )\n        end\n        local targetPos = TensorCore.getPosInDirection(pos, posDir, 1.5)\n        M.DirectTo(targetPos.x, targetPos.z, guideTime, 0.2)\n        data.MuAiGd_RelativityFlag.Turing = true\n    end\nend\n\n-- 引导灯结束了 且 获得了火伤buff，需要回中了\nif data.MuAiGd_RelativityFlag.Turing and not data.MuAiGd_RelativityFlag.TuringBack then\n    local buff = TensorCore.getBuff(M.GetPlayer().id, 4383)\n    if buff and buff.duration >= 11 then\n        M.Info(\"引导灯完成, 回场中！\")\n        data.MuAiGd_P3_BackCenter()\n        data.MuAiGd_RelativityFlag.TuringBack = true\n    end\nend\n",
 							conditions = 
 							{
 								
@@ -2667,6 +2454,7 @@ local tbl =
 						{
 							category = "Lua",
 							conditionLua = "return data.MuAiGd_P3_1_type ~= nil and data.MuAiGd_P3_1_type > 0 and MuAiGuide.Config.FruCfg.UltimateRelativityType == 2",
+							name = "已获取类型+日基",
 							uuid = "1bf477aa-4eff-c15c-ae59-e45662de9898",
 							version = 2,
 						},
@@ -2674,7 +2462,7 @@ local tbl =
 				},
 				eventType = 3,
 				mechanicTime = 532.4,
-				name = "[MuAiGuide]遗迹王国摇号",
+				name = "[MuAiGuide]日基摇号",
 				randomOffset = 10,
 				timeRange = true,
 				timelineIndex = 123,

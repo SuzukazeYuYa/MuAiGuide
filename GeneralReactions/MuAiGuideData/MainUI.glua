@@ -118,7 +118,12 @@ local DrawMainUI = function(M)
                 end
                 GUI:SameLine()
                 if ptMember.info ~= nil and ptMember.info.job ~= nil and ptMember.info.name ~= nil then
-                    GUI:Selectable( "   " .. M.GetJobNameById(ptMember.info.job) .. "      " .. ptMember.info.name,  IsSelected())
+                    if M.GetPlayer().id == ptMember.info.id then
+                        GUI:Selectable( "   " .. M.GetJobNameById(ptMember.info.job) .. "      " .. 'Bard',  IsSelected())
+                    else
+                        GUI:Selectable( "   " .. M.GetJobNameById(ptMember.info.job) .. "      " .. ptMember.info.name,  IsSelected())
+                    end
+                 
                 else
                     GUI:Selectable("   " .. "未知" .. "      " .. "未知玩家" .. i, IsSelected())
                 end

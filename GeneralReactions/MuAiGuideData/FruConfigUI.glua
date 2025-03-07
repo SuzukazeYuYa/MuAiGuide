@@ -363,6 +363,16 @@ local DrawFruConfigUI = function(M)
                         end
                         GUI:PopItemWidth()
                     end
+
+                    GUI:PushItemWidth(40)
+                    M.FruConfigUI.AddLabel("暗夜舞蹈引导：", false)
+                    local P3DarkestDanceTaker, P3DarkestDanceTakerChange = GUI:Combo("##P3DarkestDanceTaker", M.Config.FruCfg.P3DarkestDanceTaker, { "MT", "ST" }, 4)
+                    if P3DarkestDanceTakerChange then
+                        M.Config.FruCfg.P3DarkestDanceTaker = P3DarkestDanceTaker
+                    end
+                    GUI:SameLine()
+                    GUI:TextColored(255, 0, 0, 1, "※T玩家必填，其他人随意！")
+                    GUI:PopItemWidth()
                     GUI:TreePop()
                 end
             end
@@ -383,6 +393,15 @@ local DrawFruConfigUI = function(M)
                         M.Config.FruCfg.DarkLitChangeType = DarkLitChangeType
                     end
                     GUI:PopItemWidth()
+                   --[[ GUI:PushItemWidth(40)
+                    M.FruConfigUI.AddLabel("暗夜舞蹈引导：", false)
+                    local P4DarkestDanceTaker, P4DarkestDanceTakerChange = GUI:Combo("##P4DarkestDanceTaker", M.Config.FruCfg.P4DarkestDanceTaker, { "MT", "ST" }, 4)
+                    if P4DarkestDanceTakerChange then
+                        M.Config.FruCfg.P4DarkestDanceTaker = P4DarkestDanceTaker
+                    end
+                    GUI:SameLine()
+                    GUI:TextColored(255, 0, 0, 1, "※T玩家必填，其他人随意！")
+                    GUI:PopItemWidth()]]
                     GUI:TreePop()
                 end
                 GUI:Separator()

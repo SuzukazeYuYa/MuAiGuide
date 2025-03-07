@@ -292,12 +292,15 @@ M.CreateFruDefaultCfg = function()
         ApocalypseChangePos = 1,
         --- P3地火解法 1：车头法 2：人群法 3：起点法 4：双分组
         ApocalypseType = 1,
-
+        --- 暗夜舞蹈谁引导 1 MT 2 ST
+        P3DarkestDanceTaker = 1,
         ----------------------------- P4 -----------------------------
         --- 光暗龙诗优先级
         DarkLitOrder = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
         --- 光暗龙诗 翻花绳4边形时候 谁换，1左换，2右换
         DarkLitChangeType = 1,
+        --- 暗夜舞蹈谁引导 1 MT 2 ST
+        P4DarkestDanceTaker = 1,
         --- 时间结晶优先级
         CrystallizeTimePriority = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
         --- Buff 处理方式， 1，基本，2，日基

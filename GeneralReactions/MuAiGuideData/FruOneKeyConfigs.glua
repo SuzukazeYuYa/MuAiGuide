@@ -66,7 +66,8 @@
             ApocalypseChangePos = 1,
             --- P3地火解法 1：车头法 2：人群法 3：起点法 4：双分组
             ApocalypseType = 1,
-
+            --- 暗夜舞蹈谁引导 1 MT 2 ST
+            P3DarkestDanceTaker = 1,
             ----------------------------- P4 -----------------------------
             --- 光暗龙诗优先级
             DarkLitOrder = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
@@ -187,7 +188,8 @@
             ApocalypseChangePos = 1,
             --- P3地火解法 1：车头法 2：人群法 3：起点法 4：双分组
             ApocalypseType = 1,
-
+            --- 暗夜舞蹈谁引导 1 MT 2 ST
+            P3DarkestDanceTaker = 1,
             ----------------------------- P4 -----------------------------
             --- 光暗龙诗优先级
             DarkLitOrder = { "H1", "H2", "MT", "ST", "D1", "D2", "D3", "D4" },

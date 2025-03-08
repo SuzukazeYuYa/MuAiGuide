@@ -42,6 +42,8 @@
             DDChangeType = 1,
             --- DD 分组方式 1: A1D4/2B3C / 2: 2A1D/B4C3
             DDGroupType = 1,
+            --- DD 逆时针跑圈方式 1：全体逆，2:仅45度逆
+            DDRunType = 1,
             --- 滑冰提示TTS
             SkatingHit = 2,
             --- 镜子
@@ -164,6 +166,8 @@
             DDChangeType = 2,
             --- DD 分组方式 1: A1D4/2B3C / 2: 2A1D,B4C3
             DDGroupType = 2,
+            --- DD 逆时针跑圈方式 1：全体逆，2:仅45度逆
+            DDRunType = 2,
             --- 滑冰提示TTS
             SkatingHit = 2,
             --- 镜子

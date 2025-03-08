@@ -1233,7 +1233,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local drawTime = 13000\nlocal selfHeading = MuAiGuide.SetHeading2Pi(TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, data.MuAiGd_DiamondDustKnockBackPos))\nlocal distance = 16.1\nlocal lightBoss\nlocal startPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, selfHeading, distance)\nMuAiGuide.DrawCircleFloor(startPos.x, startPos.z, drawTime, 0.5)\n\nfor _, ent in pairs(TensorCore.entityList(\"contentid=13554\")) do\n    lightBoss = ent\n    break\nend\n\n\nlocal OP = { x = startPos.x - 100, z = startPos.z - 100 }\nlocal OB = { x = lightBoss.pos.x - 100, z = lightBoss.pos.z - 100 }\n\n-- 计算点积和模长，用于计算夹角\nlocal dotProduct = OP.x * OB.x + OP.z * OB.z\nlocal magnitudeOA = math.sqrt(OP.x ^ 2 + OP.z ^ 2)\nlocal magnitudeOB = math.sqrt(OB.x ^ 2 + OB.z ^ 2)\n\n-- 计算夹角\nlocal theta = math.acos(dotProduct / (magnitudeOA * magnitudeOB))\n-- 使用叉积判断方向\nlocal crossProduct = OP.x * OB.z - OP.z * OB.x\nif crossProduct < 0 then\n    theta = 2 * math.pi - theta\nend\nif MuAiGuide.IsSame(theta, 2 * math.pi) then\n    theta = 0\nend\nd(theta)\nlocal wide\nlocal endHeading\nlocal guideHeading\nif MuAiGuide.IsSame(math.pi / 4, theta) or MuAiGuide.IsSame(math.pi * 5 / 4, theta) then\n    MuAiGuide.Info(\"反跑135度！\")\n    wide = math.pi * 3 / 4\n    endHeading = selfHeading + wide / 2\n    guideHeading = selfHeading + wide\nelse\n    if MuAiGuide.IsSame(math.pi / 2, theta) or MuAiGuide.IsSame(math.pi * 3 / 2, theta) then\n        MuAiGuide.Info(\"正跑90度！\")\n        wide = math.pi / 2\n    elseif MuAiGuide.IsSame(math.pi * 3 / 4, theta) or MuAiGuide.IsSame(math.pi * 7 / 4, theta) then\n        MuAiGuide.Info(\"正跑135度！\")\n        wide = math.pi * 3 / 4\n    elseif MuAiGuide.IsSame(0, theta) or MuAiGuide.IsSame(math.pi, theta) then\n        MuAiGuide.Info(\"正跑180度！\")\n        wide = math.pi\n    end\n    endHeading = selfHeading - wide / 2\n    guideHeading = selfHeading - wide\nend\n\nlocal endPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, guideHeading, distance)\nMuAiGuide.DirectTo(endPos.x, endPos.z, drawTime)\n\nlocal posDrawer = Argus2.ShapeDrawer:new(\n    (GUI:ColorConvertFloat4ToU32(1, 0, 0, 0)),\n    (GUI:ColorConvertFloat4ToU32(1, 0, 0, 0)),\n    (GUI:ColorConvertFloat4ToU32(1, 0, 0, 0)),\n    (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n    5\n) \nposDrawer:addTimedCone(\n    drawTime,\n    100, 0, 100,\n    distance,\n    wide,\n    endHeading,\n    0,\n    false\n)\n\nself.used = true\n",
+							actionLua = "local drawTime = 13000\nlocal M = MuAiGuide\nfunction drawArcArrow(startPos, h, timeout)\n    local center = { x = 100, y = 0, z = 100 }\n    -- 圆周半径\n    local r = TensorCore.getDistance2d(center, startPos)\n    local firstH = TensorCore.getHeadingToTarget(center, startPos)\n    local hVale = math.abs(h)\n    local mark\n    if h > 0 then\n        mark = 1\n    else\n        mark = -1\n    end\n    local cnt = math.ceil(hVale / (math.pi / 36)) - 1\n    local rectLength = r * math.sin(math.pi / 72) * 2\n    local lastPos = startPos\n    local curH = firstH + mark * ( math.pi * 19 / 36 - 0.04)\n    local player = TensorCore.mGetPlayer()\n    local posDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n            (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n            10\n    )\n    for i = 1, cnt do\n        posDrawer:addTimedRect(timeout, lastPos.x, player.pos.y, lastPos.z,  rectLength + 0.02, 0.5, curH)\n        local dir = firstH + i * mark * math.pi / 36\n        lastPos = TensorCore.getPosInDirection(center, dir, r)\n        curH = curH + mark * math.pi / 36\n    end\n    local lastH = hVale - cnt * math.pi / 36\n    local lastLength = r * math.sin(lastH / 2) * 2\n    local endH = curH +  mark * lastH / 2\n    posDrawer:addTimedArrow(timeout, lastPos.x, player.pos.y, lastPos.z,  endH, lastLength - 1, 0.5, 1, 1,0)\nend\n\nlocal selfHeading = M.SetHeading2Pi(TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 },\n        data.MuAiGd_DiamondDustKnockBackPos))\nlocal distance = 16.1\nlocal startPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, selfHeading, distance)\nlocal lightBoss\nfor _, ent in pairs(TensorCore.entityList(\"contentid=13554\")) do\n    lightBoss = ent\n    break\nend\n\nlocal OP = { x = startPos.x - 100, z = startPos.z - 100 }\nlocal OB = { x = lightBoss.pos.x - 100, z = lightBoss.pos.z - 100 }\n-- 计算点积和模长，用于计算夹角\nlocal dotProduct = OP.x * OB.x + OP.z * OB.z\nlocal magnitudeOA = math.sqrt(OP.x ^ 2 + OP.z ^ 2)\nlocal magnitudeOB = math.sqrt(OB.x ^ 2 + OB.z ^ 2)\n-- 计算夹角\nlocal theta = math.acos(dotProduct / (magnitudeOA * magnitudeOB))\n-- 使用叉积判断方向\nlocal crossProduct = OP.x * OB.z - OP.z * OB.x\nif crossProduct < 0 then\n    theta = 2 * math.pi - theta\nend\nif M.IsSame(theta, 2 * math.pi) then\n    theta = 0\nend\nlocal wide\nlocal guideHeading\nlocal arrowHeading\nif M.IsSame(math.pi / 4, theta) or M.IsSame(math.pi * 5 / 4, theta) then\n    if M.Config.FruCfg.DDRunType == 1 then\n        M.Info(\"反跑135度！\")\n        wide = math.pi * 3 / 4\n        arrowHeading = math.pi * 3 / 4\n    else\n        if M.IsSame(math.pi / 4, theta) then\n            M.Info(\"反跑90度！\")\n            wide = math.pi / 2\n            arrowHeading = math.pi  / 2\n        else\n            M.Info(\"正跑90度！\")\n            wide = -math.pi / 2\n            arrowHeading = -math.pi / 2\n        end\n    end\n    guideHeading = M.SetHeading2Pi(selfHeading + wide)\nelse\n    clock = 1\n    if M.IsSame(math.pi / 2, theta) or M.IsSame(math.pi * 3 / 2, theta) then\n        M.Info(\"正跑90度！\")\n        wide = math.pi / 2\n        arrowHeading = -math.pi / 2\n    elseif M.IsSame(math.pi * 3 / 4, theta) or M.IsSame(math.pi * 7 / 4, theta) then\n        M.Info(\"正跑135度！\")\n        wide = math.pi * 3 / 4\n        arrowHeading = -math.pi * 3 / 4\n    elseif M.IsSame(0, theta) or M.IsSame(math.pi, theta) then\n        M.Info(\"正跑180度！\")\n        wide = math.pi\n        arrowHeading = -math.pi\n    end\n    guideHeading = selfHeading - wide\nend\nlocal endPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, guideHeading, distance)\nM.DirectTo(endPos.x, endPos.z, drawTime)\nlocal arrowPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, selfHeading, 18)\ndrawArcArrow(arrowPos, arrowHeading, drawTime)\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "80339835-c5e5-2000-be6a-7a3bf542d52d",
 							version = 2.1,
@@ -1245,7 +1245,7 @@ local tbl =
 				{
 				},
 				mechanicTime = 251.1,
-				name = "[MuAiGuide]跑圈方向",
+				name = "[MuAiGuide]跑圈",
 				timelineIndex = 50,
 				timerOffset = 1,
 				uuid = "ba5a2f21-2839-d605-a4b2-0636a2a4737d",
@@ -1452,21 +1452,56 @@ local tbl =
 			},
 		},
 	},
-	[62] = 
+	[61] = 
 	{
 		
 		{
 			data = 
 			{
-				name = "[Core] Dash To Boss",
-				uuid = "2e88c0d7-7952-0d8c-b940-ac07ab9efb15",
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local posDrawer2 = Argus2.ShapeDrawer:new(\n        (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n        nil,\n        (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(1, 1, 1, 0.5)),\n        0.8\n)\nposDrawer2:addTimedArrowOnEnt(8000, MuAiGuide.GetPlayer().id, 31, 0.3, 1, 0.3, nil, 0, true)\nself.used = true\n",
+							conditions = 
+							{
+								
+								{
+									"235416e3-9403-d65e-afc0-02998fddfef5",
+									true,
+								},
+							},
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "ca0d0175-c170-e0ab-83d0-1a8d3c002a95",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return MuAiGuide.Config.AnyOneReactionOn == false",
+							name = "检查设置",
+							uuid = "235416e3-9403-d65e-afc0-02998fddfef5",
+							version = 2,
+						},
+					},
+				},
+				mechanicTime = 272.3,
+				name = "[MuAiGuide]滑冰瞄准器",
+				timelineIndex = 61,
+				timerOffset = -8,
+				uuid = "1ec79cf5-514d-f465-8d45-a85d9ddb013f",
 				version = 2,
 			},
-			inheritedObjectUUID = "264f0845-7e4a-cdd6-bb2d-79177b270d51",
-			inheritedOverwrites = 
-			{
-				timerStartOffset = -0.10000000149012,
-			},
+			inheritedIndex = 1,
 		},
 	},
 	[68] = 

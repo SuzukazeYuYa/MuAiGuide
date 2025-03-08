@@ -221,12 +221,20 @@ local DrawFruConfigUI = function(M)
                     if DDGroupTypeIdxChange then
                         M.Config.FruCfg.DDGroupType = DDGroupType
                     end
+                    M.FruConfigUI.AddLabel("逆时针跑圈方式：", false, 165)
+                    GUI:PushItemWidth(120)
+                    local DDRunType, DDRunTypeChange = GUI:Combo("##DDRunType", M.Config.FruCfg.DDRunType, { "全体成员都逆", "仅分身在45度逆" }, 4)
+                    if DDRunTypeChange then
+                        M.Config.FruCfg.DDRunType = DDRunType
+                    end
+                    GUI:PopItemWidth()
                     M.FruConfigUI.AddLabel("滑冰倒计时提示：", false, 165)
                     GUI:PushItemWidth(50)
                     local SkatingHit, SkatingHitChange = GUI:Combo("##SkatingHit", M.Config.FruCfg.SkatingHit, { "TTS", "噪音", "关闭" }, 4)
                     if SkatingHitChange then
                         M.Config.FruCfg.SkatingHit = SkatingHit
-                    end
+                    end                
+                   
                     GUI:PopItemWidth()
                     GUI:TreePop()
                 end

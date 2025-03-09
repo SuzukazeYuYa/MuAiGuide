@@ -455,7 +455,7 @@ local DrawFruConfigUI = function(M)
                             local buffId = tonumber(M.Config.FruCfg.CrystallizeTimeByBuff[index])
                             local buffIndex = M.IndexOf(buffIds, buffId)
                             M.FruConfigUI.AddLabel("[" .. labels[index] .. "]", true)
-                            local newIndex, changed = GUI:Combo("##POS" .. i, buffIndex, buffNames, 4)
+                            local newIndex, changed = GUI:Combo("##POS" .. index, buffIndex, buffNames, 4)
                             if changed then
                                 local newBuff = buffIds[newIndex]
                                 local oldIndex
@@ -465,7 +465,7 @@ local DrawFruConfigUI = function(M)
                                         break
                                     end
                                 end
-                                M.Config.FruCfg.CrystallizeTimeByBuff[i] = M.Config.FruCfg.CrystallizeTimeByBuff[oldIndex]
+                                M.Config.FruCfg.CrystallizeTimeByBuff[index] = M.Config.FruCfg.CrystallizeTimeByBuff[oldIndex]
                                 M.Config.FruCfg.CrystallizeTimeByBuff[oldIndex] = buffId
                             end
                             if i == 1 then

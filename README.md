@@ -16,7 +16,7 @@ FF14 Minion TensorReactions用指路轴
 <br>$${\color{red}如果需要修改副本设置，请尽量在开始战斗之前设置好，最好是进本之前就调好。}$$
 <br>2、设置除了小队列表部分外均会自动存档，如果你需要备份存档等操作，处理存档文件即可。
 <br>存档文件保存位置为：\Bots\FFXIVMinion64\LuaMods\MuAiGuide\MuAiGuideConfig.lua
-##主UI细节说明
+## 主UI细节说明
 ![image](https://github.com/user-attachments/assets/bf5bbc0f-f639-4815-9a3d-689982f95e88)
 ### 全局设置： 
 #### ANYONE是否开启

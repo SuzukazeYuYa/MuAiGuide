@@ -42,7 +42,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance\nif TensorCore.isAnyEntityCasting(40144) then -- 火\n    data.MuAiGd_P1_8_Type1 = 1\n    distance = 7\n    MuAiGuide.Info(\"八方然后分摊。\")\nelse\n    data.MuAiGd_P1_8_Type1 = 2\n    local melees = { \"MT\", \"ST\", \"D1\", \"D2\" }\n\n    if table.contains(melees, MuAiGuide.SelfPos) then\n        distance = 7\n    else\n        distance = 14\n    end\n    MuAiGuide.Info(\"八方然后分散。\")\nend\nlocal pos = TensorCore.getPosInDirection(bossPos, data.MuAiGd_P1_8_BaseHeading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 5000)\nself.used = true\n",
+							actionLua = "local bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance\nif TensorCore.isAnyEntityCasting(40144) then -- 火\n    data.MuAiGd_P1_8_Type1 = 1\n    distance = 6\n    MuAiGuide.Info(\"八方然后分摊。\")\nelse\n    data.MuAiGd_P1_8_Type1 = 2\n    local melees = { \"MT\", \"ST\", \"D1\", \"D2\" }\n    if table.contains(melees, MuAiGuide.SelfPos) then\n        distance = 6\n    else\n        distance = 14\n    end\n    MuAiGuide.Info(\"八方然后分散。\")\nend\nlocal pos = TensorCore.getPosInDirection(bossPos, data.MuAiGd_P1_8_BaseHeading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 5000)\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "25e6b076-bdfc-d583-b16b-027d0cb6cd1c",
 							version = 2.1,
@@ -380,7 +380,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, data.MuAiGd_P1_8_BaseHeading, 13)\nMuAiGuide.DirectTo(pos.x, pos.z, 10000)\nself.used = true",
+							actionLua = "local melees = { \"MT\", \"ST\", \"D1\", \"D2\" }\nlocal distance \nif not table.contains(melees, MuAiGuide.SelfPos) or (MuAiGuide.Config.FruCfg.ProteanType == 2 and MuAiGuide.SelfPos == \"ST\") then\n    distance = 13\nelse\n    distance = 6\nend\nlocal pos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, data.MuAiGd_P1_8_BaseHeading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 10000)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "822af936-8a44-e797-ba24-4875441a33c4",
 							version = 2.1,

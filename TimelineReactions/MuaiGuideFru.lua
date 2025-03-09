@@ -60,35 +60,6 @@ local tbl =
 				version = 2,
 			},
 		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "local dropTable = {\n    -- 2\n    [1] = {\n        { x = 97, z = 103 },\n        { x = 92.7, z = 107.3 },\n        { x = 92, z = 100 },\n        { x = 94.3, z = 94.3 },\n        { x = 100, z = 89 },\n    },\n    -- 4\n    [2] = {\n        { x = 103, z = 97 },\n        { x = 107.3, z = 92.7 },\n        { x = 108, z = 100 },\n        { x = 105.7, z = 105.7 },\n        { x = 100, z = 111 },\n    },\n}\nlocal poses = dropTable[1]\nfor i = 1, 5 do\n    local pos = poses[i]\nMuAiGuide.DrawCircleUI(pos.x , pos.z, 5000, 0.5)\nend\nself.used = true",
-							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "004fe8ef-6f16-c2ff-aee9-2e25819d0dd0",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-				},
-				enabled = false,
-				mechanicTime = 13.7,
-				name = "test",
-				timelineIndex = 1,
-				uuid = "415efcb0-ef85-8ef6-bbf4-a65d9b8f2789",
-				version = 2,
-			},
-		},
 	},
 	
 	{
@@ -1465,7 +1436,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local posDrawer2 = Argus2.ShapeDrawer:new(\n        (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n        nil,\n        (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(1, 1, 1, 0.5)),\n        0.8\n)\nposDrawer2:addTimedArrowOnEnt(8000, MuAiGuide.GetPlayer().id, 31, 0.3, 1, 0.3, nil, 0, true)\nself.used = true\n",
+							actionLua = "local posDrawer2 = Argus2.ShapeDrawer:new(\n        (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n        nil,\n        (GUI:ColorConvertFloat4ToU32(0, 1, 0, 0.5)),\n        (GUI:ColorConvertFloat4ToU32(1, 1, 1, 0.5)),\n        0.8\n)\n\nposDrawer2:addArrow(Player.pos.x, Player.pos.y, Player.pos.z, Player.camera.h + math.pi, 31, 0.3, 1, 0.3, true)\nself.used = true",
 							conditions = 
 							{
 								
@@ -1494,43 +1465,17 @@ local tbl =
 						},
 					},
 				},
-				enabled = false,
+				eventType = 12,
 				mechanicTime = 272.3,
-				name = "[MuAiGuide]滑冰瞄准器（不好用）",
+				name = "[MuAiGuide]滑冰瞄准",
+				timeRange = true,
 				timelineIndex = 61,
 				timerOffset = -8,
+				timerStartOffset = -8,
 				uuid = "1ec79cf5-514d-f465-8d45-a85d9ddb013f",
 				version = 2,
 			},
 			inheritedIndex = 1,
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "d(Player.camera)\nself.used = true",
-							gVar = "ACR_TensorMagnum3_CD",
-							uuid = "900ee743-a5b7-d3bc-87e0-c3070a844135",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-				},
-				mechanicTime = 272.3,
-				name = "123",
-				timelineIndex = 61,
-				uuid = "c8cd9a58-d1a7-91b2-9beb-1277d2c0f89a",
-				version = 2,
-			},
 		},
 	},
 	[68] = 

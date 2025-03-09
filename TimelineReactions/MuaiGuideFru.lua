@@ -3942,6 +3942,7 @@ local tbl =
 							uuid = "5b9a62df-cb5f-675a-b1f4-849ac93d6dc9",
 							version = 2.1,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				conditions = 

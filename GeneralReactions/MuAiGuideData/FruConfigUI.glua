@@ -28,19 +28,23 @@ local DrawFruConfigUI = function(M)
             if GUI:CollapsingHeader("全局设置") then
                 GUI:BulletText("一键切换：")
                 GUI:TextColored(255, 255, 0, 1, "※以下均为默认设置，有多种打法的部分仍需要设置！")
-                GUI:Button("默认", 100, 20)
+                GUI:Button("默认", 150, 20)
                 if GUI:IsItemClicked(0) then
                     M.Config.FruCfg = M.CreateFruDefaultCfg()
                 end
-                GUI:SameLine()
-                GUI:Button("日基", 100, 20)
+                GUI:SameLine(0, 30)
+                GUI:Button("日基", 150, 20)
                 if GUI:IsItemClicked(0) then
                     M.FastJapanConfig()
                 end
-                GUI:SameLine()
-                GUI:Button("莫古力", 100, 20)
+                GUI:Button("莫古力", 150, 20)
                 if GUI:IsItemClicked(0) then
                     M.FastMgl()
+                end
+                GUI:SameLine(0, 30)
+                GUI:Button("莫灵喵", 150, 20)
+                if GUI:IsItemClicked(0) then
+                    M.FastMLM()
                 end
                 GUI:Separator()
                 M.FruConfigUI.AddLabel("基础八方：", false, 93)
@@ -306,9 +310,16 @@ local DrawFruConfigUI = function(M)
                 if GUI:TreeNode("1.时间压缩·绝") then
                     M.FruConfigUI.AddLabel("处理方案：", false)
                     GUI:PushItemWidth(80)
-                    local UltimateRelativityType, UltimateRelativityTypeChange = GUI:Combo("##UltimateRelativityType", M.Config.FruCfg.UltimateRelativityType, { "灰九式", "日野主流" }, 4)
+                    local UltimateRelativityType, UltimateRelativityTypeChange = GUI:Combo("##UltimateRelativityType", M.Config.FruCfg.UltimateRelativityType, { "灰九瞪眼", "日野摇号", "莫莫科技" }, 4)
                     if UltimateRelativityTypeChange then
                         M.Config.FruCfg.UltimateRelativityType = UltimateRelativityType
+                    end
+                    if M.Config.FruCfg.UltimateRelativityType == 1 then
+                        GUI:TextColored(0, 255, 255, 1, "   ※看小队列表获取优先级")
+                    elseif M.Config.FruCfg.UltimateRelativityType == 2 then
+                        GUI:TextColored(0, 255, 255, 1, "   ※日基自动摇号，根据摇到的号确定优先级")
+                    elseif M.Config.FruCfg.UltimateRelativityType == 3 then
+                        GUI:TextColored(0, 255, 255, 1, "   ※莫灵喵式，根据头顶标点确定优先级")
                     end
                     GUI:PopItemWidth()
                     GUI:TreePop()
@@ -318,7 +329,7 @@ local DrawFruConfigUI = function(M)
                 if GUI:TreeNode("2.启示录") then
                     GUI:PushItemWidth(80)
                     M.FruConfigUI.AddLabel("处理方案：", false)
-                    local ApocalypseGroupType, ApocalypseGroupTypeCg = GUI:Combo("##ApocalypseGroupType", M.Config.FruCfg.ApocalypseGroupType, { "预站位", "科技标点", "日野主流", "双分组" }, 4)
+                    local ApocalypseGroupType, ApocalypseGroupTypeCg = GUI:Combo("##ApocalypseGroupType", M.Config.FruCfg.ApocalypseGroupType, { "预站位", "莫莫科技", "日野主流", "双分组" }, 4)
                     if ApocalypseGroupTypeCg then
                         M.Config.FruCfg.ApocalypseGroupType = ApocalypseGroupType
                     end
@@ -328,7 +339,7 @@ local DrawFruConfigUI = function(M)
                     elseif M.Config.FruCfg.ApocalypseGroupType == 3 then
                         GUI:TextColored(0, 255, 255, 1, "   ※上下预站位，高优先级交换")
                     elseif M.Config.FruCfg.ApocalypseGroupType == 2 then
-                        GUI:TextColored(0, 255, 255, 1, "   ※不预站位，ACT标记攻击左非攻击右（莫灵喵）")
+                        GUI:TextColored(0, 255, 255, 1, "   ※莫灵喵标记攻击左非攻击右")
                     else
                         GUI:TextColored(0, 255, 255, 1, "   ※双分组固定站位")
                     end

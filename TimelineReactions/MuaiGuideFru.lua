@@ -1494,14 +1494,43 @@ local tbl =
 						},
 					},
 				},
+				enabled = false,
 				mechanicTime = 272.3,
-				name = "[MuAiGuide]滑冰瞄准器",
+				name = "[MuAiGuide]滑冰瞄准器（不好用）",
 				timelineIndex = 61,
 				timerOffset = -8,
 				uuid = "1ec79cf5-514d-f465-8d45-a85d9ddb013f",
 				version = 2,
 			},
 			inheritedIndex = 1,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "d(Player.camera)\nself.used = true",
+							gVar = "ACR_TensorMagnum3_CD",
+							uuid = "900ee743-a5b7-d3bc-87e0-c3070a844135",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 272.3,
+				name = "123",
+				timelineIndex = 61,
+				uuid = "c8cd9a58-d1a7-91b2-9beb-1277d2c0f89a",
+				version = 2,
+			},
 		},
 	},
 	[68] = 
@@ -3195,23 +3224,6 @@ local tbl =
 				timerOffset = -4,
 				uuid = "3014db00-9808-8e92-ace6-085fd57dd984",
 				version = 2,
-			},
-		},
-	},
-	[159] = 
-	{
-		
-		{
-			data = 
-			{
-				name = "[Kaze] Potion",
-				uuid = "baf4dad5-40d5-ce13-b11d-a18f325cd2e4",
-				version = 2,
-			},
-			inheritedObjectUUID = "b02f4064-9d8d-a4f4-9a26-1f408ef229bf",
-			inheritedOverwrites = 
-			{
-				timerStartOffset = 6.1999998092651,
 			},
 		},
 	},

@@ -76,7 +76,7 @@
             --- 光暗龙诗 翻花绳4边形时候 谁换，1左换，2右换
             DarkLitChangeType = 1,
             --- 时间结晶优先级
-            CrystallizeTimePriority = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
+            CrystallizeTimePriority = { "H1", "H2", "MT", "ST","D1", "D2", "D3", "D4" },
             --- Buff 处理方式， 1，基本，2，日基
             CrystallizeTimeBuffType = 1,
             --- 时间结晶处理方式：1:固定吃，2:标点，3:自动摇号

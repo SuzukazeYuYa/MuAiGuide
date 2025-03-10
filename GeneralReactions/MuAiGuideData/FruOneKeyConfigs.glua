@@ -80,9 +80,10 @@
             --- Buff 处理方式， 1，基本，2，日基
             CrystallizeTimeBuffType = 1,
             --- 时间结晶处理方式：1:固定吃，2:标点，3:自动摇号
-            CrystallizeTimeType = 1,
+            CrystallizeTimeType = 3,
             --- 时间结晶击退处理方式：1 Y字， 2：角落
-            CrystallizeTimeKnockBack = 1,
+            CrystallizeTimeKnockBack = 2,
+            CrystallizeTimeKnockCType = 2,
             -- 固定吃, 顺序
             CrystallizeTimeByBuff = {
                 2462, -- 冰
@@ -92,10 +93,10 @@
             },
 
             CrystallizeMark = {
-                ["D"] = 1,
-                ["B"] = 2,
-                ["3"] = 3,
-                ["4"] = 4
+                ["D"] = 4,
+                ["B"] = 1,
+                ["3"] = 2,
+                ["4"] = 3
             },
 
             ----------------------------- P4 -----------------------------
@@ -207,6 +208,7 @@
             CrystallizeTimeType = 3,
             --- 时间结晶击退处理方式：1 Y字， 2：角落
             CrystallizeTimeKnockBack = 1,
+            CrystallizeTimeKnockCType = 1,
             -- 固定吃, 顺序
             CrystallizeTimeByBuff = {
                 2462, -- 冰
@@ -332,6 +334,8 @@
             CrystallizeTimeType = 2,
             --- 时间结晶击退处理方式：1 Y字， 2：角落
             CrystallizeTimeKnockBack = 1,
+            
+            CrystallizeTimeKnockCType = 1,
             -- 固定吃, 顺序
             CrystallizeTimeByBuff = {
                 2462, -- 冰

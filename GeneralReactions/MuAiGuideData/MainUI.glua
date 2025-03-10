@@ -211,7 +211,7 @@ local DrawMainUI = function(M)
                 end
                 GUI:PopItemWidth()
                 GUI:SameLine(0, 50)
-                GUI:Button("开始调试", 100, 20)
+                GUI:Button("开始调试", 120, 20)
                 if GUI:IsItemClicked(0) then
                     d(M.IndexOf(M.JobPosName, M.DebugPos))
                     if not table.contains(M.JobPosName, M.DebugPos) then

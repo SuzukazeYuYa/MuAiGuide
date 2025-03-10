@@ -437,7 +437,7 @@ local DrawFruConfigUI = function(M)
                         M.Config.FruCfg.CrystallizeTimePriority = M.StringSplit(inputP42ProPriority, ",")
                     end
                     GUI:PopItemWidth()
-                    M.FruConfigUI.AddLabel("红冰上无人方案：", false, 162)
+                    M.FruConfigUI.AddLabel("红冰不分摊人：", false, 162)
                     GUI:PushItemWidth(110)
                     local CrystallizeTimeBuffType, CrystallizeTimeBuffTypeCg = GUI:Combo("##CrystallizeTimeBuffType", M.Config.FruCfg.CrystallizeTimeBuffType, { "向下躲开大圈", "向上冲出大圈" }, 4)
                     if CrystallizeTimeBuffTypeCg then
@@ -549,7 +549,7 @@ local DrawFruConfigUI = function(M)
                     GUI:Text("--------------------------------------")
 
                     GUI:PushItemWidth(80)
-                    M.FruConfigUI.AddLabel("击退方案：", false)
+                    M.FruConfigUI.AddLabel("击退方案：", false, 140)
                     local CrystallizeTimeKnockBack, CrystallizeTimeKnockBackCg = GUI:Combo("##CrystallizeTimeKnockBack", M.Config.FruCfg.CrystallizeTimeKnockBack, { "Y字击退", "角落击退" }, 4)
                     if CrystallizeTimeKnockBackCg then
                         M.Config.FruCfg.CrystallizeTimeKnockBack = CrystallizeTimeKnockBack
@@ -557,6 +557,14 @@ local DrawFruConfigUI = function(M)
                     GUI:PopItemWidth()
                     if M.Config.FruCfg.CrystallizeTimeKnockBack == 1 then
                         GUI:TextColored(0, 255, 255, 1, "   ※Y字击退自动开启防击退")
+                    elseif M.Config.FruCfg.CrystallizeTimeKnockBack then
+                        GUI:PushItemWidth(80)
+                        M.FruConfigUI.AddLabel("回返位置：", false, 140)
+                        local CrystallizeTimeKnockCType, CrystallizeTimeKnockCTypeCg = GUI:Combo("##CrystallizeTimeKnockCType", M.Config.FruCfg.CrystallizeTimeKnockCType, { "外标点", "内标点" }, 4)
+                        if CrystallizeTimeKnockCTypeCg then
+                            M.Config.FruCfg.CrystallizeTimeKnockCType = CrystallizeTimeKnockCType
+                        end
+                        GUI:PopItemWidth()
                     end
                     GUI:TreePop()
                 end

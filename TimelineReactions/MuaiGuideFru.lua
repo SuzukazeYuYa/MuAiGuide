@@ -2449,6 +2449,11 @@ local tbl =
 									"1bf477aa-4eff-c15c-ae59-e45662de9898",
 									true,
 								},
+								
+								{
+									"901b1b66-28a2-6251-9d6f-b07ec4ddfb67",
+									true,
+								},
 							},
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "8c21bd8d-112c-c0f9-832a-2027386e33fe",
@@ -2469,8 +2474,20 @@ local tbl =
 							version = 2,
 						},
 					},
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return TensorCore.mGetPlayer().marker == nil or TensorCore.mGetPlayer().marker == 0",
+							name = "没有标记",
+							uuid = "901b1b66-28a2-6251-9d6f-b07ec4ddfb67",
+							version = 2,
+						},
+					},
 				},
 				eventType = 3,
+				loop = true,
 				mechanicTime = 532.4,
 				name = "[MuAiGuide]日基摇号",
 				randomOffset = 10,
@@ -3460,6 +3477,11 @@ local tbl =
 									"1fed5fed-c504-2b7f-9536-3e5d6d8ccaa2",
 									true,
 								},
+								
+								{
+									"3de1da4c-8b0e-5b71-bf21-51250e66298d",
+									true,
+								},
 							},
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "183d8615-93a7-5650-a210-e544cfcfbf34",
@@ -3475,11 +3497,24 @@ local tbl =
 						{
 							category = "Lua",
 							conditionLua = "return MuAiGuide.Config.FruCfg.CrystallizeTimeType == 3",
+							name = "手摇模式",
 							uuid = "1fed5fed-c504-2b7f-9536-3e5d6d8ccaa2",
 							version = 2,
 						},
 					},
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return TensorCore.mGetPlayer().marker == nil or TensorCore.mGetPlayer().marker == 0",
+							name = "没有标记",
+							uuid = "3de1da4c-8b0e-5b71-bf21-51250e66298d",
+							version = 2,
+						},
+					},
 				},
+				loop = true,
 				mechanicTime = 798.9,
 				name = "[MuAiGuide]疯狂摇号",
 				timeRange = true,

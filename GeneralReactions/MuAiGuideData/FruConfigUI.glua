@@ -140,7 +140,11 @@ local DrawFruConfigUI = function(M)
                         if restPosChanged then
                             M.Config.FruCfg.FruLightFireRestPos = M.StringSplit(restPos, ",")
                         end
-                        GUI:TextColored(0, 255, 0, 1, "   ※左上、右上、左下、右下分别对应几号闲人")
+                        if FruLightFireDir == 1 then
+                            GUI:TextColored(0, 255, 0, 1, "   ※左上、右上、左下、右下分别对应几号闲人")
+                        else
+                            GUI:TextColored(0, 255, 0, 1, "   ※左上、左下、右上、右下分别对应几号闲人")
+                        end
                     end
                     GUI:TreePop()
                 end

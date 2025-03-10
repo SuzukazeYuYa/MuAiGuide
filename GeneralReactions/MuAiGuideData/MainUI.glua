@@ -54,15 +54,15 @@ local DrawMainUI = function(M)
         if GUI:CollapsingHeader("职能设置", GUI.TreeNodeFlags_SDefaultOpen) then
             GUI:Dummy(1, 1)
             if M.SelfPos then
-                GUI:BulletText("玩家当前职能")
+                GUI:BulletText("当前职能:")
                 GUI:SameLine()
                 if M.DebugMode then
-                    GUI:TextColored(255, 0, 0, 1, "[" .. M.SelfPos .. "][调试]")
+                    GUI:TextColored(255, 0, 0, 1,  M.SelfPos .. "[调试]")
                 else
-                    GUI:TextColored(255, 0, 0, 1, "[" .. M.SelfPos .. "]")
+                    GUI:TextColored(255, 0, 0, 1,  M.SelfPos)
                 end
                 GUI:SameLine()
-                GUI:TextColored(0, 255, 0, 1, "※拖动角色名进行职能修改")
+                GUI:TextColored(0, 255, 0, 1, " ※拖动角色名进行职能修改")
             else
                 GUI:TextColored(255, 0, 0, 1, "当前没有加入队伍")
             end
@@ -190,25 +190,30 @@ local DrawMainUI = function(M)
                 M.ConfigFruInit = false
                 M.FruConfigUI.open = not M.FruConfigUI.open
             end
+            GUI:SameLine()
+            GUI:Button("预留位置", 150, 30)
+            if GUI:IsItemClicked(0) then
+                M.Info("敬请期待..")
+            end
         end
         if GUI:CollapsingHeader("调试工具") then
             GUI:Text(" ")
             GUI:SameLine()
             GUI:TextColored(255, 0, 0, 1, "※不知道干嘛的千万别动！")
             if not M.DebugMode then
-                GUI:PushItemWidth(25)
+                GUI:PushItemWidth(40)
                 GUI:Text(" ")
                 GUI:SameLine()
-                local value, changed = GUI:InputText("作为调试视角", M.DebugPos, GUI.InputTextFlags_CharsNoBlank)
-                if changed then
-                    M.DebugPos = value
+                local index = M.IndexOf(M.JobPosName, M.DebugPos)
+                local debugJob, debugJobChange = GUI:Combo("作为第一视角", index,  M.JobPosName, 4)
+                if debugJobChange then
+                    M.DebugPos = M.JobPosName[debugJob]
                 end
                 GUI:PopItemWidth()
-                GUI:SameLine()
-                GUI:Text("    ")
-                GUI:SameLine()
-                GUI:Button("设置调试视角")
+                GUI:SameLine(0, 50)
+                GUI:Button("开始调试", 100, 20)
                 if GUI:IsItemClicked(0) then
+                    d(M.IndexOf(M.JobPosName, M.DebugPos))
                     if not table.contains(M.JobPosName, M.DebugPos) then
                         M.Info("填写有误!")
                         M.Debug("填写有误!")
@@ -219,7 +224,9 @@ local DrawMainUI = function(M)
                     end
                 end
             else
-                GUI:Button("取消调试视角")
+                GUI:Text(" ")
+                GUI:SameLine()
+                GUI:Button("取消调试视角", 280, 20)
                 if GUI:IsItemClicked(0) then
                     M.DebugMode = false
                     M.GetSelfPos()
@@ -228,9 +235,9 @@ local DrawMainUI = function(M)
             end
             GUI:Text(" ")
             GUI:SameLine()
-            MuAiGuide.DevelopMode = GUI:Checkbox("开发模式          ", MuAiGuide.DevelopMode)
-            GUI:SameLine()
-            GUI:Button("  快速重载   ")
+            MuAiGuide.DevelopMode = GUI:Checkbox("UI开发模式", MuAiGuide.DevelopMode)
+            GUI:SameLine(0, 80)
+            GUI:Button("重载MuAiGuide", 120, 20)
             if GUI:IsItemClicked(0) then
                 MuAiGuide.UI.open = false
                 MuAiGuide.FruConfigUI.open = false
@@ -241,10 +248,8 @@ local DrawMainUI = function(M)
         GUI:BulletText("BUG反馈")
         GUI:Dummy(10, 1)
         GUI:SameLine()
-        GUI:Text("1.将关键信息发送到QQ邮箱：2437365584@qq.com")
+        GUI:Text("添加QQ2437365584，备注BUG反馈")
         GUI:Dummy(10, 1)
-        GUI:SameLine()
-        GUI:Text("2.添加QQ2437365584，备注BUG反馈")
         GUI:BulletText("说明书&&下载地址：")
         GUI:Button("https://github.com/SuzukazeYuYa/MuAiGuide", 330, 20)
         if GUI:IsItemClicked(0) then

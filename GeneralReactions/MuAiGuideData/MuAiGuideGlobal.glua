@@ -319,6 +319,8 @@ M.CreateFruDefaultCfg = function()
         CrystallizeTimeBuffType = 1,
         --- 时间结晶贡品处理方式：1:固定吃，2:标点，3:自动摇号
         CrystallizeTimeType = 1,
+        --- 禁冰，锁风 / 锁冰，禁风
+        CrystallizeTimeActType = 1,
         --- 时间结晶击退处理方式：1 Y字， 2：角落
         CrystallizeTimeKnockBack = 1,
         --- 角落时候是内标点还是外标点

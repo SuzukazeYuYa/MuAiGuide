@@ -446,9 +446,16 @@ local DrawFruConfigUI = function(M)
                     GUI:PopItemWidth()
                     GUI:PushItemWidth(110)
                     M.FruConfigUI.AddLabel("贡品拾取方式：", false, 162)
-                    local CrystallizeTimeType, CrystallizeTimeTypeCG = GUI:Combo("##CrystallizeTimeType", M.Config.FruCfg.CrystallizeTimeType, { "BUFF固定", "科技标点", "自动摇到的号" }, 4)
+                    local CrystallizeTimeType, CrystallizeTimeTypeCG = GUI:Combo("##CrystallizeTimeType", M.Config.FruCfg.CrystallizeTimeType, { "BUFF固定", "科技标点", "自动手摇结果" }, 4)
                     if CrystallizeTimeTypeCG then
                         M.Config.FruCfg.CrystallizeTimeType = CrystallizeTimeType
+                    end
+                    if M.Config.FruCfg.CrystallizeTimeType == 2 then
+                        M.FruConfigUI.AddLabel("科技类型：", false, 162)
+                        local CrystallizeTimeActType, CrystallizeTimeActTypeCG = GUI:Combo("##CrystallizeTimeActType", M.Config.FruCfg.CrystallizeTimeActType, { "短锁链/长禁止", "短禁止/长锁链"}, 4)
+                        if CrystallizeTimeActTypeCG then
+                            M.Config.FruCfg.CrystallizeTimeActType = CrystallizeTimeActType
+                        end
                     end
                     GUI:PopItemWidth()
                     GUI:Text("--------------------------------------")

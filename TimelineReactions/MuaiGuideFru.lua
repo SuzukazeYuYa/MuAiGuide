@@ -2765,6 +2765,38 @@ local tbl =
 			inheritedIndex = 3,
 		},
 	},
+	[139] = 
+	{
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "for i = 1,14 do\n    SendTextCommand(\"/mk clear <\"..i..\">\")\nend\nself.used = true",
+							gVar = "ACR_TensorMagnum3_CD",
+							uuid = "bc049a79-aeee-2d74-a908-f9b3b91c3912",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 587.1,
+				name = "清标点",
+				timelineIndex = 139,
+				timerOffset = -3,
+				uuid = "0e5cef20-fa7b-ec9f-b705-c4aa7df579e6",
+				version = 2,
+			},
+		},
+	},
 	[142] = 
 	{
 		

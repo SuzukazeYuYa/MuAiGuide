@@ -13,7 +13,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance\nif TensorCore.isAnyEntityCasting(40144) then -- 火\n    data.MuAiGd_P1_8_Type1 = 1\n    distance = 6\n    MuAiGuide.Info(\"八方然后和搭档分摊。\", true)\nelse\n    data.MuAiGd_P1_8_Type1 = 2\n    local melees = { \"MT\", \"ST\", \"D1\", \"D2\" }\n    if table.contains(melees, MuAiGuide.SelfPos) then\n        distance = 6\n    else\n        distance = 14\n    end\n    MuAiGuide.Info(\"八方然后分散。\", true)\nend\nlocal pos = TensorCore.getPosInDirection(bossPos, data.MuAiGd_P1_8_BaseHeading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 5000, true)\nself.used = true\n",
+							actionLua = "local bossPos = TensorCore.mGetEntity(data.MuAiGd_P1_BOSS.id).pos\nlocal distance\nif TensorCore.isAnyEntityCasting(40144) then -- 火\n    data.MuAiGd_P1_8_Type1 = 1\n    distance = 6\n    MuAiGuide.Info(\"八方然后和搭档分摊。\", true)\nelse\n    data.MuAiGd_P1_8_Type1 = 2\n    local melees = { \"MT\", \"ST\", \"D1\", \"D2\" }\n    if table.contains(melees, MuAiGuide.SelfPos) then\n        distance = 6\n    else\n        distance = 14\n    end\n    MuAiGuide.Info(\"八方然后分散。\", true)\nend\nlocal pos = TensorCore.getPosInDirection(bossPos, data.MuAiGd_P1_8_BaseHeading, distance)\nMuAiGuide.DirectTo(pos.x, pos.z, 5000)\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "25e6b076-bdfc-d583-b16b-027d0cb6cd1c",
 							version = 2.1,

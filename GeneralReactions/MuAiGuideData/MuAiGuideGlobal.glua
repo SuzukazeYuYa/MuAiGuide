@@ -70,12 +70,15 @@ end
 
 --- 输出消息到聊天栏
 --- @param msg string
-M.Info = function(msg)
+M.Info = function(msg, ttsOn)
     if not M.Config.LogToEchoMsg then
         return
     end
     local info = "/e [信息]" .. msg
     SendTextCommand(info)
+    if ttsOn and M.Config.TTS == true then
+        TensorCore.addAlertText(0, msg, 1, 2, true)
+    end
 end
 
 --- 输出信息到控制台
@@ -212,6 +215,8 @@ M.CreateDefaultCfg = function()
         LogToEchoMsg = true,
         --- 绝伊甸设置
         FruCfg = M.CreateFruDefaultCfg(),
+        --- 开启TTS
+        TTS = false
     }
 end
 
@@ -245,6 +250,8 @@ M.CreateFruDefaultCfg = function()
         CatchTwoDownFall = { "D1", "D2" },
         --- 雷火线优先级
         FruLightFirePriority = { "H1", "H2", "MT", "ST", "D1", "D2", "D3", "D4" },
+        --- 雷火线标记
+        FruLightFireMark = false,
         --- 雷火线处理方向：1：上下，2：左右
         FruLightFireDir = 1,
         --- 雷火线处理方式：1：上下互换，2：闲人固定
@@ -303,6 +310,8 @@ M.CreateFruDefaultCfg = function()
         DarkLitChangeType = 1,
         --- 暗夜舞蹈谁引导 1 MT 2 ST
         P4DarkestDanceTaker = 1,
+        --- 雷火线标记
+        CrystallizeTimeMark = false,
         --- 时间结晶优先级
         CrystallizeTimePriority = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
         --- Buff 处理方式， 1，基本，2，日基
@@ -676,6 +685,11 @@ M.GetRMPartner = function()
         partner = "H2"
     end
     return partner
+end
+
+M.MarkParty = function(marker,id)
+    ActionList:Get(12, marker):Cast(id)
+    M.Debug("标记队友，id = " .. id .. "marker = " .. marker)
 end
 
 ------------------------------- 全局绘制 -------------------------------

@@ -19,6 +19,8 @@
             CatchTwoDownFall = { "MT", "D1" },
             --- 雷火线优先级
             FruLightFirePriority = { "H1", "H2", "MT", "ST", "D1", "D2", "D3", "D4" },
+            --- 雷火线标记
+            FruLightFireMark = false,
             --- 雷火线处理方向：1：上下，2：左右
             FruLightFireDir = 1,
             --- 雷火线处理方式：1：上下互换，2：闲人固定
@@ -75,6 +77,7 @@
             DarkLitOrder = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
             --- 光暗龙诗 翻花绳4边形时候 谁换，1左换，2右换
             DarkLitChangeType = 1,
+            CrystallizeTimeMark = false,
             --- 时间结晶优先级
             CrystallizeTimePriority = { "H1", "H2", "MT", "ST","D1", "D2", "D3", "D4" },
             --- Buff 处理方式， 1，基本，2，日基
@@ -144,6 +147,8 @@
             CatchTwoDownFall = { "MT", "D1" },
             --- 雷火线优先级
             FruLightFirePriority = { "H1", "H2", "MT", "ST", "D1", "D2", "D3", "D4" },
+            --- 雷火线标记
+            FruLightFireMark = false,
             --- 雷火线处理方向：1：上下，2：左右
             FruLightFireDir = 2,
             --- 雷火线处理方式：1：上下互换，2：闲人固定
@@ -200,6 +205,7 @@
             DarkLitOrder = { "H1", "H2", "MT", "ST", "D1", "D2", "D3", "D4" },
             --- 光暗龙诗 翻花绳4边形时候 谁换，1左换，2右换
             DarkLitChangeType = 2,
+            CrystallizeTimeMark = false,
             --- 时间结晶优先级
             CrystallizeTimePriority = { "H1", "MT", "ST", "D1", "D2", "D3", "D4", "H2" },       
             --- Buff 处理方式， 1，基本，2，日基
@@ -270,6 +276,8 @@
             CatchTwoDownFall = { "MT", "D1" },
             --- 雷火线优先级
             FruLightFirePriority = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
+            --- 雷火线标记
+            FruLightFireMark = false,
             --- 雷火线处理方向：1：上下，2：左右
             FruLightFireDir = 1,
             --- 雷火线处理方式：1：上下互换，2：闲人固定
@@ -322,10 +330,12 @@
             --- 暗夜舞蹈谁引导 1 MT 2 ST
             P3DarkestDanceTaker = 1,
             ----------------------------- P4 -----------------------------
+            
             --- 光暗龙诗优先级
             DarkLitOrder = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
             --- 光暗龙诗 翻花绳4边形时候 谁换，1左换，2右换
             DarkLitChangeType = 1,
+            CrystallizeTimeMark = false,
             --- 时间结晶优先级
             CrystallizeTimePriority = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
             --- Buff 处理方式， 1，基本，2，日基

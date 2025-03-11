@@ -689,8 +689,6 @@ M.GetRMPartner = function()
 end
 
 M.MarkParty = function(marker,id)
-    ActionList:Get(12, marker):Cast(id)
-    M.Debug("标记队友，id = " .. id .. "marker = " .. marker)
 end
 
 ------------------------------- 全局绘制 -------------------------------

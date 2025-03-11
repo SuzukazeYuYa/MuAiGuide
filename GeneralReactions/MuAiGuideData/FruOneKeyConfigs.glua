@@ -104,7 +104,7 @@
 
             ----------------------------- P4 -----------------------------
             --- 踩塔类型： 1.固定踩塔 ，2.顺序踩塔
-            DarkLightWingsTakeTowerType = 1,
+            DarkLightWingsTakeTowerType = 2,
             --- 固定塔站位
             DarkLightWings = {
                 Down = { "D1", "D2" },

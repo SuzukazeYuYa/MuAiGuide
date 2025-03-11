@@ -225,6 +225,7 @@ M.LoadDefaultMain = function()
     M.Config.GuidePairColor = { r = 0, g = 0, b = 1, a = 0.5 }
     M.Config.AnyOneReactionOn = true
     M.Config.LogToEchoMsg = true
+    M.Config.TTS = false
 end
 
 M.LoadDefaultFre = function()

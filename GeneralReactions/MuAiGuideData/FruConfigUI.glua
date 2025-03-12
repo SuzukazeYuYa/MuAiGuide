@@ -380,7 +380,7 @@ local DrawFruConfigUI = function(M)
                         end
                         GUI:PushItemWidth(80)
                         M.FruConfigUI.AddLabel("分散方案：", false, 113)
-                        local ApocalypseType, ApocalypseTypeCg = GUI:Combo("##ApocalypseType", M.Config.FruCfg.ApocalypseType, { "旧版基准", "安置基准" }, 4)
+                        local ApocalypseType, ApocalypseTypeCg = GUI:Combo("##ApocalypseType", M.Config.FruCfg.ApocalypseType, { "地火基准", "安置基准" }, 4)
                         if ApocalypseTypeCg then
                             M.Config.FruCfg.ApocalypseType = ApocalypseType
                         end

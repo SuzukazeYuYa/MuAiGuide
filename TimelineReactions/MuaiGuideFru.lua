@@ -2143,7 +2143,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local buff = TensorCore.getBuff(MuAiGuide.GetPlayer().id, 2257)\nif buff and buff.stacks <= 2 then\n    MuAiGuide.DirectTo(100, 100, 5000)\n    M.Info(\"2层去踩塔。\", true)\nelse\n    M.Info(\"不踩。\", true)\nend\nself.used = true\n",
+							actionLua = "local buff = TensorCore.getBuff(MuAiGuide.GetPlayer().id, 2257)\nif buff and buff.stacks <= 2 then\n    MuAiGuide.DirectTo(100, 100, 5000)\n    MuAiGuide.Info(\"2层去踩塔。\", true)\nelse\n    MuAiGuide.Info(\"不踩。\", true)\nend\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "ad8e4ca1-3dd5-e4cc-a999-8563781b7638",
 							version = 2.1,

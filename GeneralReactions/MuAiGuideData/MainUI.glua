@@ -10,46 +10,44 @@ local DrawMainUI = function(M)
     GUI:SetNextWindowSize(200, 0, GUI.SetCond_Appearing)
     M.UI.visible, M.UI.open = GUI:Begin("MuAiGuide Setting", M.UI.open)
     if M.UI.visible then
-    if GUI:CollapsingHeader("基础设置") then
-        GUI:Text(" ")
-        GUI:SameLine()
-        M.Config.AnyOneReactionOn = GUI:Checkbox("是否启用了Anyone", M.Config.AnyOneReactionOn)
-        GUI:SameLine()
-        GUI:TextColored(0, 255, 0, 1, "※如果不用A轴请取消勾选")
-        GUI:Text(" ")
-        GUI:SameLine()
-        M.Config.GuideColor.r, M.Config.GuideColor.g, M.Config.GuideColor.b, M.Config.GuideColor.a, M.ConfigUI.GuideColorChange =
-        GUI:ColorEdit4("指路工具颜色",
-                M.Config.GuideColor.r,
-                M.Config.GuideColor.g,
-                M.Config.GuideColor.b,
-                M.Config.GuideColor.a,
-                GUI.ColorEditMode_NoInputs)
-        
-        GUI:SameLine(0, 50)
-        M.Config.GuidePairColor.r, M.Config.GuidePairColor.g, M.Config.GuidePairColor.b, M.Config.GuidePairColor.a, M.ConfigUI.GuideColorPChange =
-        GUI:ColorEdit4("分摊连线颜色",
-                M.Config.GuidePairColor.r,
-                M.Config.GuidePairColor.g,
-                M.Config.GuidePairColor.b,
-                M.Config.GuidePairColor.a,
-                GUI.ColorEditMode_NoInputs)
-        if M.ConfigUI.GuideColorChange or M.ConfigUI.GuideColorPChange then
-            M.SaveConfig()
+        if GUI:CollapsingHeader("基础设置") then
+            GUI:Text(" ")
+            GUI:SameLine()
+            M.Config.AnyOneReactionOn = GUI:Checkbox("是否启用了Anyone", M.Config.AnyOneReactionOn)
+            GUI:SameLine()
+            GUI:TextColored(0, 255, 0, 1, "※如果不用A轴请取消勾选")
+            GUI:Text(" ")
+            GUI:SameLine()
+            M.Config.GuideColor.r, M.Config.GuideColor.g, M.Config.GuideColor.b, M.Config.GuideColor.a, M.ConfigUI.GuideColorChange = GUI:ColorEdit4("指路工具颜色",
+                    M.Config.GuideColor.r,
+                    M.Config.GuideColor.g,
+                    M.Config.GuideColor.b,
+                    M.Config.GuideColor.a,
+                    GUI.ColorEditMode_NoInputs)
+
+            GUI:SameLine(0, 50)
+            M.Config.GuidePairColor.r, M.Config.GuidePairColor.g, M.Config.GuidePairColor.b, M.Config.GuidePairColor.a, M.ConfigUI.GuideColorPChange = GUI:ColorEdit4("分摊连线颜色",
+                    M.Config.GuidePairColor.r,
+                    M.Config.GuidePairColor.g,
+                    M.Config.GuidePairColor.b,
+                    M.Config.GuidePairColor.a,
+                    GUI.ColorEditMode_NoInputs)
+            if M.ConfigUI.GuideColorChange or M.ConfigUI.GuideColorPChange then
+                M.SaveConfig()
+            end
+            GUI:Text(" ")
+            GUI:SameLine()
+            M.Config.LogToEchoMsg = GUI:Checkbox("聊天栏提示信息", M.Config.LogToEchoMsg)
+            GUI:SameLine(0, 36)
+            M.Config.TTS = GUI:Checkbox("开启TTS播报", M.Config.TTS)
+            GUI:Dummy(1, 1)
+            GUI:Text(" ")
+            GUI:SameLine()
+            GUI:Button("恢复默认设置")
+            if GUI:IsItemClicked(0) then
+                M.LoadDefaultMain()
+            end
         end
-        GUI:Text(" ")
-        GUI:SameLine()
-        M.Config.LogToEchoMsg = GUI:Checkbox("聊天栏提示信息", M.Config.LogToEchoMsg)
-        GUI:SameLine(0, 36)
-        M.Config.TTS = GUI:Checkbox("开启TTS播报", M.Config.TTS)
-        GUI:Dummy(1, 1)
-        GUI:Text(" ")
-        GUI:SameLine()
-        GUI:Button("恢复默认设置")
-        if GUI:IsItemClicked(0) then
-            M.LoadDefaultMain()
-        end
-    end
 
         GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing | GUI.SetCond_Once)
         if GUI:CollapsingHeader("职能设置", GUI.TreeNodeFlags_SDefaultOpen) then
@@ -58,9 +56,9 @@ local DrawMainUI = function(M)
                 GUI:BulletText("当前职能:")
                 GUI:SameLine()
                 if M.DebugMode then
-                    GUI:TextColored(255, 0, 0, 1,  M.SelfPos .. "[调试]")
+                    GUI:TextColored(255, 0, 0, 1, M.SelfPos .. "[调试]")
                 else
-                    GUI:TextColored(255, 0, 0, 1,  M.SelfPos)
+                    GUI:TextColored(255, 0, 0, 1, M.SelfPos)
                 end
                 GUI:SameLine()
                 GUI:TextColored(0, 255, 0, 1, " ※拖动角色名进行职能修改")
@@ -83,17 +81,29 @@ local DrawMainUI = function(M)
             GUI:Text(" ")
             GUI:SameLine()
             GUI:PushItemWidth(303)
-            GUI:ListBoxHeader("##Jobs", 304, 200)
-            local partyMembers = {
-                { info = M.Party.MT, label = "MT" },
-                { info = M.Party.ST, label = "ST" },
-                { info = M.Party.H1, label = "H1" },
-                { info = M.Party.H2, label = "H2" },
-                { info = M.Party.D1, label = "D1" },
-                { info = M.Party.D2, label = "D2" },
-                { info = M.Party.D3, label = "D3" },
-                { info = M.Party.D4, label = "D4" }
-            }
+
+            local partyMembers
+            if table.size(M.Party) == 4 then
+                GUI:ListBoxHeader("##Jobs", 304, 100)
+                partyMembers = {
+                    { info = M.Party.MT, label = "MT" },
+                    { info = M.Party.H1, label = "H1" },
+                    { info = M.Party.D1, label = "D1" },
+                    { info = M.Party.D2, label = "D2" },
+                }
+            else
+                GUI:ListBoxHeader("##Jobs", 304, 200)
+                partyMembers = {
+                    { info = M.Party.MT, label = "MT" },
+                    { info = M.Party.ST, label = "ST" },
+                    { info = M.Party.H1, label = "H1" },
+                    { info = M.Party.H2, label = "H2" },
+                    { info = M.Party.D1, label = "D1" },
+                    { info = M.Party.D2, label = "D2" },
+                    { info = M.Party.D3, label = "D3" },
+                    { info = M.Party.D4, label = "D4" }
+                }
+            end
             for i, member in ipairs(partyMembers) do
                 local IsSelected = function()
                     if member.label == M.Party.selected then
@@ -102,24 +112,43 @@ local DrawMainUI = function(M)
                     return false
                 end
                 local ptMember = partyMembers[i]
-                if i == 1 or i == 2 then
-                    GUI:ColorButton("#jobPos", 0, 0, 255, 255, GUI.ColorEditMode_NoTooltip, 20, 20)
-                elseif i == 3 or i == 4 then
-                    GUI:ColorButton("#jobPos", 0, 255, 0, 255, GUI.ColorEditMode_NoTooltip, 20, 20)
+                if table.size(M.Party) == 4 then
+                    if i == 1 then
+                        GUI:ColorButton("#jobPos", 0, 0, 255, 255, GUI.ColorEditMode_NoTooltip, 20, 20)
+                    elseif i == 2 then
+                        GUI:ColorButton("#jobPos", 0, 255, 0, 255, GUI.ColorEditMode_NoTooltip, 20, 20)
+                    else
+                        GUI:ColorButton("#jobPos", 255, 0, 0, 255, GUI.ColorEditMode_NoTooltip, 20, 20)
+                    end
+                    GUI:SameLine()
+                    if i == 1 then
+                        GUI:TextColored(0, 100, 255, 1, "[" .. ptMember.label .. "]")
+                    elseif i == 2 then
+                        GUI:TextColored(0, 255, 0, 1, "[" .. ptMember.label .. "]")
+                    else
+                        GUI:TextColored(255, 0, 0, 1, "[" .. ptMember.label .. "]")
+                    end
                 else
-                    GUI:ColorButton("#jobPos", 255, 0, 0, 255, GUI.ColorEditMode_NoTooltip, 20, 20)
+                    if i == 1 or i == 2 then
+                        GUI:ColorButton("#jobPos", 0, 0, 255, 255, GUI.ColorEditMode_NoTooltip, 20, 20)
+                    elseif i == 3 or i == 4 then
+                        GUI:ColorButton("#jobPos", 0, 255, 0, 255, GUI.ColorEditMode_NoTooltip, 20, 20)
+                    else
+                        GUI:ColorButton("#jobPos", 255, 0, 0, 255, GUI.ColorEditMode_NoTooltip, 20, 20)
+                    end
+                    GUI:SameLine()
+                    if i == 1 or i == 2 then
+                        GUI:TextColored(0, 100, 255, 1, "[" .. ptMember.label .. "]")
+                    elseif i == 3 or i == 4 then
+                        GUI:TextColored(0, 255, 0, 1, "[" .. ptMember.label .. "]")
+                    else
+                        GUI:TextColored(255, 0, 0, 1, "[" .. ptMember.label .. "]")
+                    end
                 end
-                GUI:SameLine()
-                if i == 1 or i == 2 then
-                    GUI:TextColored(0, 100, 255, 1, "[" .. ptMember.label .. "]")
-                elseif i == 3 or i == 4 then
-                    GUI:TextColored(0, 255, 0, 1, "[" .. ptMember.label .. "]")
-                else
-                    GUI:TextColored(255, 0, 0, 1, "[" .. ptMember.label .. "]")
-                end
+
                 GUI:SameLine()
                 if ptMember.info ~= nil and ptMember.info.job ~= nil and ptMember.info.name ~= nil then
-                    GUI:Selectable( "   " .. M.GetJobNameById(ptMember.info.job) .. "      " .. ptMember.info.name,  IsSelected())
+                    GUI:Selectable("   " .. M.GetJobNameById(ptMember.info.job) .. "      " .. ptMember.info.name, IsSelected())
                 else
                     GUI:Selectable("   " .. "未知" .. "      " .. "未知玩家" .. i, IsSelected())
                 end
@@ -206,7 +235,7 @@ local DrawMainUI = function(M)
                 GUI:Text(" ")
                 GUI:SameLine()
                 local index = M.IndexOf(M.JobPosName, M.DebugPos)
-                local debugJob, debugJobChange = GUI:Combo("作为第一视角", index,  M.JobPosName, 4)
+                local debugJob, debugJobChange = GUI:Combo("作为第一视角", index, M.JobPosName, 4)
                 if debugJobChange then
                     M.DebugPos = M.JobPosName[debugJob]
                 end

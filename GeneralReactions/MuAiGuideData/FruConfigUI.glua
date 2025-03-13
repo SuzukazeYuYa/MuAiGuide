@@ -46,6 +46,13 @@ local DrawFruConfigUI = function(M)
                 if GUI:IsItemClicked(0) then
                     M.FastMLM()
                 end
+                GUI:TextColored(255, 255, 0, 1, "※一键配置说明※")
+                GUI:TextColored(255, 255, 0, 1, "1.基本上mmw仅需改动P2光爆和P3地火，默认为六芒星、车")
+                GUI:TextColored(255, 255, 0, 1, "头法原版。其他均已自动调好，不需要修改设置。")
+                GUI:TextColored(255, 255, 0, 1, "2.MLM攻略目前在适配中，大体上已经完成，如果有问题请反")
+                GUI:TextColored(255, 255, 0, 1, "馈时候帮忙提供一个卫月回放！")          
+                GUI:TextColored(255, 255, 0, 1, "3.各类繁杂的设置仅供缝合攻略使用，能不动尽量别乱动，")
+                GUI:TextColored(255, 255, 0, 1, "如果发现一件配置指路错误，请反馈并供卫月回放文件!")
                 GUI:Separator()
                 M.FruConfigUI.AddLabel("基础八方：", false, 93)
                 GUI:PushItemWidth(180)
@@ -119,8 +126,6 @@ local DrawFruConfigUI = function(M)
                     if FruLightFirePriorityChanged then
                         M.Config.FruCfg.FruLightFirePriority = M.StringSplit(FruLightFirePriority, ",")
                     end
-                    GUI:TextColored(255, 0, 0, 1, "  ※本工具不支持DB闲固定。也不准备适配！")
-                    GUI:TextColored(255, 0, 0, 1, "  ※目前支持的闲固人固定是NGA原版！")
                     M.FruConfigUI.AddLabel("处理方式：", false)
                     GUI:PushItemWidth(50)
                     local FruLightFireDir, FruLightFireDirIdxChanged = GUI:Combo("##FruLightFireDir", M.Config.FruCfg.FruLightFireDir, { "上下", "左右" }, 4)

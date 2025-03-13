@@ -24,6 +24,7 @@ local JobName = {
     "机工", "诗人", "舞者",
     "召唤", "绘灵", "黑魔", "赤魔"
 }
+local specialMaps = { 875 }
 
 M.JobPosName = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" }
 --- UI定义
@@ -385,11 +386,32 @@ M.LoadParty = function()
     M.Party = {}
     local members = M.GetPartyPlayers()
     table.sort(members, function(p1, p2) return M.IndexOf(JobIds, p1.job) < M.IndexOf(JobIds, p2.job) end)
+    if table.size(members) == 4 then
+        for i = 1, 4 do
+            if M.IsTank(members[i].job) then
+                if M.Party.MT == nil then
+                    M.Party.MT = members[i]
+                end
+            elseif M.IsHealer(members[i].job) then
+                if M.Party.H1 == nil then
+                    M.Party.H1 = members[i]
+                end
+            else
+                if M.Party.D1 == nil then
+                    M.Party.D1 = members[i]
+                elseif M.Party.H2 == nil then
+                    M.Party.D2 = members[i]
+                end
+            end
+        end
+        M.GetSelfPos()
+        return
+    end
     if members == nil or table.size(members) < 8 then
         M.Info("当前没有组队。")
         return
     end
-    --d(members)
+
     local memberHasSet = {}
     for i = 1, 8, 1 do
         if M.IsTank(members[i].job) then
@@ -690,7 +712,7 @@ M.GetRMPartner = function()
     return partner
 end
 
-M.MarkParty = function(marker,id)
+M.MarkParty = function(marker, id)
 end
 
 ------------------------------- 全局绘制 -------------------------------

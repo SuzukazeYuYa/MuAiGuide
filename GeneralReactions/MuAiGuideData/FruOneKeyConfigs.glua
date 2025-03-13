@@ -308,7 +308,7 @@
             --- 滑冰提示TTS
             SkatingHit = 2,
             --- 镜子
-            MirrorPosMelee1 = { "D1", "MT", "ST", "D2" },
+            MirrorPosMelee1 = { "ST", "D2", "D1", "MT" },
             MirrorPosMelee2 = { "MT", "D1", "D2", "ST" },
             MirrorPosRange = { "H1", "D3", "D4", "H2" },
             --- 蓝镜子居中情况下 1. 远左近右， 2.近左远右

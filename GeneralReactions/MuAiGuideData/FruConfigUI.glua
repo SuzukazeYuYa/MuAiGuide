@@ -119,6 +119,8 @@ local DrawFruConfigUI = function(M)
                     if FruLightFirePriorityChanged then
                         M.Config.FruCfg.FruLightFirePriority = M.StringSplit(FruLightFirePriority, ",")
                     end
+                    GUI:TextColored(255, 0, 0, 1, "  ※本工具不支持DB闲固定。也不准备适配！")
+                    GUI:TextColored(255, 0, 0, 1, "  ※目前支持的闲固人固定是NGA原版！")
                     M.FruConfigUI.AddLabel("处理方式：", false)
                     GUI:PushItemWidth(50)
                     local FruLightFireDir, FruLightFireDirIdxChanged = GUI:Combo("##FruLightFireDir", M.Config.FruCfg.FruLightFireDir, { "上下", "左右" }, 4)

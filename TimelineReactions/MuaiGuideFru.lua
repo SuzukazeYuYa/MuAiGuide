@@ -2319,7 +2319,7 @@ local tbl =
 						{
 							category = "Lua",
 							conditionLua = "return MuAiGuide.Config.FruCfg.UltimateRelativityType == 1",
-							name = "国服",
+							name = "非摇号模式",
 							uuid = "24ccac1b-77c5-bc73-9e31-668c100d089c",
 							version = 2,
 						},
@@ -2348,7 +2348,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "local M = MuAiGuide\nif data.MuAiGd_P3_1_Lights == nil then\n    data.MuAiGd_P3_1_Lights = {}\n    data.MuGuide_GetDirType = function(fire)\n        if fire == nil then\n            return 4\n        end\n        if fire then\n            -- 长火\n            if fire.duration > 22 then\n                return 1\n            elseif fire.duration > 12 then\n                -- 中火\n                return 2\n            else\n                -- 短火\n                return 3\n            end\n        end\n    end\n    M.Debug(\"===================== P3一运查找关键灯-开始 =====================\")\nend\n\n-- 采集灯\nif table.size(data.MuAiGd_P3_1_Lights) < 8 then\n    for _, ent in pairs(TensorCore.entityList(\"contentid=9825\")) do\n        if Argus.getEntityModel(ent.id) == 17832 then\n            local curHeading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, ent.pos)\n            data.MuAiGd_P3_1_Lights[ent.id] = { entity = ent, heading = curHeading }\n        end\n    end\nend\n\n--获取12点\nif table.size(data.MuAiGd_P3_1_Lights) == 8 and data.MuAiGd_P3_1_Clock12 == nil then\n    local yellowLineInfo = {}\n    for _, info in pairs(data.MuAiGd_P3_1_Lights) do\n        local lines = Argus.getTethersOnEnt(info.entity.id)\n        for _, line in pairs(lines) do\n            if line.type == 134 then\n                table.insert(yellowLineInfo, info)\n                break\n            end\n        end\n    end\n    if table.size(yellowLineInfo) > 0 then\n        M.Debug(\"连线灯分析完毕，开始查找12点！\")\n        local not12 = {}\n        for i = 1, #yellowLineInfo do\n            for j = i + 1, #yellowLineInfo do\n                local diff = math.abs(yellowLineInfo[i].heading - yellowLineInfo[j].heading)\n                if diff > math.pi then\n                    diff = diff - math.pi\n                end\n                --近似互为直角\n                if M.IsSame(diff, math.pi / 2) then\n                    table.insert(not12, i)\n                    table.insert(not12, j)\n                    break\n                end\n            end\n            if table.size(not12) == 2 then\n                break\n            end\n        end\n        for i = 1, #yellowLineInfo do\n            if not table.contains(not12, i) then\n                data.MuAiGd_P3_1_Clock12 = yellowLineInfo[i]\n                if M.Config.LogToEchoMsg then\n                    local infoPoint = M.GetGamePointByHeading(M.Config.FruCfg.PosInfo, data.MuAiGd_P3_1_Clock12.heading)\n                    M.Info(\"当前12点为：\" .. infoPoint .. \"点\")\n                end\n                break\n            end\n        end\n        if data.MuAiGd_P3_1_Clock12 ~= nil and M.GetPlayer().marker ~= nil and M.GetPlayer().marker > 0 then\n            if not M.Config.AnyOneReactionOn then\n                TensorCore.getStaticDrawer(GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 0 / 255, .25), 2)\n                    :addTimedArrow(40000, 100, 0, 100, data.MuAiGd_P3_1_Clock12.heading, 6, 2, 4, 4, 0, false)\n            end\n            local type = data.MuAiGd_P3_1_type\n            local dir\n            if M.IsDps(M.GetPlayer().job) then\n                if type == 1 or type == 4 then\n                    dir = 0\n                elseif type == 2 then\n                    dir = -math.pi / 2\n                else\n                    if M.GetPlayer().marker == 1 then\n                        dir = math.pi / 4\n                        M.Info(\"我是高优先级短火。\")\n                    elseif M.GetPlayer().marker == 2 then\n                        dir = -math.pi / 4\n                        M.Info(\"我是低优先级短火。\")\n                    end\n                end\n            else\n                if type == 1 then\n                    if M.GetPlayer().marker == 6 then\n                        dir = 3 / 4 * math.pi\n                        M.Info(\"我是高优先级长火。\")\n                    elseif M.GetPlayer().marker == 7 then\n                        dir = -3 / 4 * math.pi\n                        M.Info(\"我是低优先级长火。\")\n                    end\n                elseif type == 2 then\n                    dir = math.pi / 2\n                else\n                    dir = math.pi\n                end\n            end\n            local finalDir = data.MuAiGd_P3_1_Clock12.heading + dir\n            if finalDir > math.pi * 2 or M.IsSame(finalDir, math.pi * 2) then\n                finalDir = finalDir - math.pi * 2\n            elseif finalDir < 0 then\n                finalDir = finalDir + math.pi * 2\n            end\n            for _, light in pairs(data.MuAiGd_P3_1_Lights) do\n                if M.IsSame(light.heading, finalDir) then\n                    data.MuAiGd_SelfLight = light\n                    break\n                end\n            end\n            M.Debug(\"最终方向\" .. (finalDir / math.pi))\n            TensorCore.getStaticDrawer(GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, .25), 2)\n                :addTimedArrow(40000, 100, 0, 100, data.MuAiGd_SelfLight.heading, 15, 1, 2, 2, 0, false)\n            if M.Config.LogToEchoMsg then\n                local infoPoint = M.GetGamePointByHeading(M.Config.FruCfg.PosInfo, finalDir)\n                M.Info(\"机制处理方向：\" .. infoPoint .. \"点。\")\n            end\n            M.Debug(\"===================== P3一运查找关键灯-结束 =====================\")\n            self.used = true\n        end\n    end\nend\n",
+							actionLua = "local M = MuAiGuide\nif data.MuAiGd_P3_1_Lights == nil then\n    data.MuAiGd_P3_1_Lights = {}\n    data.MuGuide_GetDirType = function(fire)\n        if fire == nil then\n            return 4\n        end\n        if fire then\n            -- 长火\n            if fire.duration > 22 then\n                return 1\n            elseif fire.duration > 12 then\n                -- 中火\n                return 2\n            else\n                -- 短火\n                return 3\n            end\n        end\n    end\n    M.Debug(\"===================== P3一运查找关键灯-开始 =====================\")\nend\n\n-- 采集灯\nif table.size(data.MuAiGd_P3_1_Lights) < 8 then\n    for _, ent in pairs(TensorCore.entityList(\"contentid=9825\")) do\n        if Argus.getEntityModel(ent.id) == 17832 then\n            local curHeading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, ent.pos)\n            data.MuAiGd_P3_1_Lights[ent.id] = { entity = ent, heading = curHeading }\n        end\n    end\nend\n\n--获取12点\nif table.size(data.MuAiGd_P3_1_Lights) == 8 and data.MuAiGd_P3_1_Clock12 == nil then\n    local yellowLineInfo = {}\n    for _, info in pairs(data.MuAiGd_P3_1_Lights) do\n        local lines = Argus.getTethersOnEnt(info.entity.id)\n        for _, line in pairs(lines) do\n            if line.type == 134 then\n                table.insert(yellowLineInfo, info)\n                break\n            end\n        end\n    end\n    if table.size(yellowLineInfo) > 0 then\n        M.Debug(\"连线灯分析完毕，开始查找12点！\")\n        local not12 = {}\n        for i = 1, #yellowLineInfo do\n            for j = i + 1, #yellowLineInfo do\n                local diff = math.abs(yellowLineInfo[i].heading - yellowLineInfo[j].heading)\n                if diff > math.pi then\n                    diff = diff - math.pi\n                end\n                --近似互为直角\n                if M.IsSame(diff, math.pi / 2) then\n                    table.insert(not12, i)\n                    table.insert(not12, j)\n                    break\n                end\n            end\n            if table.size(not12) == 2 then\n                break\n            end\n        end\n        for i = 1, #yellowLineInfo do\n            if not table.contains(not12, i) then\n                data.MuAiGd_P3_1_Clock12 = yellowLineInfo[i]\n                if M.Config.LogToEchoMsg then\n                    local infoPoint = M.GetGamePointByHeading(M.Config.FruCfg.PosInfo, data.MuAiGd_P3_1_Clock12.heading)\n                    M.Info(\"当前12点为：\" .. infoPoint .. \"点。\")\n                end\n                break\n            end\n        end\n        if data.MuAiGd_P3_1_Clock12 ~= nil and M.GetPlayer().marker ~= nil and M.GetPlayer().marker > 0 then\n            if not M.Config.AnyOneReactionOn then\n                TensorCore.getStaticDrawer(GUI:ColorConvertFloat4ToU32(0 / 255, 255 / 255, 0 / 255, .25), 2)\n                    :addTimedArrow(40000, 100, 0, 100, data.MuAiGd_P3_1_Clock12.heading, 6, 2, 4, 4, 0, false)\n            end\n            local type = data.MuAiGd_P3_1_type\n            local dir\n            if M.IsDps(M.GetPlayer().job) then\n                if type == 1 or type == 4 then\n                    dir = 0\n                elseif type == 2 then\n                    dir = -math.pi / 2\n                else\n                    if M.GetPlayer().marker == 1 then\n                        dir = math.pi / 4\n                        M.Info(\"攻击1:高优先级短火。\")\n                    elseif M.GetPlayer().marker == 2 then\n                        dir = -math.pi / 4\n                        M.Info(\"锁链1:低优先级短火。\")\n                    end\n                end\n            else\n                if type == 1 then\n                    if M.GetPlayer().marker == 6 then\n                        dir = 3 / 4 * math.pi\n                        M.Info(\"锁链1:高优先级长火。\")\n                    elseif M.GetPlayer().marker == 7 then\n                        dir = -3 / 4 * math.pi\n                        M.Info(\"锁链2:低优先级长火。\")\n                    end\n                elseif type == 2 then\n                    dir = math.pi / 2\n                else\n                    dir = math.pi\n                end\n            end\n            local finalDir = data.MuAiGd_P3_1_Clock12.heading + dir\n            if finalDir > math.pi * 2 or M.IsSame(finalDir, math.pi * 2) then\n                finalDir = finalDir - math.pi * 2\n            elseif finalDir < 0 then\n                finalDir = finalDir + math.pi * 2\n            end\n            for _, light in pairs(data.MuAiGd_P3_1_Lights) do\n                if M.IsSame(light.heading, finalDir) then\n                    data.MuAiGd_SelfLight = light\n                    break\n                end\n            end\n            M.Debug(\"最终方向\" .. (finalDir / math.pi))\n            TensorCore.getStaticDrawer(GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, .25), 2)\n                :addTimedArrow(40000, 100, 0, 100, data.MuAiGd_SelfLight.heading, 15, 1, 2, 2, 0, false)\n            if M.Config.LogToEchoMsg then\n                local infoPoint = M.GetGamePointByHeading(M.Config.FruCfg.PosInfo, finalDir)\n                M.Info(\"机制处理方向：\" .. infoPoint .. \"点方向。\")\n            end\n            M.Debug(\"===================== P3一运查找关键灯-结束 =====================\")\n            self.used = true\n        end\n    end\nend\n",
 							conditions = 
 							{
 								
@@ -2473,7 +2473,62 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if MuAiGuide.IsDps(MuAiGuide.GetPlayer().job) then\n    if data.MuAiGd_P3_1_type == 1 or data.MuAiGd_P3_1_type == 4 then\n        MuAiGuide.Info(\"时间压缩摇号：锁链3。\")\n        SendTextCommand(\"/mk bind3 <me>\")\n    elseif data.MuAiGd_P3_1_type == 2 then\n        SendTextCommand(\"/mk stop2 <me>\")\n        MuAiGuide.Info(\"时间压缩摇号：禁止2。\")\n    elseif data.MuAiGd_P3_1_type == 3 then\n        SendTextCommand(\"/mk attack <me>\")\n        MuAiGuide.Info(\"时间压缩摇号：攻击1、2随机。\")\n    end\nelse\n    if data.MuAiGd_P3_1_type == 1 then\n        SendTextCommand(\"/mk bind <me>\")\n        MuAiGuide.Info(\"时间压缩摇号：锁链1、2随机。\")\n    elseif data.MuAiGd_P3_1_type == 2 then\n        SendTextCommand(\"/mk stop1 <me>\")\n        MuAiGuide.Info(\"时间压缩摇号：禁止1。\")\n    elseif data.MuAiGd_P3_1_type == 3 or data.MuAiGd_P3_1_type == 4 then\n        SendTextCommand(\"/mk attack3 <me>\")\n        MuAiGuide.Info(\"时间压缩摇号：攻击3。\")\n    end\nend\nself.used = true",
+							actionLua = "data.MuAiGd_p3_MarkTime = Now()\nlocal selfIndex = MuAiGuide.IndexOf(MuAiGuide.JobPosName)\ndata.MuAiGd_p3_MarkTimeOffset = (selfIndex - 1) * 200\nself.used = true",
+							conditions = 
+							{
+								
+								{
+									"1bf477aa-4eff-c15c-ae59-e45662de9898",
+									true,
+								},
+							},
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "8c21bd8d-112c-c0f9-832a-2027386e33fe",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_P3_1_type ~= nil and data.MuAiGd_P3_1_type > 0 and MuAiGuide.Config.FruCfg.UltimateRelativityType == 2",
+							name = "已获取类型+日基",
+							uuid = "1bf477aa-4eff-c15c-ae59-e45662de9898",
+							version = 2,
+						},
+					},
+				},
+				eventType = 3,
+				mechanicTime = 532.4,
+				name = "[MuAiGuide]日基摇号-数据定义",
+				randomOffset = 10,
+				timeRange = true,
+				timelineIndex = 123,
+				timerEndOffset = 19,
+				timerOffset = 1,
+				timerStartOffset = -2,
+				uuid = "3034ecf8-b3ca-c427-8828-c186759967a4",
+				version = 2,
+			},
+			inheritedIndex = 5,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "local M = MuAiGuide\nif M.IsDps(M.GetPlayer().job) then\n    if data.MuAiGd_P3_1_type == 1 or data.MuAiGd_P3_1_type == 4 then\n        M.Info(\"时间压缩摇号：锁链3。\")\n        SendTextCommand(\"/mk bind3 <me>\")\n    elseif data.MuAiGd_P3_1_type == 2 then\n        SendTextCommand(\"/mk stop2 <me>\")\n        M.Info(\"时间压缩摇号：禁止2。\")\n    elseif data.MuAiGd_P3_1_type == 3 then\n        SendTextCommand(\"/mk attack <me>\")\n        M.Info(\"时间压缩摇号：攻击1、2随机。\")\n    end\nelse\n    if data.MuAiGd_P3_1_type == 1 then\n        SendTextCommand(\"/mk bind <me>\")\n        M.Info(\"时间压缩摇号：锁链1、2随机。\")\n    elseif data.MuAiGd_P3_1_type == 2 then\n        SendTextCommand(\"/mk stop1 <me>\")\n        M.Info(\"时间压缩摇号：禁止1。\")\n    elseif data.MuAiGd_P3_1_type == 3 or data.MuAiGd_P3_1_type == 4 then\n        SendTextCommand(\"/mk attack3 <me>\")\n        M.Info(\"时间压缩摇号：攻击3。\")\n    end\nend\ndata.MuAiGd_p3_MarkTime = Now()\nself.used = true",
 							conditions = 
 							{
 								
@@ -2484,6 +2539,11 @@ local tbl =
 								
 								{
 									"901b1b66-28a2-6251-9d6f-b07ec4ddfb67",
+									true,
+								},
+								
+								{
+									"ccda5683-241c-23e9-af84-4d2b26e6da52",
 									true,
 								},
 							},
@@ -2517,6 +2577,17 @@ local tbl =
 							version = 2,
 						},
 					},
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_p3_MarkTime ~= nil and data.MuAiGd_p3_MarkTimeOffset ~= nil and TimeSince(data.MuAiGd_p3_MarkTime) > data.MuAiGd_p3_MarkTimeOffset",
+							name = "延迟时间已到",
+							uuid = "ccda5683-241c-23e9-af84-4d2b26e6da52",
+							version = 2,
+						},
+					},
 				},
 				eventType = 3,
 				loop = true,
@@ -2528,10 +2599,10 @@ local tbl =
 				timerEndOffset = 19,
 				timerOffset = -2,
 				timerStartOffset = -2,
-				uuid = "3034ecf8-b3ca-c427-8828-c186759967a4",
+				uuid = "ef9f2277-7b69-f240-b8ad-ab3ff1a747ac",
 				version = 2,
 			},
-			inheritedIndex = 5,
+			inheritedIndex = 6,
 		},
 	},
 	[135] = 
@@ -3564,6 +3635,71 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
+							actionLua = "local Line = Argus2.ShapeDrawer:new(\n    (GUI:ColorConvertFloat4ToU32(1, 0, 0, 0)),\n    nil,\n    (GUI:ColorConvertFloat4ToU32(1, 1, 1, 0)),\n    (GUI:ColorConvertFloat4ToU32(0, 1, 1, 1)),\n    3\n)\nLine:addTimedCircle(25000, 100, 0, 100, 12.25, 0, false)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "113718ec-237f-9bb4-ba26-6e1b11dd0aad",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 798.9,
+				name = "[MuAiGuide]绘制龙头路径",
+				timelineIndex = 179,
+				uuid = "cdc92c46-49d8-e3e1-905c-c0b07a2d7b69",
+				version = 2,
+			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_p4_MarkTime = Now()\nlocal selfIndex = MuAiGuide.IndexOf(MuAiGuide.JobPosName)\ndata.MuAiGd_p4_MarkTimeOffset = (selfIndex - 1) * 200\nself.used = true",
+							endIfUsed = true,
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "8c21bd8d-112c-c0f9-832a-2027386e33fe",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				eventType = 3,
+				mechanicTime = 798.9,
+				name = "[MuAiGuide]疯狂摇号-数据定义",
+				randomOffset = 10,
+				timeRange = true,
+				timelineIndex = 179,
+				timerEndOffset = 20,
+				timerOffset = 1,
+				timerStartOffset = -10,
+				uuid = "466b087b-aa2d-4104-9dd1-ca2170c27d68",
+				version = 2,
+			},
+			inheritedIndex = 3,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
 							actionLua = "SendTextCommand(\"/mk attack <me>\")\nMuAiGuide.Info(\"有蓝BUFF，已自动摇号！\")\nself.used = true",
 							conditions = 
 							{
@@ -3580,6 +3716,11 @@ local tbl =
 								
 								{
 									"bb517077-607c-691b-b24a-367cf672600b",
+									true,
+								},
+								
+								{
+									"ffae3ac0-e574-4dc3-9136-c450be890bd0",
 									true,
 								},
 							},
@@ -3624,6 +3765,17 @@ local tbl =
 							version = 2,
 						},
 					},
+					
+					{
+						data = 
+						{
+							category = "Lua",
+							conditionLua = "return data.MuAiGd_p4_MarkTime ~= nil and data.MuAiGd_p4_MarkTimeOffset ~= nil and TimeSince(data.MuAiGd_p4_MarkTime) > data.MuAiGd_p4_MarkTimeOffset",
+							name = "延迟时间已到",
+							uuid = "ffae3ac0-e574-4dc3-9136-c450be890bd0",
+							version = 2,
+						},
+					},
 				},
 				loop = true,
 				mechanicTime = 798.9,
@@ -3635,34 +3787,7 @@ local tbl =
 				uuid = "69755cf1-3e3f-4d1c-a339-8944a8b9274b",
 				version = 2,
 			},
-		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "local Line = Argus2.ShapeDrawer:new(\n    (GUI:ColorConvertFloat4ToU32(1, 0, 0, 0)),\n    nil,\n    (GUI:ColorConvertFloat4ToU32(1, 1, 1, 0)),\n    (GUI:ColorConvertFloat4ToU32(0, 1, 1, 1)),\n    3\n)\nLine:addTimedCircle(25000, 100, 0, 100, 12.25, 0, false)\nself.used = true",
-							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "113718ec-237f-9bb4-ba26-6e1b11dd0aad",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-				},
-				mechanicTime = 798.9,
-				name = "[MuAiGuide]绘制龙头路径",
-				timelineIndex = 179,
-				uuid = "cdc92c46-49d8-e3e1-905c-c0b07a2d7b69",
-				version = 2,
-			},
+			inheritedIndex = 4,
 		},
 	},
 	[181] = 

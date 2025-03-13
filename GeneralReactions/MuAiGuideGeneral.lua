@@ -28,7 +28,7 @@ local tbl =
 					data = 
 					{
 						aType = "Lua",
-						actionLua = "if not MuAiGuide then\n    self.used = true\n    return\nend\n\nif MuAiGuide and MuAiGuide.FruConfigUI.open then\n    MuAiGuide.FruConfigUI.open = false\nend\nif MuAiGuide and MuAiGuide.UI.open then\n    MuAiGuide.UI.open = false\nend\nMuAiGuide.Party = nil\nd(\"[MuAiGuide] 基础数据已清空！\")\nMuAiGuideClearFlg = 1\nMuAiGuide.UIPop = false\nself.used = true",
+						actionLua = "if not MuAiGuide then\n    self.used = true\n    return\nend\n\nif MuAiGuide and MuAiGuide.FruConfigUI.open then\n    MuAiGuide.FruConfigUI.open = false\nend\nif MuAiGuide and MuAiGuide.UI.open then\n    MuAiGuide.UI.open = false\nend\nMuAiGuide.Party = nil\nd(\"[MuAiGuide] 基础数据已清空！\")\nMuAiGuideClearFlg = 1\nMuAiGuide.UIPop = false\nMuAiGuide.SelfPos = nil\nself.used = true",
 						gVar = "ACR_TensorRequiem3_CD",
 						name = "重置MuAiGuide",
 						uuid = "c58be1b6-54b0-6889-a973-4de1d29faf08",
@@ -295,6 +295,7 @@ local tbl =
 						uuid = "57ead78e-08cb-c312-8b10-598d9fceb159",
 						version = 2.1,
 					},
+					inheritedIndex = 1,
 				},
 			},
 			conditions = 
@@ -389,15 +390,6 @@ local tbl =
 						version = 2,
 					},
 					inheritedIndex = 1,
-				},
-				
-				{
-					data = 
-					{
-						category = "Lua",
-						uuid = "766165d6-2ec2-08a7-83d9-0709c0c1cdc2",
-						version = 2,
-					},
 				},
 			},
 			eventType = 11,

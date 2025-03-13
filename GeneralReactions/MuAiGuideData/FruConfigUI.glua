@@ -126,12 +126,18 @@ local DrawFruConfigUI = function(M)
                         M.Config.FruCfg.FruLightFireDir = FruLightFireDir
                     end
                     GUI:SameLine(0, 2)
-                    M.FruConfigUI.AddLabel("方向分组", true, 218)
-                    GUI:PushItemWidth(80)
-                    local FruLightFireType, FruLightFireTypeIdxChanged = GUI:Combo("##FruLightFireType", M.Config.FruCfg.FruLightFireType, { "内外互换", "闲人固定" }, 4)
-                    if FruLightFireTypeIdxChanged then
-                        M.Config.FruCfg.FruLightFireType = FruLightFireType
+                    if M.Config.FruCfg.FruLightFireDir == 1 then
+                        M.FruConfigUI.AddLabel("方向分组", true, 218)
+                        GUI:PushItemWidth(80)
+                        local FruLightFireType, FruLightFireTypeIdxChanged = GUI:Combo("##FruLightFireType", M.Config.FruCfg.FruLightFireType, { "内外互换", "闲人固定" }, 4)
+                        if FruLightFireTypeIdxChanged then
+                            M.Config.FruCfg.FruLightFireType = FruLightFireType
+                        end
+                    else
+                        M.Config.FruCfg.FruLightFireType = 1
+                        GUI:TextColored(0, 255, 0, 1, "   ※仅支持内外互换")
                     end
+     
                     if M.Config.FruCfg.FruLightFireType == 1 then
                         M.FruConfigUI.AddLabel("闲人站位：", false, 113)
                         GUI:PushItemWidth(70)

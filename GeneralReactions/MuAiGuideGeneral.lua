@@ -281,63 +281,6 @@ local tbl =
 					data = 
 					{
 						aType = "Lua",
-						actionLua = "-- 根据转圈来分析方向\nlocal drawTime = 30000\n--local BallState = nil\nif eventArgs.markerID == 156 or eventArgs.markerID == 157 then\n    data.AloaloLinkPlayers = nil\n    --d('火球出现！！！！！')\n    --d(eventArgs.markerID)\n\t--BallState = {}\n    -- 场地半径\n    local range = 19.5\n\n    -- 火球位置（场地中心）\n    local fireBallPos = TensorCore.mGetEntity(eventArgs.entityID).pos\n\n    -- 设指针球的位置是 ballPos\n    local ballPos\n    for _, ent in pairs(TensorCore.entityList(\"contentid=12507\")) do\n        ballPos = ent.pos\n        break\n    end\n\n    MuAiGuide.DrawCircleUI(fireBallPos.x, fireBallPos.y, 10000)\n\n    -- 球角度\n    local headingBall = TensorCore.getHeadingToTarget(fireBallPos, ballPos)\n\n    -- 球角度逆时针旋转15°即为目标颜色的正向\n    local targetBase = headingBall + math.pi / 12\n\n    -- 求出4个备选安全点\n     local aimPos4 = {}\n    for i = 1, 4 do\n        local heading = targetBase + math.pi / 2 * (i - 1)\n        local pos = TensorCore.getPosInDirection(fireBallPos, heading, range)\n        --table.insert(aimPos4, pos)\n        --MuAiGuide.DrawCircleUI(pos.x, pos.z, drawTime)\n        if  i % 2 == 0 then\n            MuAiGuide.DrawCircleUI(pos.x, pos.z, drawTime, 1, 0, 0, 0, 0.9, 0 )\n        else \n            MuAiGuide.DrawCircleUI(pos.x, pos.z, drawTime, 1, 255, 0, 0, 0.9, 0 )\n        end\n    end\n --[[ \n    -- 找到火球的一个圈\n    local model9020\n    for _, ent in pairs(TensorCore.entityList(\"model=9020\")) do\n        model9020 = ent\n        break\n    end\n    local headingFireBall = TensorCore.getHeadingToTarget(fireBallPos, model9020.pos)\n\n    local firePos = {}\n    table.insert(firePos, TensorCore.getPosInDirection(fireBallPos, headingFireBall, range))\n    table.insert(firePos, TensorCore.getPosInDirection(fireBallPos, headingFireBall + math.pi * 2 / 3, range))\n    table.insert(firePos, TensorCore.getPosInDirection(fireBallPos, headingFireBall - math.pi * 2 / 3, range))\n\n    local minDisSqr = math.huge\n    local point12\n    for _, a in ipairs(aimPos4) do\n        for _, b in ipairs(firePos) do\n            local dist = (a.x - b.x) ^ 2 + (a.z - b.z) ^ 2\n            if dist < minDisSqr then\n                minDisSqr = dist\n                point12 = a\n            end\n        end\n    end\n    local o2bh = TensorCore.getHeadingToTarget(fireBallPos, point12)\n    local guidePos1 = TensorCore.getPosInDirection(fireBallPos, o2bh + math.pi / 2, 19.5)\n    local guidePos2 = TensorCore.getPosInDirection(fireBallPos, o2bh - math.pi / 2, 19.5)\n\t\n\tMuAiGuide.DrawCircleUI(guidePos1.x, guidePos1.z , drawTime, 1, 0, 0, 0, 0.9, 0 ) \n\tMuAiGuide.DrawCircleUI(guidePos2.x, guidePos2.z , drawTime, 1, 0, 0, 0, 0.9, 0 ) \n\tMuAiGuide.DrawCircleUI(point12.x, point12.z , drawTime, 1, 255, 0, 0, 0.9, 0 ) \n\n\n   BallState.Standard12 = point12;\nelseif eventArgs.markerID == 97 and BallState then\n\tif\tBallState.MarkPlayers == nil then\n\t\tBallState.MarkPlayers = {}\n\tend\n\n    local p = TensorCore.mGetPlayer()\n    if #BallState.MarkPlayers < 2 then\n        table.insert(BallState.MarkPlayers, eventArgs.entityID)\n    end\n    if #BallState.MarkPlayers == 2 then\n        local o2bh = TensorCore.getHeadingToTarget(fireBallPos, BallState.Standard12)\n        local guidePos\n        -- 判断自己是否在这2个人里面\n        if table.contains(BallState.MarkPlayers, p.id) then\n            -- 判断是否是DPS\n            if MuAiGuide.IsDps(p.job) then\n                guidePos = TensorCore.getPosInDirection(fireBallPos, o2bh - math.pi / 2, 19.5)\n            else\n                guidePos = TensorCore.getPosInDirection(fireBallPos, o2bh + math.pi / 2, 19.5)\n            end\n        else\n            guidePos = BallState.Standard12\n        end\n\t\tBallState.MarkPlayers = {}\n        MuAiGuide.DirectTo(guidePos.x, guidePos.z, drawTime)\n    end\nend]]--\nend\nself.used = true",
-						conditions = 
-						{
-							
-							{
-								"9c5f46ee-8155-c114-892c-f124c7b63815",
-								true,
-							},
-						},
-						gVar = "ACR_TensorReaper_AOE",
-						name = "阿罗阿罗2转盘",
-						uuid = "57ead78e-08cb-c312-8b10-598d9fceb159",
-						version = 2.1,
-					},
-					inheritedIndex = 1,
-				},
-			},
-			conditions = 
-			{
-				
-				{
-					data = 
-					{
-						category = "Self",
-						conditionType = 12,
-						dequeueIfLuaFalse = true,
-						localMapIDList = 
-						{
-							1179,
-							1180,
-						},
-						name = "阿罗阿罗",
-						uuid = "9c5f46ee-8155-c114-892c-f124c7b63815",
-						version = 2,
-					},
-					inheritedIndex = 1,
-				},
-			},
-			enabled = false,
-			eventType = 4,
-			name = "AloaloAddMarker",
-			uuid = "6e30e67e-07d4-96d5-924f-b0a285fdf586",
-			version = 2,
-		},
-		inheritedIndex = 5,
-	},
-	
-	{
-		data = 
-		{
-			actions = 
-			{
-				
-				{
-					data = 
-					{
-						aType = "Lua",
 						actionLua = "if not MuAiGuide.UIPop then\n    MuAiGuide.UIPop = false\nend\n\nif MuAiGuide and not MuAiGuide.UIPop and MuAiGuide.UI.open == false then\n    local party = MuAiGuide.GetPartyPlayers()\n    if party and table.size(party) >= 8 then\n        if MuAiGuide.Party == nil or table.size(MuAiGuide.Party) < 8 then\n            MuAiGuide.LoadParty()\n\t\t\tMuAiGuide.Debug(\"已读取小队列表\")\n\t\t\tMuAiGuide.UI.open = true\n\t\t\tMuAiGuide.UIPop = true\n        end      \n\t\tself.used = true\n    end\nend\n",
 						conditions = 
 						{

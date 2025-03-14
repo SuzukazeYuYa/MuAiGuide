@@ -905,46 +905,12 @@ M.FrameDirect = function(x, z, size)
     newDraw3:addCircle(x, playerPos.y, z, 0.03, true)
 end
 
---- 绘制一个圆
+--- 绘制一个圆（废弃）
 M.DrawCircleUI = function(x, z, time, size, r, g, b, a, delay)
-    r = r or 0
-    g = g or 0
-    b = b or 0
-    a = a or 0.35
-    delay = delay or 0
-    size = size or 1
-    if r == 0 and g == 0 and b == 0 then
-        g = 255
-    end
-    local newDraw = Argus2.ShapeDrawer:new(
-            (GUI:ColorConvertFloat4ToU32(r / 255, g / 255, b / 255, a)),
-            (GUI:ColorConvertFloat4ToU32(r / 255, g / 255, b / 255, a)),
-            (GUI:ColorConvertFloat4ToU32(r / 255, g / 255, b / 255, a)),
-            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),
-            1
-    )
-    newDraw:addTimedCircle(time, x, M.GetPlayer().pos.y, z, size, 0, true)
 end
 
---- 绘制一个地面圆
+--- 绘制一个地面圆（废弃）
 M.DrawCircleFloor = function(x, z, time, size, r, g, b, a, delay)
-    r = r or 0
-    g = g or 0
-    b = b or 0
-    a = a or 0.35
-    size = size or 1
-    delay = delay or 0
-    if r == 0 and g == 0 and b == 0 then
-        g = 255
-    end
-    local newDraw = Argus2.ShapeDrawer:new(
-            (GUI:ColorConvertFloat4ToU32(r / 255, g / 255, b / 255, a)),
-            (GUI:ColorConvertFloat4ToU32(r / 255, g / 255, b / 255, a)),
-            (GUI:ColorConvertFloat4ToU32(r / 255, g / 255, b / 255, a)),
-            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),
-            1
-    )
-    newDraw:addTimedCircle(time, x, M.GetPlayer().pos.y, z, size, 0, false)
 end
 
 local mainDrawer, fruConfigDrawer = nil, nil

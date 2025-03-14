@@ -3701,7 +3701,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "SendTextCommand(\"/mk attack <me>\")\nMuAiGuide.Info(\"有蓝BUFF，已自动摇号！\")\nself.used = true",
+							actionLua = "SendTextCommand(\"/mk attack <me>\")\nMuAiGuide.Info(\"有蓝BUFF，已自动摇号！\")\ndata.MuAiGd_p4_MarkTime = Now()\nself.used = true",
 							conditions = 
 							{
 								

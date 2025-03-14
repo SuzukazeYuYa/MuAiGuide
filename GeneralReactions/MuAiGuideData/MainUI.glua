@@ -280,11 +280,12 @@ local DrawMainUI = function(M)
         GUI:SameLine()
         GUI:Text("添加QQ2437365584，备注BUG反馈")
         GUI:Dummy(10, 1)
-        GUI:BulletText("说明书&&下载地址：")
+        GUI:BulletText("说明书、下载地址、更新日志：")
         GUI:Button("https://github.com/SuzukazeYuYa/MuAiGuide", 330, 20)
         if GUI:IsItemClicked(0) then
             io.popen("start https://github.com/SuzukazeYuYa/MuAiGuide")
         end
+        GUI:Text("                                        ver.153")
     end
     M.SaveConfig()
     local winPosx, winPosy = GUI:GetWindowPos();

@@ -327,7 +327,7 @@ local DrawFruConfigUI = function(M)
                 if GUI:TreeNode("1.时间压缩·绝") then
                     M.FruConfigUI.AddLabel("处理方案：", false)
                     GUI:PushItemWidth(80)
-                    local UltimateRelativityType, UltimateRelativityTypeChange = GUI:Combo("##UltimateRelativityType", M.Config.FruCfg.UltimateRelativityType, { "灰九瞪眼", "日野摇号", "莫莫科技" }, 4)
+                    local UltimateRelativityType, UltimateRelativityTypeChange = GUI:Combo("##UltimateRelativityType", M.Config.FruCfg.UltimateRelativityType, { "灰九式", "日野摇号" }, 4)
                     if UltimateRelativityTypeChange then
                         M.Config.FruCfg.UltimateRelativityType = UltimateRelativityType
                     end
@@ -335,8 +335,6 @@ local DrawFruConfigUI = function(M)
                         GUI:TextColored(0, 255, 255, 1, "   ※看小队列表获取优先级")
                     elseif M.Config.FruCfg.UltimateRelativityType == 2 then
                         GUI:TextColored(0, 255, 255, 1, "   ※日基自动摇号，根据摇到的号确定优先级")
-                    elseif M.Config.FruCfg.UltimateRelativityType == 3 then
-                        GUI:TextColored(0, 255, 255, 1, "   ※莫灵喵式，根据头顶标点确定优先级")
                     end
                     GUI:PopItemWidth()
                     GUI:TreePop()

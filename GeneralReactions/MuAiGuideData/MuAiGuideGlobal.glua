@@ -29,7 +29,9 @@ local specialMaps = { 875 }
 M.JobPosName = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" }
 --- UI定义
 M.UI = {}
-M.FruConfigUI = {}
+M.FruConfigUI = {
+    NewMode = false
+}
 
 M.IsTank = function(job)
     return table.contains(TankJobs, job)

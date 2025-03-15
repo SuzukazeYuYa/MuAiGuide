@@ -4280,11 +4280,46 @@ local tbl =
 				conditions = 
 				{
 				},
+				enabled = false,
 				mechanicTime = 1011.4,
 				name = "[MuAiGuide]画分摊",
 				timelineIndex = 215,
 				timerOffset = -2.5,
 				uuid = "f61197d0-740d-77ba-bc2a-228dc124413d",
+				version = 2,
+			},
+			inheritedIndex = 1,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_drawDivGroup = function()\n    local M = MuAiGuide\n    if M.Config.FruCfg.drawAknMorn == false then\n        return\n    end\n    local purpleDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(1, 0, 1, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(1, 0, 1, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(1, 0, 1, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(1, 1, 1, 1)),\n            2\n    )\n    local yellowDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(1, 1, 0, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(1, 1, 0, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(1, 1, 0, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(1, 1, 1, 1)),\n            2\n    )\n\n    local white = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(1, 1, 1, 1)),\n            (GUI:ColorConvertFloat4ToU32(1, 1, 1, 1)),\n            (GUI:ColorConvertFloat4ToU32(1, 1, 1, 1)),\n            (GUI:ColorConvertFloat4ToU32(1, 1, 1, 1)),\n            2\n    )\n\n    local boss = TensorCore.mGetEntity(data.MuAiGd_P5_BOSS.id)\n    local bossFront = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, boss.pos.h, 6)\n    white:addArrow(boss.pos.x, boss.pos.y, boss.pos.z, boss.pos.h, 20, 0.05, 0.4, 0.2, true)\n    white:addArrow(boss.pos.x, boss.pos.y, boss.pos.z, boss.pos.h + math.pi, 20, 0.05, 0, 0, true)\n    white:addArrow(boss.pos.x, boss.pos.y, boss.pos.z, boss.pos.h, 12, 0.05, 0.4, 0.2, true)\n    white:addArrow(boss.pos.x, boss.pos.y, boss.pos.z, boss.pos.h, 4, 0.05, 0.4, 0.2, true)\n    local leftPlayer, rightPlayer\n    local minDirSubL = 10000000\n    local minDirSubR = 10000000\n    for i = 1, 8 do\n\n        local job = M.JobPosName[i];\n        local ent = M.Party[job]\n        local player = TensorCore.mGetEntity(ent.id)\n        local curHeading = TensorCore.getHeadingToTarget({ x = 100, y = 0, z = 100 }, player.pos)\n\n        local clock = M.GetClock(bossFront, player.pos)\n\n        if clock then\n            -- 顺\n            local sub\n            if boss.pos.h < curHeading then\n                sub = boss.pos.h + 2 * math.pi - curHeading\n            else\n                sub = boss.pos.h - curHeading\n            end\n\n            if sub < minDirSubR then\n                minDirSubR = sub\n                rightPlayer = player\n            end\n        else\n            -- 逆\n            local sub\n            if curHeading < boss.pos.h then\n                sub = curHeading + 2 * math.pi - boss.pos.h\n            else\n                sub = curHeading - boss.pos.h\n            end\n            if sub < minDirSubL then\n                minDirSubL = sub\n                leftPlayer = player\n            end\n        end\n    end\n    if rightPlayer then\n        rightPlayer = TensorCore.mGetEntity(rightPlayer.id)\n        purpleDrawer:addCircle(rightPlayer.pos.x, rightPlayer.pos.y, rightPlayer.pos.z, 4, false)\n    end\n    if leftPlayer then\n        leftPlayer = TensorCore.mGetEntity(leftPlayer.id)\n        yellowDrawer:addCircle(leftPlayer.pos.x, leftPlayer.pos.y, leftPlayer.pos.z, 4, false)\n    end\nend\ndata.MuAiGd_P5_drawDivGroup()\nself.used = true\n",
+							gVar = "ACR_TensorRuin3_CD",
+							uuid = "5b9a62df-cb5f-675a-b1f4-849ac93d6dc9",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				eventType = 12,
+				mechanicTime = 1011.4,
+				name = "[MuAiGuide]画分摊New",
+				timeRange = true,
+				timelineIndex = 215,
+				timerOffset = -2.5,
+				timerStartOffset = -2.5,
+				uuid = "e49b6e6b-d23a-88a2-93d9-df846d94e167",
 				version = 2,
 			},
 			inheritedIndex = 1,
@@ -4622,11 +4657,44 @@ local tbl =
 				conditions = 
 				{
 				},
+				enabled = false,
 				mechanicTime = 1124,
 				name = "[MuAiGuide]画分摊2",
 				timelineIndex = 243,
 				timerOffset = -2.5,
 				uuid = "053bde7c-d968-565a-947f-ee4995dbf46e",
+				version = 2,
+			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_drawDivGroup()\nself.used = true\n",
+							gVar = "ACR_TensorRuin3_CD",
+							uuid = "5b9a62df-cb5f-675a-b1f4-849ac93d6dc9",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				eventType = 12,
+				mechanicTime = 1124,
+				name = "[MuAiGuide]画分摊new2",
+				timeRange = true,
+				timelineIndex = 243,
+				timerOffset = -2.5,
+				timerStartOffset = -2.5,
+				uuid = "38b7ef4c-5319-ffd7-8dbe-16e20831c11a",
 				version = 2,
 			},
 		},
@@ -4994,11 +5062,44 @@ local tbl =
 				conditions = 
 				{
 				},
+				enabled = false,
 				mechanicTime = 1214.2,
 				name = "[MuAiGuide]画分摊3",
 				timelineIndex = 268,
 				timerOffset = -2.5,
 				uuid = "ef5ccd59-727a-4d33-afab-678cf74db3f2",
+				version = 2,
+			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_drawDivGroup()\nself.used = true\n",
+							gVar = "ACR_TensorRuin3_CD",
+							uuid = "5b9a62df-cb5f-675a-b1f4-849ac93d6dc9",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				eventType = 12,
+				mechanicTime = 1214.2,
+				name = "[MuAiGuide]画分摊new3",
+				timeRange = true,
+				timelineIndex = 268,
+				timerOffset = -2.5,
+				timerStartOffset = -2.5,
+				uuid = "f72c62e3-d03c-1d5f-a25b-993086dde80f",
 				version = 2,
 			},
 		},

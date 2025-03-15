@@ -17,6 +17,7 @@ local DrawFruConfigUI = function(M)
     if M.FruConfigUI.open then
         if not M.UI.open then
             M.FruConfigUI.open = false
+            M.FruConfigUI.NewMode = false
             return
         end
         GUI:SetNextWindowSize(200, 0, GUI.SetCond_Appearing)
@@ -26,7 +27,18 @@ local DrawFruConfigUI = function(M)
             GUI:SetNextWindowPos(M.FruConfigUI.x, M.FruConfigUI.y, GUI.SetCond_Appearing)
             GUI:TextColored(255, 0, 0, 1, "※所有非优先级八方均按照C开始逆时针一周填写")
             if GUI:CollapsingHeader("全局设置") then
-                GUI:BulletText("一键切换：")
+                --if M.FruConfigUI.NewMode then
+                --    GUI:Button("确认新建", 150, 20)
+                --    if GUI:IsItemClicked(0) then
+                --        M.FruConfigUI.NewMode = false
+                --    end
+                --else
+                --    GUI:Button("新建配置", 150, 20)
+                --    if GUI:IsItemClicked(0) then
+                --        M.FruConfigUI.NewMode = true
+                --    end
+                --end
+                GUI:BulletText("一键默认：")
                 GUI:TextColored(255, 255, 0, 1, "※以下均为默认设置，有多种打法的部分仍需要设置！")
                 GUI:Button("默认", 150, 20)
                 if GUI:IsItemClicked(0) then
@@ -638,12 +650,12 @@ local DrawFruConfigUI = function(M)
                 if GUI:TreeNode("绘图设置：") then
                     GUI:TextColored(0, 1, 1, 1, "※补充一些绘制")
                     M.Config.FruCfg.drawShit = GUI:Checkbox("地火", M.Config.FruCfg.drawShit)
-                    GUI:SameLine(0, 80)
+                    GUI:SameLine(0, 120)
                     M.Config.FruCfg.drawAknMorn = GUI:Checkbox("分摊", M.Config.FruCfg.drawAknMorn)
-                    GUI:SameLine(0,0)
-                    GUI:TextColored(1, 0, 0, 1, " ※仅支持44或17")
+                    --GUI:SameLine(0,0)
+                    --GUI:TextColored(1, 0, 0, 1, " ※仅支持44或17")
                     M.Config.FruCfg.drawWinLight = GUI:Checkbox("左右刀&远近", M.Config.FruCfg.drawWinLight)
-                    GUI:SameLine(0, 35)
+                    GUI:SameLine(0, 75)
                     M.Config.FruCfg.drawWinPolarizing = GUI:Checkbox("挡枪", M.Config.FruCfg.drawWinPolarizing)
                     GUI:TreePop()
                 end

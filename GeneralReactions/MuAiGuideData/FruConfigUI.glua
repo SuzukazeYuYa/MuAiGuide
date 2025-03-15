@@ -461,8 +461,8 @@ local DrawFruConfigUI = function(M)
                     end
                     GUI:PopItemWidth()
                     M.FruConfigUI.AddLabel("红冰不分摊人：", false, 162)
-                    GUI:PushItemWidth(110)
-                    local CrystallizeTimeBuffType, CrystallizeTimeBuffTypeCg = GUI:Combo("##CrystallizeTimeBuffType", M.Config.FruCfg.CrystallizeTimeBuffType, { "向下躲开大圈", "向上冲出大圈" }, 4)
+                    GUI:PushItemWidth(100)
+                    local CrystallizeTimeBuffType, CrystallizeTimeBuffTypeCg = GUI:Combo("##CrystallizeTimeBuffType", M.Config.FruCfg.CrystallizeTimeBuffType, { "往下躲大圈", "赤暴走开冲" }, 4)
                     if CrystallizeTimeBuffTypeCg then
                         M.Config.FruCfg.CrystallizeTimeBuffType = CrystallizeTimeBuffType
                     end
@@ -478,6 +478,12 @@ local DrawFruConfigUI = function(M)
                         local CrystallizeTimeActType, CrystallizeTimeActTypeCG = GUI:Combo("##CrystallizeTimeActType", M.Config.FruCfg.CrystallizeTimeActType, { "短锁链/长禁止", "短禁止/长锁链"}, 4)
                         if CrystallizeTimeActTypeCG then
                             M.Config.FruCfg.CrystallizeTimeActType = CrystallizeTimeActType
+                        end
+                        GUI:SameLine()
+                        if M.Config.FruCfg.CrystallizeTimeActType == 1 then
+                            GUI:TextColored(255, 255, 0, 1, "[Souma]")
+                        else
+                            GUI:TextColored(255, 255, 0, 1, "[莫灵喵]")
                         end
                     end
                     GUI:PopItemWidth()

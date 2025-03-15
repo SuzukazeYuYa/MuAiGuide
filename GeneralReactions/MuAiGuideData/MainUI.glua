@@ -297,7 +297,7 @@ local DrawMainUI = function(M)
         if GUI:IsItemClicked(0) then
             io.popen("start https://github.com/SuzukazeYuYa/MuAiGuide")
         end
-        GUI:Text("                                        ver.159")
+        GUI:Text("                                        ver.160")
     end
     M.SaveConfig()
     local winPosx, winPosy = GUI:GetWindowPos();

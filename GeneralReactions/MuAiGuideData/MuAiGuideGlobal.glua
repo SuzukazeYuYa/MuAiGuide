@@ -382,6 +382,69 @@ end
 
 M.Config = M.LoadConfig()
 M.PreviousSave = M.LoadConfig()
+M.NewFileName = ""
+M.LoadConfigs = function()
+    local files = { "None" }
+    local path = GetLuaModsPath()
+    local savePath = path .. "\\MuAiGuide"
+    local pFile = io.popen('dir "' .. savePath .. '" /b')
+    if pFile then
+        for filename in pFile:lines() do
+            if filename ~= "MuAiGuideConfig.lua" then
+                table.insert(files, M.RemoveExtension(filename))
+            end
+        end
+        pFile:close()
+    end
+    return files
+end
+
+M.SaveFileConfig = function(fileName, table)
+    local path = GetLuaModsPath()
+    local savePath = path .. "\\MuAiGuide"
+    local saveFile = savePath .. "\\" .. fileName .. ".lua"
+    if (not FolderExists(savePath)) then
+        FolderCreate(savePath)
+    end
+    FileSave(saveFile, table)
+    M.Info("已将当前设置保存到文件" .. fileName .. "。")
+end
+
+M.LoadFileConfig = function(fileName)
+    local path = GetLuaModsPath()
+    local savePath = path .. "\\MuAiGuide"
+    local saveFile = savePath .. "\\" .. fileName .. ".lua"
+    if (not FolderExists(savePath)) then
+        FolderCreate(savePath)
+    end
+    local config = FileLoad(saveFile)
+    M.Info("读取文件" .. fileName .. "成功！")
+    return config
+end
+
+function M.RemoveExtension(filename)
+    local dotIndex = filename:match(".*()%.")
+    if dotIndex then
+        return filename:sub(1, dotIndex - 1)
+    else
+        return filename
+    end
+end
+
+function M.ContainsIgnoreCase(tbl, target)
+    if type(tbl) ~= "table" or type(target) ~= "string" then
+        return false
+    end
+    for _, value in ipairs(tbl) do
+        if type(value) == "string" and string.lower(value) == string.lower(target) then
+            return true
+        end
+    end
+    return false
+end
+
+M.ConfigTable = M.LoadConfigs()
+M.ConfigTableIndex = 1
 
 --- 读取小队信息（初始化模块）
 M.LoadParty = function()

@@ -27,61 +27,125 @@ local DrawFruConfigUI = function(M)
             GUI:SetNextWindowPos(M.FruConfigUI.x, M.FruConfigUI.y, GUI.SetCond_Appearing)
             GUI:TextColored(255, 0, 0, 1, "※所有非优先级八方均按照C开始逆时针一周填写")
             if GUI:CollapsingHeader("全局设置") then
-                --if M.FruConfigUI.NewMode then
-                --    GUI:Button("确认新建", 150, 20)
-                --    if GUI:IsItemClicked(0) then
-                --        M.FruConfigUI.NewMode = false
-                --    end
-                --else
-                --    GUI:Button("新建配置", 150, 20)
-                --    if GUI:IsItemClicked(0) then
-                --        M.FruConfigUI.NewMode = true
-                --    end
-                --end
-                GUI:BulletText("一键默认：")
-                GUI:TextColored(255, 255, 0, 1, "※以下均为默认设置，有多种打法的部分仍需要设置！")
-                GUI:Button("默认", 150, 20)
-                if GUI:IsItemClicked(0) then
-                    M.Config.FruCfg = M.CreateFruDefaultCfg()
+
+                GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
+                if GUI:TreeNode("1.一键默认") then
+                    GUI:TextColored(255, 255, 0, 1, "※以下均为默认设置，有多种打法的部分仍需要设置！")
+                    GUI:Button("默认", 130, 20)
+                    if GUI:IsItemClicked(0) then
+                        M.Config.FruCfg = M.CreateFruDefaultCfg()
+                    end
+                    GUI:SameLine(0, 30)
+                    GUI:Button("日基", 130, 20)
+                    if GUI:IsItemClicked(0) then
+                        M.FastJapanConfig()
+                    end
+                    GUI:Button("莫古力/MMW", 130, 20)
+                    if GUI:IsItemClicked(0) then
+                        M.FastMgl()
+                    end
+                    GUI:SameLine(0, 30)
+                    GUI:Button("莫灵喵", 130, 20)
+                    if GUI:IsItemClicked(0) then
+                        M.FastMLM()
+                    end
+                    GUI:TextColored(255, 255, 0, 1, "※一键配置说明※")
+                    GUI:TextColored(255, 255, 0, 1, "1.基本上mmw仅需改动P2光爆和P3地火，默认为六芒星、")
+                    GUI:TextColored(255, 255, 0, 1, "车头法原版。其他均已自动调好，不需要修改设置。")
+                    GUI:TextColored(255, 255, 0, 1, "2.MLM攻略目前在适配中，大体上已经完成，如果有问题")
+                    GUI:TextColored(255, 255, 0, 1, "请反馈时候帮忙提供一个卫月回放！")
+                    GUI:TextColored(255, 255, 0, 1, "3.各类繁杂的设置仅供缝合攻略使用，能不动尽量别乱")
+                    GUI:TextColored(255, 255, 0, 1, "动，如果发现一件配置指路错误，请联系反馈。")
+                    GUI:TreePop()
                 end
-                GUI:SameLine(0, 30)
-                GUI:Button("日基", 150, 20)
-                if GUI:IsItemClicked(0) then
-                    M.FastJapanConfig()
-                end
-                GUI:Button("莫古力/MMW", 150, 20)
-                if GUI:IsItemClicked(0) then
-                    M.FastMgl()
-                end
-                GUI:SameLine(0, 30)
-                GUI:Button("莫灵喵", 150, 20)
-                if GUI:IsItemClicked(0) then
-                    M.FastMLM()
-                end
-                GUI:TextColored(255, 255, 0, 1, "※一键配置说明※")
-                GUI:TextColored(255, 255, 0, 1, "1.基本上mmw仅需改动P2光爆和P3地火，默认为六芒星、车")
-                GUI:TextColored(255, 255, 0, 1, "头法原版。其他均已自动调好，不需要修改设置。")
-                GUI:TextColored(255, 255, 0, 1, "2.MLM攻略目前在适配中，大体上已经完成，如果有问题请反")
-                GUI:TextColored(255, 255, 0, 1, "馈时候帮忙提供一个卫月回放！")          
-                GUI:TextColored(255, 255, 0, 1, "3.各类繁杂的设置仅供缝合攻略使用，能不动尽量别乱动，")
-                GUI:TextColored(255, 255, 0, 1, "如果发现一件配置指路错误，请反馈并供卫月回放文件!")
                 GUI:Separator()
-                M.FruConfigUI.AddLabel("基础八方：", false, 93)
-                GUI:PushItemWidth(180)
-                local gJobPos, gJobPosChanged = GUI:InputText("##JobPos", M.StringJoin(M.Config.FruCfg.JobPos, ","), GUI.InputTextFlags_CharsNoBlank)
-                if gJobPosChanged then
-                    M.Config.FruCfg.JobPos = M.StringSplit(gJobPos, ",")
+                GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
+                if GUI:TreeNode("2.配置文件工具") then
+                    if M.FruConfigUI.NewMode then
+                        M.FruConfigUI.AddLabel("新配置名：", false)
+                        GUI:PushItemWidth(200)
+                        local havaSame = false
+                        local NewFileName, NewFileNameChanged = GUI:InputText("##NewFileName", M.NewFileName, GUI.InputTextFlags_CharsNoBlank)
+                        if NewFileNameChanged then
+                            local fileName = NewFileName
+                            if M.ContainsIgnoreCase(M.ConfigTable, fileName)
+                                    or string.lower(fileName) == "muaiguideconfig" then
+                                GUI:TextColored(1, 0, 0, 1, "已存在该名称文件,无法创建")
+                                havaSame = true
+                            else
+                                M.NewFileName = NewFileName
+                            end
+                        end
+                        GUI:PopItemWidth()
+                        GUI:Button("确认", 100, 20)
+                        if GUI:IsItemClicked(0) then
+                            if not havaSame then
+                                M.SaveFileConfig(M.NewFileName, M.Config.FruCfg)
+                                M.FruConfigUI.NewMode = false
+                                table.insert(M.ConfigTable, M.NewFileName)
+                            end
+                        end
+                        GUI:SameLine()
+                        GUI:Button("取消", 100, 20)
+                        if GUI:IsItemClicked(0) then
+                            M.NewFileName = ""
+                            M.FruConfigUI.NewMode = false
+                        end
+                    else
+                        GUI:PushItemWidth(300)
+                        local configIndex, configIndexChange = GUI:Combo("##configIndex", M.ConfigTableIndex, M.ConfigTable, 4)
+                        if configIndexChange then
+                            M.ConfigTableIndex = configIndex
+                        end
+                        GUI:PopItemWidth()
+                        if M.ConfigTableIndex == 1 then
+                            GUI:Button("新建配置", 90, 20)
+                            if GUI:IsItemClicked(0) then
+                                M.NewFileName = ""
+                                M.FruConfigUI.NewMode = true
+                            end
+                        else
+                            GUI:Button("加载此配置", 90, 20)
+                            if GUI:IsItemClicked(0) then
+                                local fileName = M.ConfigTable[M.ConfigTableIndex]
+                                M.Config.FruCfg = M.LoadFileConfig(fileName)
+                            end
+                            GUI:SameLine()
+                            GUI:Button("新建配置", 90, 20)
+                            if GUI:IsItemClicked(0) then
+                                M.NewFileName = ""
+                                M.FruConfigUI.NewMode = true
+                            end
+                            GUI:SameLine()
+                            GUI:Button("保存到此配置", 100, 20)
+                            if GUI:IsItemClicked(0) then
+                                M.SaveFileConfig(M.NewFileName, M.Config.FruCfg)
+                            end
+                        end
+                    end
+                    GUI:TreePop()
                 end
-                GUI:PopItemWidth()
-                M.FruConfigUI.AddLabel("场地标点：", false)
-                GUI:PushItemWidth(115)
-                local markPos, markPosChanged = GUI:InputText("##PosInfo", M.StringJoin(M.Config.FruCfg.PosInfo, ","), GUI.InputTextFlags_CharsNoBlank)
-                if markPosChanged then
-                    M.Config.FruCfg.PosInfo = M.StringSplit(markPos, ",")
+                GUI:Separator()
+                GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
+                if GUI:TreeNode("3.基础设置") then
+                    M.FruConfigUI.AddLabel("基础八方：", false, 93)
+                    GUI:PushItemWidth(180)
+                    local gJobPos, gJobPosChanged = GUI:InputText("##JobPos", M.StringJoin(M.Config.FruCfg.JobPos, ","), GUI.InputTextFlags_CharsNoBlank)
+                    if gJobPosChanged then
+                        M.Config.FruCfg.JobPos = M.StringSplit(gJobPos, ",")
+                    end
+                    GUI:PopItemWidth()
+                    M.FruConfigUI.AddLabel("场地标点：", false)
+                    GUI:PushItemWidth(115)
+                    local markPos, markPosChanged = GUI:InputText("##PosInfo", M.StringJoin(M.Config.FruCfg.PosInfo, ","), GUI.InputTextFlags_CharsNoBlank)
+                    if markPosChanged then
+                        M.Config.FruCfg.PosInfo = M.StringSplit(markPos, ",")
+                    end
+                    GUI:PopItemWidth()
+                    GUI:SameLine()
+                    GUI:TextColored(255, 255, 0, 1, "※影响UI显示")
+                    GUI:TreePop()
                 end
-                GUI:PopItemWidth()
-                GUI:SameLine()
-                GUI:TextColored(255, 255, 0, 1, "※影响部分UI的显示")
             end
             if GUI:CollapsingHeader("P1.绝命战士") then
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
@@ -156,7 +220,7 @@ local DrawFruConfigUI = function(M)
                         M.Config.FruCfg.FruLightFireType = 1
                         GUI:TextColored(0, 255, 0, 1, "   ※仅支持内外互换")
                     end
-     
+
                     if M.Config.FruCfg.FruLightFireType == 1 then
                         M.FruConfigUI.AddLabel("闲人站位：", false, 113)
                         GUI:PushItemWidth(70)
@@ -266,8 +330,8 @@ local DrawFruConfigUI = function(M)
                     local SkatingHit, SkatingHitChange = GUI:Combo("##SkatingHit", M.Config.FruCfg.SkatingHit, { "TTS", "噪音", "关闭" }, 4)
                     if SkatingHitChange then
                         M.Config.FruCfg.SkatingHit = SkatingHit
-                    end                
-                   
+                    end
+
                     GUI:PopItemWidth()
                     GUI:TreePop()
                 end
@@ -439,15 +503,15 @@ local DrawFruConfigUI = function(M)
                         M.Config.FruCfg.DarkLitChangeType = DarkLitChangeType
                     end
                     GUI:PopItemWidth()
-                   --[[ GUI:PushItemWidth(40)
-                    M.FruConfigUI.AddLabel("暗夜舞蹈引导：", false)
-                    local P4DarkestDanceTaker, P4DarkestDanceTakerChange = GUI:Combo("##P4DarkestDanceTaker", M.Config.FruCfg.P4DarkestDanceTaker, { "MT", "ST" }, 4)
-                    if P4DarkestDanceTakerChange then
-                        M.Config.FruCfg.P4DarkestDanceTaker = P4DarkestDanceTaker
-                    end
-                    GUI:SameLine()
-                    GUI:TextColored(255, 0, 0, 1, "※T玩家必填，其他人随意！")
-                    GUI:PopItemWidth()]]
+                    --[[ GUI:PushItemWidth(40)
+                     M.FruConfigUI.AddLabel("暗夜舞蹈引导：", false)
+                     local P4DarkestDanceTaker, P4DarkestDanceTakerChange = GUI:Combo("##P4DarkestDanceTaker", M.Config.FruCfg.P4DarkestDanceTaker, { "MT", "ST" }, 4)
+                     if P4DarkestDanceTakerChange then
+                         M.Config.FruCfg.P4DarkestDanceTaker = P4DarkestDanceTaker
+                     end
+                     GUI:SameLine()
+                     GUI:TextColored(255, 0, 0, 1, "※T玩家必填，其他人随意！")
+                     GUI:PopItemWidth()]]
                     GUI:TreePop()
                 end
                 GUI:Separator()
@@ -475,7 +539,7 @@ local DrawFruConfigUI = function(M)
                     end
                     if M.Config.FruCfg.CrystallizeTimeType == 2 then
                         M.FruConfigUI.AddLabel("科技类型：", false, 162)
-                        local CrystallizeTimeActType, CrystallizeTimeActTypeCG = GUI:Combo("##CrystallizeTimeActType", M.Config.FruCfg.CrystallizeTimeActType, { "短锁链/长禁止", "短禁止/长锁链"}, 4)
+                        local CrystallizeTimeActType, CrystallizeTimeActTypeCG = GUI:Combo("##CrystallizeTimeActType", M.Config.FruCfg.CrystallizeTimeActType, { "短锁链/长禁止", "短禁止/长锁链" }, 4)
                         if CrystallizeTimeActTypeCG then
                             M.Config.FruCfg.CrystallizeTimeActType = CrystallizeTimeActType
                         end

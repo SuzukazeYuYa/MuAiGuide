@@ -383,22 +383,22 @@ end
 M.Config = M.LoadConfig()
 M.PreviousSave = M.LoadConfig()
 M.NewFileName = ""
+
+--- 读取存档名称
 M.LoadConfigs = function()
     local files = { "None" }
     local path = GetLuaModsPath()
     local savePath = path .. "\\MuAiGuide"
-    local pFile = io.popen('dir "' .. savePath .. '" /b')
-    if pFile then
-        for filename in pFile:lines() do
-            if filename ~= "MuAiGuideConfig.lua" then
-                table.insert(files, M.RemoveExtension(filename))
-            end
+    local items = FolderList(savePath)
+    for i = 1, #items do
+        if items[i] ~= "MuAiGuideConfig.lua" then
+            table.insert(files, M.RemoveExtension(items[i]))
         end
-        pFile:close()
     end
     return files
 end
 
+--- 将表格序列化到文件
 M.SaveFileConfig = function(fileName, table)
     local path = GetLuaModsPath()
     local savePath = path .. "\\MuAiGuide"
@@ -410,6 +410,7 @@ M.SaveFileConfig = function(fileName, table)
     M.Info("已将当前设置保存到文件" .. fileName .. "。")
 end
 
+--- 读取序列化的表格文件
 M.LoadFileConfig = function(fileName)
     local path = GetLuaModsPath()
     local savePath = path .. "\\MuAiGuide"
@@ -422,6 +423,7 @@ M.LoadFileConfig = function(fileName)
     return config
 end
 
+--- 移除文件扩展名
 function M.RemoveExtension(filename)
     local dotIndex = filename:match(".*()%.")
     if dotIndex then
@@ -431,6 +433,7 @@ function M.RemoveExtension(filename)
     end
 end
 
+--- 不区分大小写方式判断表格存在元素
 function M.ContainsIgnoreCase(tbl, target)
     if type(tbl) ~= "table" or type(target) ~= "string" then
         return false

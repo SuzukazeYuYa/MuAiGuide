@@ -538,6 +538,9 @@ local DrawFruConfigUI = function(M)
                     end
                     GUI:PopItemWidth()
                     GUI:PushItemWidth(110)
+                    if M.Config.FruCfg.CrystallizeTimeBuffType == 2 then
+                        GUI:TextColored(0, 1, 1, 1, "  ※赤暴走含自动疾跑")
+                    end
                     M.FruConfigUI.AddLabel("贡品拾取方式：", false, 162)
                     local CrystallizeTimeType, CrystallizeTimeTypeCG = GUI:Combo("##CrystallizeTimeType", M.Config.FruCfg.CrystallizeTimeType, { "BUFF固定", "科技标点", "自动手摇结果" }, 4)
                     if CrystallizeTimeTypeCG then

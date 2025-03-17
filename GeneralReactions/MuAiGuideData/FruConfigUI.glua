@@ -544,17 +544,16 @@ local DrawFruConfigUI = function(M)
                         M.Config.FruCfg.CrystallizeTimeType = CrystallizeTimeType
                     end
                     if M.Config.FruCfg.CrystallizeTimeType == 2 then
+                        GUI:TextColored(255, 0, 0, 1, "※目前科技种类繁杂，为做到兼容适配，你要问下")
+                        GUI:TextColored(255, 0, 0, 1, "开那个人锁链和禁止代表的意义。当然也可以选择")
+                        GUI:TextColored(255, 0, 0, 1, "【无视禁止和锁链】，并确认好【优先级】！")
                         M.FruConfigUI.AddLabel("科技类型：", false, 162)
-                        local CrystallizeTimeActType, CrystallizeTimeActTypeCG = GUI:Combo("##CrystallizeTimeActType", M.Config.FruCfg.CrystallizeTimeActType, { "短锁链/长禁止", "短禁止/长锁链" }, 4)
+                        GUI:PushItemWidth(140)
+                        local CrystallizeTimeActType, CrystallizeTimeActTypeCG = GUI:Combo("##CrystallizeTimeActType", M.Config.FruCfg.CrystallizeTimeActType, { "红冰锁链|红风禁止", "红冰禁止|红风锁链", "无视锁链和禁止" }, 4)
                         if CrystallizeTimeActTypeCG then
                             M.Config.FruCfg.CrystallizeTimeActType = CrystallizeTimeActType
                         end
-                        GUI:SameLine()
-                        if M.Config.FruCfg.CrystallizeTimeActType == 1 then
-                            GUI:TextColored(255, 255, 0, 1, "[Souma]")
-                        else
-                            GUI:TextColored(255, 255, 0, 1, "[莫灵喵]")
-                        end
+                        GUI:PopItemWidth()
                     end
                     GUI:PopItemWidth()
                     GUI:Text("--------------------------------------")

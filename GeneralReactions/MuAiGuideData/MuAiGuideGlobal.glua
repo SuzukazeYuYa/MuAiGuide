@@ -241,17 +241,17 @@ M.CreateFruDefaultCfg = function()
         PosInfo = { "C", "3", "B", "2", "A", "1", "D", "4" },
         --- 基础8方位置
         JobPos = { "H2", "D2", "ST", "D4", "MT", "D3", "H1", "D1" },
+
         ----------------------------- P1 -----------------------------
-        --- 分散方案 1 TH逆DPS顺，2 全顺
         ProteanType = 1,
         --- 雾龙8方站位 C逆
         FruUtopainSkyPosInfo = { "H2", "D2", "D4", "ST", "MT", "D3", "H1", "D1" },
         --- 抓人分组上
-        CatchTwoUp = { "MT", "H1", "D1", "D3" },
+        CatchTwoUp = { "MT", "ST", "H1", "H2" },
         --- 抓人分组下
-        CatchTwoDown = { "ST", "H2", "D2", "D4" },
+        CatchTwoDown = { "D1", "D2", "D3", "D4" },
         --- 抓人补位
-        CatchTwoDownFall = { "D1", "D2" },
+        CatchTwoDownFall = { "MT", "D1" },
         --- 雷火线优先级
         FruLightFirePriority = { "H1", "H2", "MT", "ST", "D1", "D2", "D3", "D4" },
         --- 雷火线标记
@@ -261,15 +261,15 @@ M.CreateFruDefaultCfg = function()
         --- 雷火线处理方式：1：上下互换，2：闲人固定
         FruLightFireType = 1,
         --- 闲人顺序，从上到下从左到右
-        FruLightFireRestPos = { "1", "2", "3", "4" },
+        FruLightFireRestPos = { "2", "1", "3", "4" },
         --- 踩塔方式 1 小学塔，2固定+补位，3,日基塔固定3人补位3人
-        TakeTowerType = 1,
+        TakeTowerType = 2,
         --- 填充塔优先级
         FallTowerOrder = { "H1", "H2", "D1", "D2", "D3", "D4" },
         --- 固定塔
         FixTowerUp = { "H1", "D1" },
-        FixTowerMid = { "D4", "D3" },
-        FixTowerDown = { "H2", "D2" },
+        FixTowerMid = { "H2", "D2" },
+        FixTowerDown = { "D4", "D3" },
         --- 日基踩塔
         JapanTowerFix = { "H1", "H2", "D4" },
         JapanTowerFall = { "D1", "D2", "D3" },
@@ -277,7 +277,7 @@ M.CreateFruDefaultCfg = function()
         ----------------------------- P2 -----------------------------
         --- DD 换位方式 1： 同组互换，2：全员顺时针
         DDChangeType = 1,
-        --- DD 分组方式 1: A1D4/2B3C / 2: 2A1D,B4C3
+        --- DD 分组方式 1: A1D4/2B3C / 2: 2A1D/B4C3
         DDGroupType = 1,
         --- DD 逆时针跑圈方式 1：全体逆，2:仅45度逆
         DDRunType = 1,
@@ -301,10 +301,10 @@ M.CreateFruDefaultCfg = function()
         UltimateRelativityType = 1,
         --- 分组方案 1: 预站位， 2: 科技  3：日基 4：双分组
         ApocalypseGroupType = 1,
-        --- 换位后是否调整位置
+        --- 换位后是否调整位置 1 不调，2调整
         ApocalypseChangePos = 1,
         --- P3地火解法 1：车头法 2：人群法 3：起点法 4：双分组
-        ApocalypseType = 1,
+        ApocalypseType = 2,
         --- 暗夜舞蹈谁引导 1 MT 2 ST
         P3DarkestDanceTaker = 1,
         ----------------------------- P4 -----------------------------
@@ -312,39 +312,38 @@ M.CreateFruDefaultCfg = function()
         DarkLitOrder = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
         --- 光暗龙诗 翻花绳4边形时候 谁换，1左换，2右换
         DarkLitChangeType = 1,
-        --- 暗夜舞蹈谁引导 1 MT 2 ST
-        P4DarkestDanceTaker = 1,
-        --- 雷火线标记
+        --- 标记队友
         CrystallizeTimeMark = false,
         --- 时间结晶优先级
-        CrystallizeTimePriority = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" },
+        CrystallizeTimePriority = { "H1", "H2", "MT", "ST","D1", "D2", "D3", "D4" },
         --- Buff 处理方式， 1，基本，2，日基
         CrystallizeTimeBuffType = 1,
-        --- 时间结晶贡品处理方式：1:固定吃，2:标点，3:自动摇号
-        CrystallizeTimeType = 1,
-        --- 禁冰，锁风 / 锁冰，禁风
+        --- 时间结晶处理方式：1:固定吃，2:标点，3:自动摇号
+        CrystallizeTimeType = 3,
+        --- 科技类型
         CrystallizeTimeActType = 1,
         --- 时间结晶击退处理方式：1 Y字， 2：角落
         CrystallizeTimeKnockBack = 1,
-        --- 角落时候是内标点还是外标点
-        CrystallizeTimeKnockCType = 1,
+        --- 标点类型
+        CrystallizeTimeKnockCType = 2,
         -- 固定吃, 顺序
         CrystallizeTimeByBuff = {
-            2461, -- 水
             2462, -- 冰
+            2461, -- 水
             2454, -- 摊
             2460, -- 暗
         },
+
         CrystallizeMark = {
-            ["D"] = 1,
-            ["B"] = 2,
-            ["3"] = 3,
-            ["4"] = 4
+            ["D"] = 4,
+            ["B"] = 1,
+            ["3"] = 2,
+            ["4"] = 3
         },
 
-        ----------------------------- P5 -----------------------------
+        ----------------------------- P4 -----------------------------
         --- 踩塔类型： 1.固定踩塔 ，2.顺序踩塔
-        DarkLightWingsTakeTowerType = 1,
+        DarkLightWingsTakeTowerType = 2,
         --- 固定塔站位
         DarkLightWings = {
             Down = { "D1", "D2" },

@@ -30,9 +30,10 @@ local DrawFruConfigUI = function(M)
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
                 if GUI:TreeNode("1.一键默认") then
                     GUI:TextColored(255, 255, 0, 1, "※以下均为默认设置，有多种打法的部分仍需要设置！")
-                    GUI:Button("默认", 130, 20)
+                    GUI:Button("国野主流", 130, 20)
                     if GUI:IsItemClicked(0) then
                         M.Config.FruCfg = M.CreateFruDefaultCfg()
+                        M.Info("已切换为国服野队主流配置，但是细节仍需检查<se.3>。")
                     end
                     GUI:SameLine(0, 30)
                     GUI:Button("日基", 130, 20)
@@ -49,12 +50,12 @@ local DrawFruConfigUI = function(M)
                         M.FastMLM()
                     end
                     GUI:TextColored(255, 255, 0, 1, "※一键配置说明※")
-                    GUI:TextColored(255, 255, 0, 1, "1.基本上mmw仅需改动P2光爆和P3地火，默认为六芒星、")
+                    GUI:TextColored(255, 255, 0, 1, "1.国服野队为当前主流，细节自行查看和修改。")
+                    GUI:TextColored(255, 255, 0, 1, "2.基本上mmw仅需改动P2光爆和P3地火，默认为六芒星、")
                     GUI:TextColored(255, 255, 0, 1, "车头法原版。其他均已自动调好，不需要修改设置。")
-                    GUI:TextColored(255, 255, 0, 1, "2.MLM攻略目前在适配中，大体上已经完成，如果有问题")
+                    GUI:TextColored(255, 255, 0, 1, "3.MLM攻略目前在适配中，大体上已经完成，如果有问题")
                     GUI:TextColored(255, 255, 0, 1, "请反馈时候帮忙提供一个卫月回放！")
-                    GUI:TextColored(255, 255, 0, 1, "3.各类繁杂的设置仅供缝合攻略使用，能不动尽量别乱")
-                    GUI:TextColored(255, 255, 0, 1, "动，如果发现一件配置指路错误，请联系反馈。")
+                    GUI:TextColored(255, 255, 0, 1, "4.各类繁杂的设置仅供缝合攻略使用，能不动尽量别动。")
                     GUI:TreePop()
                 end
                 GUI:Separator()
@@ -134,7 +135,7 @@ local DrawFruConfigUI = function(M)
                 GUI:Separator()
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
                 if GUI:TreeNode("3.基础设置") then
-                    M.FruConfigUI.AddLabel("基础八方：", false, 93)
+                    M.FruConfigUI.AddLabel("基础八方：", false, 115)
                     GUI:PushItemWidth(180)
                     local gJobPos, gJobPosChanged = GUI:InputText("##JobPos", M.StringJoin(M.Config.FruCfg.JobPos, ","), GUI.InputTextFlags_CharsNoBlank)
                     if gJobPosChanged then
@@ -443,7 +444,7 @@ local DrawFruConfigUI = function(M)
                     if M.Config.FruCfg.ApocalypseGroupType <= 2 then
                         if M.Config.FruCfg.ApocalypseGroupType == 1 then
                             M.FruConfigUI.AddLabel("换位后：", false, 113)
-                            GUI:PushItemWidth(120)
+                            GUI:PushItemWidth(100)
                             local ApocalypseChangePos, ApocalypseChangePosCg = GUI:Combo("##ApocalypseChangePos", M.Config.FruCfg.ApocalypseChangePos, { "不调整站位", "调整站位" }, 4)
                             if ApocalypseChangePosCg then
                                 M.Config.FruCfg.ApocalypseChangePos = ApocalypseChangePos
@@ -680,6 +681,7 @@ local DrawFruConfigUI = function(M)
             if GUI:CollapsingHeader("P5.潘多拉·米特隆") then
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
                 if GUI:TreeNode("踩塔：") then
+                    GUI:TextColored(255, 0, 0, 1, "※仅支持MT1塔对面站位方案")
                     M.FruConfigUI.AddLabel("基本方案：")
                     GUI:PushItemWidth(80)
                     local DarkLightWingsTakeTowerType, DarkLightWingsTakeTowerTypeCg = GUI:Combo("##DarkLightWingsTakeTowerType", M.Config.FruCfg.DarkLightWingsTakeTowerType, { "固定踩塔", "顺序踩塔" }, 4)

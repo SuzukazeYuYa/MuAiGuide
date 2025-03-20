@@ -61,35 +61,6 @@ local tbl =
 			},
 			inheritedIndex = 4,
 		},
-		
-		{
-			data = 
-			{
-				actions = 
-				{
-					
-					{
-						data = 
-						{
-							aType = "Lua",
-							actionLua = "local pos  = TensorCore.getPosInDirection({x = 100, y = 0, z = 100}, math.pi * 7 / 6, 6)\nd(pos)\nMuAiGuide.DirectTo(pos.x , pos.z , 10000)\nself.used = true",
-							gVar = "ACR_TensorRequiem3_CD",
-							uuid = "d14131e0-ebdb-5ca2-b916-09dc929097cc",
-							version = 2.1,
-						},
-					},
-				},
-				conditions = 
-				{
-				},
-				enabled = false,
-				mechanicTime = 13.7,
-				name = "123",
-				timelineIndex = 1,
-				uuid = "890e566e-f258-b2e0-b5b3-37a9a6e2c2bc",
-				version = 2,
-			},
-		},
 	},
 	
 	{
@@ -3557,6 +3528,7 @@ local tbl =
 							uuid = "4cd39d56-1177-db8e-b9b3-a4548e4da94d",
 							version = 2,
 						},
+						inheritedIndex = 2,
 					},
 				},
 				eventType = 3,
@@ -3567,6 +3539,63 @@ local tbl =
 				version = 2,
 			},
 			inheritedIndex = 2,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P4_1_SpellID = eventArgs.spellID \nself.used = true",
+							conditions = 
+							{
+								
+								{
+									"fcda6f0d-3626-6322-83a3-732028ac4d2c",
+									true,
+								},
+							},
+							gVar = "ACR_RikuWHM3_CD",
+							uuid = "0372657a-808b-c1f7-9bcd-d463a75f7c6a",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+					
+					{
+						data = 
+						{
+							category = "Event",
+							eventArgOptionType = 3,
+							eventArgType = 2,
+							name = "左右刀读条",
+							spellIDList = 
+							{
+								40228,
+								40229,
+							},
+							uuid = "fcda6f0d-3626-6322-83a3-732028ac4d2c",
+							version = 2,
+						},
+					},
+				},
+				eventType = 3,
+				mechanicTime = 752.3,
+				name = "[MuAiGuide]左右刀ID读取",
+				timeRange = true,
+				timelineIndex = 169,
+				timerEndOffset = 10,
+				timerStartOffset = -10,
+				uuid = "57bb76b8-c488-bc86-b351-4ce1fc4796a5",
+				version = 2,
+			},
 		},
 	},
 	[170] = 
@@ -3582,7 +3611,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if MuAiGuide.SelfPos ~= \"MT\" and MuAiGuide.SelfPos ~= \"ST\" then\n    local player = TensorCore.mGetEntity(MuAiGuide.GetPlayer().id)\n    MuAiGuide.DirectTo(100, player.pos.z, 3000)\nend\nself.used = true",
+							actionLua = "local M = MuAiGuide\nlocal isLeadTank = (M.SelfPos == \"MT\" and M.Config.FruCfg.P3DarkestDanceTaker == 1\n        or M.SelfPos == \"ST\" and M.Config.FruCfg.P3DarkestDanceTaker == 2)\nif isLeadTank then\n    for _, ent in pairs(TensorCore.entityList(\"contentid=9832\")) do\n        if Argus.isEntityVisible(ent) then\n            data.MuAiGd_P4_BOSS_Gaia = ent\n            break\n        end\n    end\n    if data.MuAiGd_P4_BOSS_Gaia then\n        local maxDistance = 0\n        for i = 1, 8 do\n            local curPos = M.JobPosName[i]\n            if M.SelfPos ~= curPos then\n                local curPlayer = M.Party[curPos]\n                local curEnt = TensorCore.mGetEntity(curPlayer.id)\n                local distance = TensorCore.getDistance2d(curEnt.pos, data.MuAiGd_P4_BOSS_Gaia.pos)\n                if maxDistance < distance then\n                    maxDistance = distance\n                end\n            end\n        end\n\n        local guidePos, up, mid, down\n        if data.MuAiGd_P4_1_SpellID == 40228 then\n            --左半场安全\n            up = { x = 86.3, y = 0, z = 86.3 }\n            mid = { x = 80.5, y = 0, z = 100 }\n            down = { x = 86.3, y = 0, z = 113.7 }\n        else\n            up = { x = 113.7, y = 0, z = 86.3 }\n            mid = { x = 119.5, y = 0, z = 100 }\n            down = { x = 113.7, y = 0, z = 113.7 }\n        end\n        local midDistance = TensorCore.getDistance2d(mid, data.MuAiGd_P4_BOSS_Gaia.pos)\n        if midDistance > maxDistance + 0.5 then\n            guidePos = mid\n        else\n            if data.MuAiGd_P4_BOSS_Gaia.pos.z > 100 and TensorCore.getDistance2d(up, data.MuAiGd_P4_BOSS_Gaia.pos) > maxDistance then\n                guidePos = up\n            elseif data.MuAiGd_P4_BOSS_Gaia.pos.z < 100 and TensorCore.getDistance2d(down, data.MuAiGd_P4_BOSS_Gaia.pos) > maxDistance then\n                guidePos = down\n            end\n        end\n        if guidePos then\n            M.DirectTo(guidePos.x, guidePos.z, 5000)\n        else\n            M.Info(\"未找到合适引导位置，请自行计算！<se.1>\")\n        end\n    end\nelse\n    local player = TensorCore.mGetEntity(M.GetPlayer().id)\n    if data.MuAiGd_P4_1_SpellID == 40228 then\n        M.DirectTo(99, player.pos.z, 5000)\n    else\n        M.DirectTo(101, player.pos.z, 5000)\n    end\nend\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "7210f740-d0f3-2ce3-ba75-b4075af0a2b0",
 							version = 2.1,
@@ -3593,7 +3622,7 @@ local tbl =
 				{
 				},
 				mechanicTime = 757.3,
-				name = "[MuAiGuide]光暗龙诗-引导人群回中增加T容错",
+				name = "[MuAiGuide]光暗龙诗-引导",
 				timelineIndex = 170,
 				uuid = "9e6e5623-ca59-e4d3-9b64-3656ca01e0df",
 				version = 2,
@@ -4555,7 +4584,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "if data.MuAiGd_P5_DrawPolarizing == nil then\n    data.MuAiGd_P5_DrawPolarizing = function()\n        if MuAiGuide.Config.FruCfg.drawWinPolarizing == false or data.MuAiGd_P5_BOSS == nil then\n            return\n        end\n        local closest1, closest2 = nil, nil\n        local dist1, dist2 = math.huge, math.huge\n        local boss = TensorCore.mGetEntity(data.MuAiGd_P5_BOSS.id)\n        for _, ent in pairs(MuAiGuide.Party) do\n            local curPlayer = TensorCore.mGetEntity(ent.id)\n            if curPlayer.Alive then\n                local dist = TensorCore.getDistance2d(boss.pos, curPlayer.pos)\n                if dist < dist1 then\n                    dist2 = dist1\n                    closest2 = closest1\n                    dist1 = dist\n                    closest1 = curPlayer\n                elseif dist < dist2 then\n                    dist2 = dist\n                    closest2 = curPlayer\n                end\n            end\n        end\n        local purpleDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n            2\n        )\n        local yellowDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.3)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n            2\n        )\n\n        local redDrawer = Argus2.ShapeDrawer:new(\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n            (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 1)),\n            6\n        )\n        if closest1 ~= nil and closest2 ~= nil then\n            local draw1, draw2\n            if MuAiGuide.GetClock(closest1.pos, closest2.pos) then\n                draw2 = yellowDrawer\n                draw1 = purpleDrawer\n            else\n                draw1 = yellowDrawer\n                draw2 = purpleDrawer\n            end\n\n            local h1 = TensorCore.getHeadingToTarget(boss.pos, closest1.pos)\n            local h2 = TensorCore.getHeadingToTarget(boss.pos, closest2.pos)\n            draw1:addRect(boss.pos.x, boss.pos.y, boss.pos.z, 40, 6, h1)\n            draw2:addRect(boss.pos.x, boss.pos.y, boss.pos.z, 40, 6, h2)\n            redDrawer:addCircle(closest1.pos.x, closest1.pos.y + 0.5, closest1.pos.z, 0.5, true)\n            redDrawer:addCircle(closest2.pos.x, closest2.pos.y + 0.5, closest2.pos.z, 0.5, true)\n        end\n    end\nend\ndata.MuAiGd_P5_DrawPolarizing()\nself.used = true\n",
+							actionLua = "local M = MuAiGuide\nif data.MuAiGd_P5_DrawPolarizing == nil then\n    data.MuAiGd_P5_DrawPolarizing = function(times)\n        if M.Config.FruCfg.drawWinPolarizing == true then\n            local closest1, closest2 = nil, nil\n            local dist1, dist2 = math.huge, math.huge\n            local boss = TensorCore.mGetEntity(data.MuAiGd_P5_BOSS.id)\n            for _, ent in pairs(M.Party) do\n                local curPlayer = TensorCore.mGetEntity(ent.id)\n                if curPlayer.Alive then\n                    local dist = TensorCore.getDistance2d(boss.pos, curPlayer.pos)\n                    if dist < dist1 then\n                        dist2 = dist1\n                        closest2 = closest1\n                        dist1 = dist\n                        closest1 = curPlayer\n                    elseif dist < dist2 then\n                        dist2 = dist\n                        closest2 = curPlayer\n                    end\n                end\n            end\n            local purpleDrawer = Argus2.ShapeDrawer:new(\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.7)),\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.7)),\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 255 / 255, 0.7)),\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n                    2\n            )\n            local yellowDrawer = Argus2.ShapeDrawer:new(\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.7)),\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.7)),\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 0 / 255, 0.7)),\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 255 / 255, 255 / 255, 1)),\n                    2\n            )\n\n            local redDrawer = Argus2.ShapeDrawer:new(\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 0)),\n                    (GUI:ColorConvertFloat4ToU32(255 / 255, 0 / 255, 0 / 255, 1)),\n                    6\n            )\n            if closest1 ~= nil and closest2 ~= nil then\n                local draw1, draw2\n                if M.GetClock(closest1.pos, closest2.pos) then\n                    draw2 = yellowDrawer\n                    draw1 = purpleDrawer\n                else\n                    draw1 = yellowDrawer\n                    draw2 = purpleDrawer\n                end\n\n                local h1 = TensorCore.getHeadingToTarget(boss.pos, closest1.pos)\n                local h2 = TensorCore.getHeadingToTarget(boss.pos, closest2.pos)\n                draw1:addRect(boss.pos.x, boss.pos.y, boss.pos.z, 40, 6, h1)\n                draw2:addRect(boss.pos.x, boss.pos.y, boss.pos.z, 40, 6, h2)\n                redDrawer:addCircle(closest1.pos.x, closest1.pos.y + 0.5, closest1.pos.z, 0.5, true)\n                redDrawer:addCircle(closest2.pos.x, closest2.pos.y + 0.5, closest2.pos.z, 0.5, true)\n            end\n        end\n\n        local bossPos = TensorCore.mGetEntity(data.MuAiGd_P5_BOSS.id).pos\n        local curPlayers = M.Config.FruCfg.drawWinPolarizingOrder[times]\n        local endHeading\n\n        local distance\n        local IsSelfLead\n        if table.contains(curPlayers, M.SelfPos) then\n            data.MuAiGd_P5_SelfFront = true\n            IsSelfLead = true\n            distance = 5.5\n        else\n            IsSelfLead = false\n            distance = 9.5\n        end\n\n        local isLeft = M.IndexOf(M.JobPosName, M.SelfPos) % 2 == 1\n        if data.MuAiGd_P5_SelfFront and not IsSelfLead then --档过了且不是当前次挡枪\n            isLeft = not isLeft\n        end\n        if isLeft then\n            endHeading = M.SetHeading2Pi(bossPos.h + math.pi * 3 / 4)\n        else\n            endHeading = M.SetHeading2Pi(bossPos.h - math.pi * 3 / 4)\n        end\n\n        local endPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, endHeading, distance)\n        M.FrameDirect(endPos.x, endPos.z)\n    end\n    data.MuAiGd_P5_DrawPolarizingFinish = function(times)\n        local boss = TensorCore.mGetEntity(data.MuAiGd_P5_BOSS.id)\n        local heading = M.SetHeading2Pi(boss.pos.h - math.pi)\n        local endPos = TensorCore.getPosInDirection({ x = 100, y = 0, z = 100 }, heading, 10)\n        M.DirectTo(endPos.x, endPos.z, 1500)\n    end\nend\ndata.MuAiGd_P5_DrawPolarizing(1)\nself.used = true\n",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "9fbbc434-39da-d3a3-a3fb-688fa60bb0f3",
 							version = 2.1,
@@ -4568,7 +4597,7 @@ local tbl =
 				},
 				eventType = 12,
 				mechanicTime = 1051.2,
-				name = "[MuAiGuide]挡枪绘制矩形-第1波",
+				name = "[MuAiGuide]挡枪-第1波",
 				timeRange = true,
 				timelineIndex = 226,
 				timerEndOffset = 0.30000001192093,
@@ -4577,6 +4606,39 @@ local tbl =
 				uuid = "2f3523e7-29c0-dc00-a85d-7521367e2f3c",
 				version = 2,
 			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_DrawPolarizingFinish(1)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1051.2,
+				name = "[MuAiGuide]挡枪-第1波end",
+				timelineIndex = 226,
+				timerEndOffset = 0.30000001192093,
+				timerOffset = 0.30000001192093,
+				timerStartOffset = 0.30000001192093,
+				uuid = "4613fc4e-3935-bf42-88a8-fcc9aa00a5c2",
+				version = 2,
+			},
+			inheritedIndex = 2,
 		},
 	},
 	[228] = 
@@ -4592,11 +4654,12 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "data.MuAiGd_P5_DrawPolarizing()\nself.used = true",
+							actionLua = "data.MuAiGd_P5_DrawPolarizing(2)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
 							version = 2.1,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				conditions = 
@@ -4604,7 +4667,7 @@ local tbl =
 				},
 				eventType = 12,
 				mechanicTime = 1055.8,
-				name = "[MuAiGuide]挡枪绘制矩形-第2波",
+				name = "[MuAiGuide]挡枪-第2波",
 				timeRange = true,
 				timelineIndex = 228,
 				timerEndOffset = 0.30000001192093,
@@ -4613,6 +4676,39 @@ local tbl =
 				uuid = "32e0afce-5c61-7e90-a3d4-59ba4a8cff58",
 				version = 2,
 			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_DrawPolarizingFinish(1)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1055.8,
+				name = "[MuAiGuide]挡枪-第2波end",
+				timelineIndex = 228,
+				timerEndOffset = 0.30000001192093,
+				timerOffset = 0.30000001192093,
+				timerStartOffset = 0.30000001192093,
+				uuid = "308f38d4-d888-8593-b915-f5b336382455",
+				version = 2,
+			},
+			inheritedIndex = 2,
 		},
 	},
 	[230] = 
@@ -4628,7 +4724,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "data.MuAiGd_P5_DrawPolarizing()\nself.used = true",
+							actionLua = "data.MuAiGd_P5_DrawPolarizing(3)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
 							version = 2.1,
@@ -4640,7 +4736,7 @@ local tbl =
 				},
 				eventType = 12,
 				mechanicTime = 1060.4,
-				name = "[MuAiGuide]挡枪绘制矩形-第3波",
+				name = "[MuAiGuide]挡枪-第3波",
 				timeRange = true,
 				timelineIndex = 230,
 				timerEndOffset = 0.30000001192093,
@@ -4649,6 +4745,39 @@ local tbl =
 				uuid = "cc79fa8d-5071-f3d3-8fd6-6f908a6cf429",
 				version = 2,
 			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_DrawPolarizingFinish(3)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1060.4,
+				name = "[MuAiGuide]挡枪-第3波end",
+				timelineIndex = 230,
+				timerEndOffset = 0.30000001192093,
+				timerOffset = 0.30000001192093,
+				timerStartOffset = 0.30000001192093,
+				uuid = "edbdca3e-552f-fb36-8ac0-6e9fee14e140",
+				version = 2,
+			},
+			inheritedIndex = 2,
 		},
 	},
 	[232] = 
@@ -4664,7 +4793,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "data.MuAiGd_P5_DrawPolarizing()\nself.used = true",
+							actionLua = "data.MuAiGd_P5_DrawPolarizing(4)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
 							version = 2.1,
@@ -4676,7 +4805,7 @@ local tbl =
 				},
 				eventType = 12,
 				mechanicTime = 1065,
-				name = "[MuAiGuide]挡枪绘制矩形-第4波",
+				name = "[MuAiGuide]挡枪-第4波",
 				timeRange = true,
 				timelineIndex = 232,
 				timerEndOffset = 0.30000001192093,
@@ -4684,6 +4813,39 @@ local tbl =
 				uuid = "8a475ceb-2131-8b23-964e-529bc34105d2",
 				version = 2,
 			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_DrawPolarizingFinish(4)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1065,
+				name = "[MuAiGuide]挡枪-第4波end",
+				timelineIndex = 232,
+				timerEndOffset = 0.30000001192093,
+				timerOffset = 0.30000001192093,
+				timerStartOffset = 0.30000001192093,
+				uuid = "e90d0a8c-fe79-6bee-bd6e-b444803c1c99",
+				version = 2,
+			},
+			inheritedIndex = 2,
 		},
 	},
 	[243] = 
@@ -4750,6 +4912,34 @@ local tbl =
 				version = 2,
 			},
 		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "d(data.MuAiGd_P5_SelfFront)\nself.used =true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "08c1e3d1-c970-f80d-b3f5-4db1cb2e00d2",
+							version = 2.1,
+						},
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1124,
+				name = "123",
+				timelineIndex = 243,
+				uuid = "c1d3fda2-a99b-573e-a7e6-a9e771b7b2e0",
+				version = 2,
+			},
+		},
 	},
 	[247] = 
 	{
@@ -4764,7 +4954,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "data.MuAiGd_P5_Towers = nil\ndata.MuAiGd_P5CastInfo = nil\nself.used = true",
+							actionLua = "data.MuAiGd_P5_Towers = nil\ndata.MuAiGd_P5CastInfo = nil\ndata.MuAiGd_P5_SelfFront = nil\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "a5e8aa3b-649f-3abc-a4d8-a7bcb66f2420",
 							version = 2.1,
@@ -4961,7 +5151,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "data.MuAiGd_P5_DrawPolarizing()\nself.used = true",
+							actionLua = "data.MuAiGd_P5_DrawPolarizing(1)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
 							version = 2.1,
@@ -4973,7 +5163,7 @@ local tbl =
 				},
 				eventType = 12,
 				mechanicTime = 1162.6,
-				name = "[MuAiGuide]挡枪绘制矩形2-第1波",
+				name = "[MuAiGuide]挡枪-第1波",
 				timeRange = true,
 				timelineIndex = 253,
 				timerEndOffset = 0.30000001192093,
@@ -4982,6 +5172,40 @@ local tbl =
 				uuid = "8306d329-2d58-1fbf-8b9d-478a047525d4",
 				version = 2,
 			},
+			inheritedIndex = 1,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_DrawPolarizingFinish(1)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1162.6,
+				name = "[MuAiGuide]挡枪-第1波end",
+				timelineIndex = 253,
+				timerEndOffset = 0.30000001192093,
+				timerOffset = 0.30000001192093,
+				timerStartOffset = 0.30000001192093,
+				uuid = "39007bb7-17c4-0ae6-8883-3a348b3dd8ab",
+				version = 2,
+			},
+			inheritedIndex = 2,
 		},
 	},
 	[255] = 
@@ -4997,11 +5221,12 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "data.MuAiGd_P5_DrawPolarizing()\nself.used = true",
+							actionLua = "data.MuAiGd_P5_DrawPolarizing(2)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
 							version = 2.1,
 						},
+						inheritedIndex = 1,
 					},
 				},
 				conditions = 
@@ -5009,7 +5234,7 @@ local tbl =
 				},
 				eventType = 12,
 				mechanicTime = 1167.2,
-				name = "[MuAiGuide]挡枪绘制矩形-第2波",
+				name = "[MuAiGuide]挡枪-第2波",
 				timeRange = true,
 				timelineIndex = 255,
 				timerEndOffset = 0.30000001192093,
@@ -5018,6 +5243,40 @@ local tbl =
 				uuid = "ca7d40f4-abb5-63de-bbb5-d6134dbcf4c2",
 				version = 2,
 			},
+			inheritedIndex = 1,
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_DrawPolarizingFinish(2)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1167.2,
+				name = "[MuAiGuide]挡枪-第2波end",
+				timelineIndex = 255,
+				timerEndOffset = 0.30000001192093,
+				timerOffset = 0.30000001192093,
+				timerStartOffset = 0.30000001192093,
+				uuid = "3102cd32-9787-9607-ad0b-577c6da2a2bb",
+				version = 2,
+			},
+			inheritedIndex = 2,
 		},
 	},
 	[257] = 
@@ -5033,7 +5292,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "data.MuAiGd_P5_DrawPolarizing()\nself.used = true",
+							actionLua = "data.MuAiGd_P5_DrawPolarizing(3)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
 							version = 2.1,
@@ -5045,7 +5304,7 @@ local tbl =
 				},
 				eventType = 12,
 				mechanicTime = 1171.8,
-				name = "[MuAiGuide]挡枪绘制矩形-第3波",
+				name = "[MuAiGuide]挡枪-第3波",
 				timeRange = true,
 				timelineIndex = 257,
 				timerEndOffset = 0.30000001192093,
@@ -5054,6 +5313,39 @@ local tbl =
 				uuid = "80229565-48bc-9d15-a492-8dccb2633222",
 				version = 2,
 			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_DrawPolarizingFinish(3)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1171.8,
+				name = "[MuAiGuide]挡枪-第3波end",
+				timelineIndex = 257,
+				timerEndOffset = 0.30000001192093,
+				timerOffset = 0.30000001192093,
+				timerStartOffset = 0.30000001192093,
+				uuid = "de95afe3-cada-4dab-8e6d-704647777528",
+				version = 2,
+			},
+			inheritedIndex = 2,
 		},
 	},
 	[259] = 
@@ -5069,7 +5361,7 @@ local tbl =
 						data = 
 						{
 							aType = "Lua",
-							actionLua = "data.MuAiGd_P5_DrawPolarizing()\nself.used = true",
+							actionLua = "data.MuAiGd_P5_DrawPolarizing(4)\nself.used = true",
 							gVar = "ACR_TensorRequiem3_CD",
 							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
 							version = 2.1,
@@ -5081,7 +5373,7 @@ local tbl =
 				},
 				eventType = 12,
 				mechanicTime = 1176.4,
-				name = "[MuAiGuide]挡枪绘制矩形-第4波",
+				name = "[MuAiGuide]挡枪-第4波",
 				timeRange = true,
 				timelineIndex = 259,
 				timerEndOffset = 0.30000001192093,
@@ -5089,6 +5381,39 @@ local tbl =
 				uuid = "ef1e4190-b303-ebef-8f18-25a1e50ca1dd",
 				version = 2,
 			},
+		},
+		
+		{
+			data = 
+			{
+				actions = 
+				{
+					
+					{
+						data = 
+						{
+							aType = "Lua",
+							actionLua = "data.MuAiGd_P5_DrawPolarizingFinish(4)\nself.used = true",
+							gVar = "ACR_TensorRequiem3_CD",
+							uuid = "2b1bc0b8-799b-9417-bba4-46f15893e23f",
+							version = 2.1,
+						},
+						inheritedIndex = 1,
+					},
+				},
+				conditions = 
+				{
+				},
+				mechanicTime = 1176.4,
+				name = "[MuAiGuide]挡枪-第4波end",
+				timelineIndex = 259,
+				timerEndOffset = 0.30000001192093,
+				timerOffset = 0.30000001192093,
+				timerStartOffset = 0.30000001192093,
+				uuid = "4978cd3a-0df5-0182-b796-965b862843ce",
+				version = 2,
+			},
+			inheritedIndex = 2,
 		},
 	},
 	[268] = 

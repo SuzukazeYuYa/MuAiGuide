@@ -81,7 +81,7 @@ local DrawFruConfigUI = function(M)
                         GUI:PopItemWidth()
                         GUI:Button("确认", 100, 20)
                         if GUI:IsItemClicked(0) then
-                            if not havaSame and M.NewFileName ~= nil and #M.NewFileName > 0  then
+                            if not havaSame and M.NewFileName ~= nil and #M.NewFileName > 0 then
                                 M.SaveFileConfig(M.NewFileName, M.Config.FruCfg)
                                 M.FruConfigUI.NewMode = false
                                 if M.NewFileName ~= M.ConfigTable[M.ConfigTableIndex] then
@@ -510,15 +510,15 @@ local DrawFruConfigUI = function(M)
                         M.Config.FruCfg.DarkLitChangeType = DarkLitChangeType
                     end
                     GUI:PopItemWidth()
-                    --[[ GUI:PushItemWidth(40)
-                     M.FruConfigUI.AddLabel("暗夜舞蹈引导：", false)
-                     local P4DarkestDanceTaker, P4DarkestDanceTakerChange = GUI:Combo("##P4DarkestDanceTaker", M.Config.FruCfg.P4DarkestDanceTaker, { "MT", "ST" }, 4)
-                     if P4DarkestDanceTakerChange then
-                         M.Config.FruCfg.P4DarkestDanceTaker = P4DarkestDanceTaker
-                     end
-                     GUI:SameLine()
-                     GUI:TextColored(255, 0, 0, 1, "※T玩家必填，其他人随意！")
-                     GUI:PopItemWidth()]]
+                    GUI:PushItemWidth(40)
+                    M.FruConfigUI.AddLabel("暗夜舞蹈引导：", false)
+                    local P4DarkestDanceTaker, P4DarkestDanceTakerChange = GUI:Combo("##P4DarkestDanceTaker", M.Config.FruCfg.P4DarkestDanceTaker, { "MT", "ST" }, 4)
+                    if P4DarkestDanceTakerChange then
+                        M.Config.FruCfg.P4DarkestDanceTaker = P4DarkestDanceTaker
+                    end
+                    GUI:SameLine()
+                    GUI:TextColored(255, 0, 0, 1, "※T玩家必填，其他人随意！")
+                    GUI:PopItemWidth()
                     GUI:TreePop()
                 end
                 GUI:Separator()
@@ -680,7 +680,7 @@ local DrawFruConfigUI = function(M)
             end
             if GUI:CollapsingHeader("P5.潘多拉·米特隆") then
                 GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
-                if GUI:TreeNode("踩塔：") then
+                if GUI:TreeNode("1.踩塔：") then
                     GUI:TextColored(255, 0, 0, 1, "※仅支持MT1塔对面站位方案")
                     M.FruConfigUI.AddLabel("基本方案：")
                     GUI:PushItemWidth(80)
@@ -723,6 +723,41 @@ local DrawFruConfigUI = function(M)
                         end
                     end
                     GUI:PopItemWidth()
+                    GUI:TreePop()
+                end
+                GUI:SetNextTreeNodeOpened(true, GUI.SetCond_Appearing)
+                if GUI:TreeNode("2.挡枪：") then
+                    M.FruConfigUI.AddLabel("第1挡：", true)
+                    GUI:PushItemWidth(50)
+                    local drawWinPolarizing1, drawWinPolarizing1Changed = GUI:InputText("##drawWinPolarizing1", M.StringJoin( M.Config.FruCfg.drawWinPolarizingOrder[1], ","), GUI.InputTextFlags_CharsNoBlank)
+                    if drawWinPolarizing1Changed then
+                        M.Config.FruCfg.drawWinPolarizingOrder[1] = M.StringSplit(drawWinPolarizing1, ",")
+                    end
+                    GUI:PopItemWidth()
+                    GUI:SameLine(0, 50)
+                    M.FruConfigUI.AddLabel("第2挡：", true)
+                    GUI:PushItemWidth(50)
+                    local drawWinPolarizing2, drawWinPolarizing2Changed = GUI:InputText("##drawWinPolarizing2", M.StringJoin( M.Config.FruCfg.drawWinPolarizingOrder[2], ","), GUI.InputTextFlags_CharsNoBlank)
+                    if drawWinPolarizing2Changed then
+                        M.Config.FruCfg.drawWinPolarizingOrder[2] = M.StringSplit(drawWinPolarizing2, ",")
+                    end
+                    GUI:PopItemWidth()
+                    M.FruConfigUI.AddLabel("第3挡：", true)
+                    GUI:PushItemWidth(50)
+                    local drawWinPolarizing3, drawWinPolarizing3Changed = GUI:InputText("##drawWinPolarizing3", M.StringJoin( M.Config.FruCfg.drawWinPolarizingOrder[3], ","), GUI.InputTextFlags_CharsNoBlank)
+                    if drawWinPolarizing3Changed then
+                        M.Config.FruCfg.drawWinPolarizingOrder[3] = M.StringSplit(drawWinPolarizing3, ",")
+                    end
+                    GUI:SameLine(0, 50)
+                    GUI:PopItemWidth()
+                    M.FruConfigUI.AddLabel("第4挡：", true)
+                    GUI:PushItemWidth(50)
+                    local drawWinPolarizing4, drawWinPolarizing4Changed = GUI:InputText("##drawWinPolarizing4", M.StringJoin( M.Config.FruCfg.drawWinPolarizingOrder[4], ","), GUI.InputTextFlags_CharsNoBlank)
+                    if drawWinPolarizing4Changed then
+                        M.Config.FruCfg.drawWinPolarizingOrder[4] = M.StringSplit(drawWinPolarizing4, ",")
+                    end
+                    GUI:PopItemWidth()
+                    
                     GUI:TreePop()
                 end
                 GUI:Separator()
